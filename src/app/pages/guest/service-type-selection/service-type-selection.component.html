@@ -1,0 +1,54 @@
+<div class="p-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/guest']" >Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Appointments</li>
+        </ol>
+    </nav>
+</div>
+<div class="d-flex justify-content-center align-items-center flex-column body-wrapper p-5">
+    <h1 *ngIf="processing">
+        Loading..
+    </h1>
+    <div *ngIf="!processing" style="min-height: 80vh;">
+        <a class="btn btn-primary light-shadow mr-2 btn-lg" *ngFor="let item of serviceItems?.data" [routerLink]="['item', item?.service_item_code]" [queryParams]="{ 'on-call': item?.on_call_only ? true : false }"> Book {{ item?.service_item_name }}</a>
+        <div class="card mt-3 light-shadow">
+            <div class="card-body" style="height: 70vh; overflow: hidden; overflow-y: auto;">
+                <table class="table mt-3">
+                    <thead>
+                        <th>ID</th>
+                        <th>Appointment Date</th>
+                        <th>Patient</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Reason</th>
+                        <th>&nbsp;</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let appointment of appointments?.data">
+                            <td>{{ appointment?.id}}</td>
+                            <td>{{ appointment?.appointment_datetime_notification }}</td>
+                            <td>{{ appointment?.patient_name }}</td>
+                            <td>{{ appointment?.service?.service_item?.service_item_name }}</td>
+                            <td>{{ appointment?.appointment_status }}</td>
+                            <td>{{ appointment?.remarks }}</td>
+                            <td>
+                                <button class="btn btn-primary" (click)="enterRoom(appointment)" *ngIf="appointment?.can_start" [disabled]="appointment?.loading">
+                                    Enter Room
+                                    <i *ngIf="appointment?.loading" class="nav-icon fas fa-circle-notch spinning"></i>
+                                </button>
+                                <button class="btn btn-danger ml-2" (click)="cancelAppointment(appointment)" *ngIf="appointment?.appointment_status === 'confirmed'" [disabled]="appointment?.cancelling">
+                                    Cancel
+                                    <i *ngIf="appointment?.cancelling" class="nav-icon fas fa-circle-notch spinning"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="appointments?.data?.length < 1">
+                            <td>No Appointments</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

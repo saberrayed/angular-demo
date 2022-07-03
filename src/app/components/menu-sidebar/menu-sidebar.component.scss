@@ -1,0 +1,33 @@
+.main-sidebar {
+  height: 100vh;
+  overflow: scroll;
+  
+  .nav-sidebar {
+      .nav-item {
+        a {
+          border-radius: 10px;
+          color: var(--mwell-text-caption-color);
+
+          &.active {
+            color: white;
+            background: rgb(111,208,243);
+            background: linear-gradient(112deg, rgba(111,208,243,1) 0%, rgba(83,174,221,1) 100%);
+            box-shadow: none;
+          }
+        }
+      }
+  }
+}
+
+.user-panel {
+  border: none;
+  
+}
+.image {
+  transition: padding ease-in-out .2s;
+  padding: 20px 50px;
+  img {
+    width: 100%;
+  }
+}
+

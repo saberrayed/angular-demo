@@ -1,0 +1,243 @@
+<div class="bg2-img" [ngStyle]="{'background-image': 'url(assets/img/bg2.png)'}">
+    <div class="card light-shadow-blue">
+        <div class="card-body px-4 mx-4 text-center">
+            <div class="d-flex justify-content-center w-100">
+                <div class="icon-onboarding d-flex justify-content-center align-items-center"><i class="fas fa-phone-square-alt"></i></div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-3 pr-0 profile-text">
+                    <span>Profile Information</span>
+                </div>
+                <div class="col-1 px-0 pt-1">
+                    <i class="fa fa-chevron-right text-warning" aria-hidden="true"></i>
+                </div>
+                <div class="col-2 px-0 pt-2 profile-text">
+                    <span>Credentials</span>
+                </div>
+                <div class="col-1 px-0 pt-1">
+                    <i class="fa fa-chevron-right text-warning" aria-hidden="true"></i>
+                </div>
+                <div class="col-2 px-0 profile-text">
+                    <span>Service Agreement</span>
+                </div>
+                <div class="col-1 px-0 pt-1">
+                    <i class="fa fa-chevron-right text-warning" aria-hidden="true"></i>
+                </div>
+                <div class="col-2 pl-0 profile-text">
+                    <span>Clinic Setup</span>
+                </div>
+            </div>
+            <div class="progress mb-4" style="height: 8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="row text-left" *ngIf="activePage == 'setup'">
+                <div class="col-12 text-primary bold h5">
+                    <span>Select the clinic that you wish to set up.</span>
+                </div>
+                <div class="col-12">
+                    <span>Choose whether you would like to setup your virtual clinic or physical clinic.</span>
+                    <hr>
+                </div>
+                <div class="col-12 pb-4 mb-4">
+                    <div class="virtual-clinic text-center" (click)="virtualClinic()">
+                        <span>Virtual Clinic</span>
+                    </div>
+                    <div class="virtual-clinic-gray text-center">
+                        <span>Physical Clinic</span><br>
+                        <small class="text-gray">(coming soon)</small>
+                    </div>
+                </div>
+            </div>
+            <form [formGroup]="form" *ngIf="form">
+                <fieldset [disabled]="loading || processing">
+                    <div class="row text-left" *ngIf="activePage == 'settings'">
+                        <div class="col-12 text-primary bold h4">
+                            <span>Virtual Clinic Settings</span>
+                        </div>
+                        <div class="col-12">
+                            <span>Your Virtual Clinic can cater to telemedicine patients from the mWell App.</span>
+                            <hr>
+                        </div>
+                        <div class="col-1">
+                            <div class="d-flex justify-content-left w-100">
+                                <div class="icon2 d-flex justify-content-center align-items-center"><i class="fas fa-map-marker-alt"></i></div>
+                            </div>
+                        </div>
+                        <div class="col-11 text-primary bold text-left mt-3">
+                            <h5>What locations will your virtual clinic accept patients from?</h5>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-11">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cater_from" id="exampleRadios2" value="anywhere" formControlName="cater_from" (click)="resetLocation()">
+                                <label class="form-check-label" for="exampleRadios2">
+                                    Cater patients from anywhere
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cater_from" id="exampleRadios3" value="specific" formControlName="cater_from" (click)="resetLocation()">
+                                <label class="form-check-label" for="exampleRadios3">
+                                    Cater patients from specific areas
+                                </label>
+                            </div>
+                            <div class="pl-4" *ngIf="form?.value?.cater_from === 'specific'">
+                                <p-multiSelect [options]="municipality" defaultLabel="Select Cities" [(ngModel)]="selectedCities" [ngModelOptions]="{ standalone: true }"
+                                    optionLabel="display" optionValue="code" display="chip">
+                                    <ng-template let-city pTemplate="item">
+                                        {{ city?.display }} ({{ city?.province?.display }})
+                                    </ng-template>
+                                </p-multiSelect>
+                            </div>
+                        </div>
+                        <div class="col-1 pt-2">
+                            <div class="d-flex justify-content-left w-100">
+                                <div class="icon2 d-flex justify-content-center align-items-center"><i class="fas fa-calendar-check"></i></div>
+                            </div>
+                        </div>
+                        <div class="col-11 text-primary bold text-left mt-4">
+                            <h5>What is the schedule of your Virtual Clinic (for Consult Later)?</h5>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-11">
+                            <div class="row" *ngFor="let day of week">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox mb-3">
+                                        <input type="checkbox" class="cursor-pointer custom-control-input" id="checker-{{ day?.code }}" name="example1" value="true" (change)="addSchedule(day?.code, $event.target.checked)">
+                                        <label class="cusror-pointer custom-control-label checkbox-label text-primary" for="checker-{{ day?.code }}">{{ day?.name }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="getDayIndex(day?.code) > -1" formArrayName="schedules">
+                                    <div class="row pb-3 pl-3" [formGroup]="getScheduleControl(getDayIndex(day?.code))">
+                                        <div class="col-auto">
+                                            <label for="selectedIntervalMon" style="font-weight: 500; margin-bottom: 0px;">Time/Schedule Block Intervals</label><br>
+                                            <select class="form-control form-control-lg" formControlName="interval">
+                                                <option *ngFor="let option of optionsTimeInterval" [value]="option?.value">{{ option?.label }}</option>
+                                            </select>
+                                            <!-- <p-dropdown [options]="optionsTimeInterval" formControlName="interval" optionLabel="label" optionValue="value" (onChange)="display($event)">
+                                            </p-dropdown> -->
+                                        </div>
+                                        <div class="col-auto">
+                                            <label for="selectedDayStart" style="font-weight: 500; margin-bottom: 0px;">Day Start Time</label><br>
+                                            <input type="time" class="form-control form-control-lg" formControlName="schedule_start_time">
+                                        </div>
+                                        <div class="col-auto">
+                                            <label for="selectedDayStart" style="font-weight: 500; margin-bottom: 0px;">Day End Time</label><br>
+                                            <input type="time" class="form-control form-control-lg" formControlName="schedule_end_time">
+                                        </div>
+                                        <div class="col-auto">
+                                            <button
+                                                type="button"
+                                                (click)="generateTimeBlock(getDayIndex(day?.code))"
+                                                class="btn btn-primary btn-lg mt-4 py-2">
+                                                Generate
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2 pl-4 text-left" [formGroup]="getScheduleControl(getDayIndex(day?.code))">
+                                        <div class="col-12 pb-2 text-primary" *ngIf="form?.value?.schedules[getDayIndex(day?.code)]?.slots?.length > 0">
+                                            <strong>Time Blocks</strong>
+                                        </div>
+                                        <div class="col-12" *ngIf="form?.value?.schedules[getDayIndex(day?.code)]?.slots?.length > 0">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <td class="p-2"><small class="bold-500">Block Start Time</small></td>
+                                                        <td class="p-2"><small class="bold-500">Block End Time</small></td>
+                                                        <td class="p-2"><small class="bold-500">Notes</small></td>
+                                                        <td class="p-2"><small class="bold-500">Patient Slots</small></td>
+                                                        <td class="p-2"><small class="bold-500">Actions</small></td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let slot of getScheduleControl(getDayIndex(day?.code))?.controls?.slots?.controls; let i = index" formArrayName="slots" >
+                                                        <td [formGroupName]="i" class="p-2">
+                                                            <input type="time" class="form-control form-control-lg" formControlName="slot_start_time">
+                                                        </td>
+                                                        <td [formGroupName]="i" class="p-2">
+                                                            <input type="time" class="form-control form-control-lg" formControlName="slot_end_time">
+                                                        </td>
+                                                        <td [formGroupName]="i" class="p-2">
+                                                            <input type="text" class="form-control form-control-lg pt-3" formControlName="slot_notes"/>
+                                                        </td>
+                                                        <td [formGroupName]="i" class="p-2">
+                                                            <input type="text" class="form-control form-control-lg pt-3 text-center bold" value="1" style="max-width: 100px;" readonly formControlName="number_of_bookings"/>
+                                                        </td>
+                                                        <td class="p-2">
+                                                            <div>
+                                                                <button class="btn btn-default btn-lg" (click)="removeSlot(getDayIndex(day?.code), i)"><i class="fas fa-trash text-danger"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="form?.value?.schedules[getDayIndex(day?.code)]?.slots?.length < 1">
+                                                        <td class="p-2" colspan="5">No Slots</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-12 mt-3 mb-3">
+                                            <button
+                                                type="button"
+                                                (click)="addSlot(getDayIndex(day?.code))"
+                                                class="btn btn-primary btn-lg">
+                                                Add New Time Block
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1 pt-2">
+                            <div class="d-flex justify-content-left w-100">
+                                <div class="icon2 d-flex justify-content-center align-items-center"><i class="fas fa-credit-card"></i></div>
+                            </div>
+                        </div>
+                        <div class="col-11 text-primary bold text-left mt-4">
+                            <h5>How much will patients be charged for a consultation?</h5>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-11">
+                            <span>
+                                Please enter the consultation fee that patients will be charged for an on-call or scheduled telemedicine consultation. You can change this anytime later.
+                            </span>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-11 py-2">
+                            <i>
+                                Note: mWell will charge the patient a booking fee on top of your fee.
+                            </i>
+                        </div>
+                        <div class="col-1 pb-4 mb-4"></div>
+                        <div class="col-3 pb-4 mb-4">
+                            <label for="fee" class="font-weight-normal">Consultation fee</label>
+                            <input type="text" id="fee" class="form-control form-control-lg" formControlName="consultation_fee"/>
+                        </div>
+                        <div class="col-8 pb-4 mb-4"></div>
+                        <div class="col-8 py-4 my-4"></div>
+                        <div class="col-12 py-4 my-4">
+                            <div class="d-flex justify-content-between">
+                                <button
+                                    class="btn btn-outline-warning btn-lg"
+                                    style="min-width: 200px"
+                                    [routerLink]="['/onboarding/service-agreement']" routerLinkActive="router-link-active" >
+                                    Back
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-primary btn-lg"
+                                    style="min-width: 200px"
+                                    (click)="save()"
+                                    [disabled]="form?.invalid || loading || processing">
+                                    Submit
+                                    <i *ngIf="processing" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+{{ selectedCities | json }}

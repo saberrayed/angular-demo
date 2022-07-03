@@ -1,0 +1,31 @@
+.template-container {
+    height: 30vh;
+    overflow: hidden;
+    overflow-y: auto;
+    background-color: var(--mwell-content-wrapper-color);
+
+    .template-list {
+        list-style: none;
+        padding: 15px;
+        margin: 0px;
+    
+        li {
+            a {
+                background-color: white;
+                border: 1px solid var(--mwell-border-color);
+                border-radius: 15px;
+                display: flex;
+                align-items: center;
+    
+                padding: 15px 20px;
+                margin-bottom: 10px;
+    
+                cursor: pointer;
+    
+                i {
+                    margin-right: 20px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,30 @@
+.upload-container {
+    border: 1px dashed #ccc;
+    padding: 10px;
+    border-radius: 10px;
+
+    .upload-preview {
+        height: 180px;
+        background: #F2F2F2;
+        border: 0.5px dashed #2F2F2F;
+        border-radius: 10px;
+        padding: 0% 28%;
+    
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .img-preview {
+        width: 250px;
+        cursor: pointer;
+    }
+}
+
+textarea {
+    resize: none;
+}
+
+.fa-file-pdf {
+    font-size: 3rem;
+}

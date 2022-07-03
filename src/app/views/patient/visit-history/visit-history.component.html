@@ -1,0 +1,82 @@
+<div class="card mt-4 bg-white">
+    <div class="card-body">
+        <div class="container-fluid p-3">
+            <div class="row pb-3">
+                <div class="col">
+                    <h5 class="font-weight-bold">VISIT HISTORY</h5>
+                </div>
+            </div>
+            <div class="row" *ngIf="processing">
+                <div class="col">
+                    <table class="table">
+                        <tr *ngFor="let count of counter(3)">
+                            <td style="width: 10%;">
+                                <div class="mb-1"><p-skeleton height="2rem" width="100px"></p-skeleton></div>
+                                <p-skeleton height="1rem" width="80px"></p-skeleton>
+                            </td>
+                            <td style="width: 60px;"><p-skeleton height="50px" width="50px" shape="circle"></p-skeleton></td>
+                            <td><p-skeleton height="150px" width="100%" borderRadius="10px"></p-skeleton></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 10%;">
+                            </td>
+                            <td style="width: 60px;"><p-skeleton height="50px" width="50px" shape="circle"></p-skeleton></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row overflow-auto" *ngIf="!processing">
+                <div class="col">
+                    <p-timeline [value]="visitHistory" class="w-100">
+                        <ng-template pTemplate="opposite" let-visit>
+                            <p class="text-left"><b>{{ visit?.admission_datetime | date: 'MMMM-d-y' }}</b>
+                            <br/>{{ visit?.admission_datetime | date: 'shortTime' }}</p>
+                        </ng-template>
+                        <ng-template pTemplate="marker" let-visit>
+                            <span
+                            [class.visit-time]="visit?.patient_class_code !== 'START'"
+                            [class.initial-time]="visit?.patient_class_code === 'START'">
+                            <span *ngIf="visit?.patient_class_code !== 'START'">
+                                <i class="fas fa-video"></i>
+                            </span>
+                            <i
+                                *ngIf="visit?.patient_class_code === 'START'"
+                                class="pi pi-clock"
+                                style="font-size: 1.5rem"
+                            ></i>
+                            </span>
+                        </ng-template>
+                        <ng-template pTemplate="content" let-visit>
+                            <div class="card" *ngIf="visit?.patient_class_code !== 'START'">
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="font-weight-bold">{{ visit?.appointment?.service?.service_item?.service_item_name }} ({{ visit?.appointment?.appointment_status_name }})</div>
+                                        <div>
+                                            <small><a [routerLink]="['/patient', patientID, 'clinical-documentation']" [queryParams]="{ visit: visit?.visit_id}" class="font-weight-bold">View Clinical Notes</a></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="w-100">
+                                        <tr>
+                                            <td style="width: 175px;">Reason for Visit</td>
+                                            <td class="font-weight-bold; "><span style="text-transform: capitalize;">{{ visit?.chief_complaint}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Clinic Name</td>
+                                            <td class="font-weight-bold">{{ visit?.clinic?.name_display || '-' }}</td>
+                                        </tr>
+                                    </table>                        
+                                </div>
+                            </div>
+                            <div *ngIf="visit?.patient_class_code === 'START'">
+                                &nbsp;
+                            </div>
+                        </ng-template>
+                    </p-timeline>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

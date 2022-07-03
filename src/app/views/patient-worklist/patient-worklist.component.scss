@@ -1,0 +1,96 @@
+.patient-worklist-table thead th {
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 0.5px solid #000;
+    background-color: #fff;
+    vertical-align: bottom;
+}
+
+.patient-worklist-table tr td {
+    text-align: center;
+    border: none !important;
+    vertical-align: middle;
+}
+
+.patient-worklist-table tbody {
+    border-top: none !important;
+}
+
+.btn-consult-now {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    width: 282px;
+    height: 51px;
+    padding-top: 10px;
+    font-size: 15px;
+    border: 1px solid #035099;
+}
+
+.btn-consult-later {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    width: 282px;
+    height: 51px;
+    padding-top: 10px;
+    font-size: 15px;
+    border: 1px solid #035099;
+}
+
+.btn-calendar{  
+    border-radius: 10px;  
+    font-size: 15px;
+    width: 223px;
+    height: 51px;
+    border: 1px solid #035099;
+}
+
+.filter-inputs {
+    background-color: #DCE6F0;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.patient-count-box {
+    background: linear-gradient(87.48deg, #4BC4EF 23.7%, #0274BE 134.85%);
+    box-shadow: 0px 7px 66px rgba(51, 198, 244, 0.2);
+    border-radius: 20px;
+    width:60%; 
+    height: 111px;
+}
+
+.total-earning-box {
+    background: linear-gradient(87.48deg, #0274BE 23.7%, #4BC4EF 134.85%);
+    box-shadow: 0px 11px 66px rgba(255, 168, 0, 0.15);
+    border-radius: 20px;
+    width:40%; 
+    height: 111px; 
+    color: #fff;
+}
+
+.status {
+    min-width: 150px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.btn-group {
+    button {
+        min-width: 200px;
+    }
+    button:first-child {
+        border-top-left-radius: 10px ;
+        border-bottom-left-radius: 10px ;
+    }
+    button:last-child {
+        border-top-right-radius: 10px ;
+        border-bottom-right-radius: 10px ;
+    }
+}
+
+.hidden {
+    display: none;
+}

@@ -1,0 +1,282 @@
+// scss file for html selector and bootstrap style override
+$border-radius: 13px;
+
+* {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+body {
+  background-color: white;
+}
+
+.form-control {
+  // border-color: var(--mwell-border-color) !important;
+}
+
+input {
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+  // color: var(--mwell-text-color) !important;
+
+  // &:not(.p-multiselect-filter) {
+  //   padding: 25px 15px !important;
+  // }
+}
+
+textarea {
+  cursor: pointer;
+  border-radius: 10px !important;
+  // padding: 15px 15px !important;
+  min-height: 52px;
+  font-weight: 700;
+}
+
+select {
+  cursor: pointer;
+  border-radius: 10px !important;
+  // padding: 15px 15px !important;
+  // height: 52px !important;
+  font-weight: 700 !important;
+  // color: var(--mwell-text-color) !important;
+}
+
+.input-group {
+
+  input:first-child {
+      border-top-right-radius: 0px !important;
+      border-bottom-right-radius: 0px !important;
+  }
+
+  input:not(:last-child):not(:first-child) {
+      border-radius: 0px !important;
+  }
+
+  .input-group-append {
+      .input-group-text {
+          border-top-right-radius: 10px !important;
+          border-bottom-right-radius: 10px !important;
+          // border-color: var(--mwell-border-color);
+      }
+  }
+
+  .input-group-prepend {
+      .input-group-text {
+          border-top-left-radius: 10px !important;
+          border-bottom-left-radius: 10px !important;
+          // border-color: var(--mwell-border-color);
+      }
+  }
+
+  .input-group-btn {
+    .btn {
+      border-top-left-radius: 0px !important;
+      border-bottom-left-radius: 0px !important;
+    }
+  }
+}
+
+.input-icon {
+  position: relative;
+
+  input {
+    padding-right: 40px !important;
+  }
+
+  i {
+    position: absolute;
+    right: 15px;
+    top: calc(50% - 8px);
+  }
+}
+
+.content-wrapper {
+    background-color: white;
+}
+
+.elevation-4 {
+    box-shadow: 0 14px 28px rgba(3, 81, 153, 0.15),0 10px 10px rgba(3, 81, 153, 0.15) !important;
+}
+
+.card {
+  border-radius: $border-radius;
+  border-color: var(--mwell-border-color);
+}
+
+.card {
+  box-shadow: none;
+
+  .card-body {
+    border-color: var(--mwell-border-color);
+    border-radius: $border-radius;
+  }
+  .card-header {
+    border-color: var(--mwell-border-color);
+  }
+  .card-footer {
+    border-color: var(--mwell-border-color);
+  }
+}
+
+.btn-lg {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 15px !important;
+}
+
+.btn-primary {
+  color: white !important;
+}
+
+.btn-success {
+  color: white !important;
+}
+
+.btn-warning {
+  color: white !important;
+}
+
+.btn-danger {
+  color: white !important;
+}
+
+.light-shadow {
+  box-shadow: 6px 6px 15px #4d4d4d45;
+}
+
+.light-shadow-blue {
+  box-shadow: 6px 6px 15px rgba(0, 99, 164, 0.21);
+  border-color: white !important;
+}
+
+.bordered-gray {
+  border: 1px solid var(--mwell-border-color);
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.unbold {
+  font-weight: normal !important;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.bold-500 {
+  font-weight: 500;
+}
+
+.bold-400 {
+  font-weight: 400;
+}
+
+.normal-weight {
+  font-weight: normal;
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.border-left-none {
+  border-left: none;
+}
+
+.border-right-none {
+  border-right: none;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.bordered-bottom {
+  border-bottom: 1px solid var(--mwell-border-color);
+}
+
+.bg-lightgray {
+    background-color: #A8A8A8 !important;
+    border-color: #A8A8A8 !important;
+}
+
+.border-color-gray {
+    border-color: #A8A8A8 !important;
+    color: #A8A8A8 !important;
+    font-weight: 600;
+}
+
+.w-1 {
+  width: 1%;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.required {
+  border-left: 3px solid red;
+}
+
+.spinning {
+  animation: spin 4s linear infinite;
+}
+
+.fadein {
+  animation: fade .3s ease-in;
+}
+
+.text-color {
+  color: var(--mwell-text-color);
+}
+
+.btn-circle {
+  border-radius: 100%;
+  width: 54px;
+  height: 54px;
+}
+
+.no-border {
+  border: none !important;
+}
+
+.table {
+  thead {
+    th {
+      border-top: 0px;
+      padding: 15px 20px;
+    }
+    th:first-child {
+      border-top-left-radius: 15px;
+    }
+    th:last-child {
+      border-top-right-radius: 15px;
+    }
+  }
+}
+
+
+@keyframes spin {
+    100% {
+      transform: rotate(360deg);
+    }
+}
+
+@keyframes fade {
+  100% {
+    opacity: 1;
+  }
+  0% {
+    opacity: 0;
+  }
+}
+

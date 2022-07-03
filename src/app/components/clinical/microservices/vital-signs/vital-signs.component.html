@@ -1,0 +1,280 @@
+<section class="mb-4">
+    <form [formGroup]="formGroup">
+      <fieldset [disabled]="adding">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col pl-0 pr-0">
+              <div class="form-row">
+                <div class="col-auto">
+                  <span>Date and time</span>
+                  <input type="datetime-local" class="form-control" formControlName="performed_datetime"/>
+                </div>
+                <div class="col">
+                  <span>Temperature</span>
+                  <div class="input-group">
+                    <input type="number" step="2" class="form-control" min="30" max="46" formControlName="temperature_c" placeholder="-"/>
+                    <div class="input-group-append">
+                      <span class="input-group-text">°C</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="width: 220px !important;">
+                  <span>Blood Pressure</span>
+                  <div class="input-group">
+                    <input type="number" class="form-control" formControlName="systolic" min="50" placeholder="-"/>
+                    <input type="number" class="form-control" formControlName="diastolic" min="50" placeholder="-"/>
+                    <div class="input-group-append">
+                      <span class="input-group-text">mmHg</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <span>Pulse Rate</span>
+                  <div class="input-group">
+                    <input type="number" class="form-control" formControlName="heart_rate" placeholder="-"/>
+                    <div class="input-group-append">
+                      <span class="input-group-text">bpm</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <span>Respiratory Rate</span>
+                  <div class="input-group">
+                    <input type="number" class="form-control" formControlName="respiratory_rate" placeholder="-"/>
+                    <div class="input-group-append">
+                      <span class="input-group-text">bpm</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="width: 70px !important;">
+                  <span>Pain</span>
+                  <div>
+                    <input type="number" class="form-control" formControlName="pain" placeholder="-" max="10"/>
+                  </div>
+                </div>
+                <div class="col">
+                  <span>Oxygen Saturation</span>
+                  <div class="input-group">
+                    <input type="number" class="form-control" formControlName="oxygen_saturation" placeholder="-"/>
+                    <div class="input-group-append">
+                      <span class="input-group-text">%</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="width: 165px !important;">
+                  <span>Capillary Blood Glucose</span>
+                  <div class="input-group">
+                    <input type="number" class="form-control" formControlName="capillary_blood_glucose" placeholder="-"/>
+                    <div class="input-group-append">
+                      <span class="input-group-text">(mg/dL)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <span>Remarks</span>
+                  <div>
+                    <input type="text" class="form-control" formControlName="remarks" placeholder="-"/>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <span>&nbsp;</span>
+                  <button class="btn btn-md btn-success btn-block" role="button" (click)="add()" [disabled]="formGroup?.invalid">
+                    <i class="fa fa-plus mr-3"></i> Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </section>
+  <section class="mb-4">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 pl-0 pr-0">
+          <div class="header">
+            <span class="fa fa-angle-up bold mr-2"></span>Vital Signs Data Summary
+            <span class="pull-right">
+              <span class="pull-right" *ngIf="vitalSigns?.from">{{ vitalSigns?.from }} to {{ vitalSigns?.to }} of {{ vitalSigns?.total }}</span>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-12 pl-0 pr-0">
+          <form>
+            <table class="table table-bordered table-condensed vital-signs">
+              <thead>
+                <tr>
+                  <th class="text-center align-middle">Date and Time</th>
+                  <th class="text-center align-middle">Temperature (°C)</th>
+                  <th class="text-center align-middle">Blood Pressure (mmHg)</th>
+                  <th class="text-center align-middle">Pulse Rate (bpm)</th>
+                  <th class="text-center align-middle">Respiratory Rate (bpm)</th>
+                  <th class="text-center align-middle">Pain</th>
+                  <th class="text-center align-middle">Oxygen Saturation (%)</th>
+                  <th class="text-center align-middle">Capillary Blood Glucose in (mg/dL)</th>
+                  <th class="text-center align-middle">Remarks</th>
+                  <th class="text-center align-middle" *ngIf="withAction">Last Updated</th>
+                  <th class="text-center align-middle" *ngIf="withAction">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let vital of paginated() | paginate : {
+                      id: 'paginator',
+                      itemsPerPage: perPage,
+                      currentPage: page,
+                      totalItems: vitals?.value?.length
+                  }; let i = index">
+                  <td>
+                    <span *ngIf="!vital?.edit">{{ vital?.performed_datetime | date: 'MMM-dd-yyyy'}}<br />{{ vital.performed_datetime | date: 'hh:mm a'}}</span>
+                    <input [disabled]="vital?.updating" *ngIf="vital?.edit" type="datetime-local" class="form-control" [attr.id]="'edit_datetime_' + i" [value]="convertToLocale(vital?.performed_datetime)"/>
+                  </td>
+                  <td [class.text-danger]=" vital.temperature_c && (+vital.temperature_c > +vital.temperature_flag || +vital.temperature_c < 35)">
+                    <span *ngIf="!vital?.edit">
+                      <i *ngIf="+vital?.temperature_c > +vital?.temperature_flag" class="ml-2 fa fa-arrow-up" aria-hidden="true"></i>
+                      <i *ngIf="+vital?.temperature_c < 35 && vital?.temperature_c" class="ml-2 fa fa-arrow-down" aria-hidden="true"></i>
+                    </span>
+                    {{ vital?.temperature_c || '-' }}
+                    <input [disabled]="vital?.updating" *ngIf="vital?.edit" type="number" step="2" min="30" max="46" class="form-control" [attr.id]="'edit_temperature_' + i" [value]="vital?.temperature_c"/>
+                  </td>
+                  <td>
+                    <div *ngIf="!vital?.edit">
+                      <span [class.text-danger]="vital.systolic && (+vital.systolic > +vital.systolic_flag || +vital.systolic < 80)">
+                        {{ vital?.systolic || '-' }}
+                        <i *ngIf="+vital?.systolic > +vital?.systolic_flag" class="ml-2 fa fa-arrow-up" aria-hidden="true"></i>
+                        <i *ngIf="+vital?.systolic < 80 && vital?.systolic" class="ml-2 fa fa-arrow-down" aria-hidden="true"></i>
+                      </span>
+                      /
+                      <span [class.text-danger]="vital?.diastolic && (+vital?.diastolic > +vital?.diastolic_flag || +vital?.diastolic < 60)">
+                        {{ vital?.diastolic || '-'}}
+                        <i *ngIf="+vital?.diastolic > +vital?.diastolic_flag" class="ml-2 fa fa-arrow-up" aria-hidden="true"></i>
+                        <i *ngIf="+vital?.diastolic < 60 && vital?.diastolic" class="ml-2 fa fa-arrow-down" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                    <div *ngIf="vital?.edit">
+                      <input [disabled]="vital?.updating" style="display: inline; width: 60px" type="number" class="form-control" [attr.id]="'edit_systolic_' + i" [value]="vital?.systolic"/>
+                      /
+                      <input [disabled]="vital?.updating" style="display: inline; width: 60px" type="number" class="form-control" [attr.id]="'edit_diastolic_' + i" [value]="vital?.diastolic"/>
+                    </div>
+                  </td>
+                  <td [class.text-danger]="vital?.heart_rate && (+vital?.heart_rate > +vital?.heart_rate_flag || +vital?.heart_rate < 60)">
+                    <span *ngIf="!vital?.edit">
+                      {{ vital?.heart_rate || '-'}}
+                      <i *ngIf="+vital?.heart_rate > +vital?.heart_rate_flag" class="ml-2 fa fa-arrow-up" aria-hidden="true"></i>
+                      <i *ngIf="+vital?.heart_rate < 60 && vital?.heart_rate" class="ml-2 fa fa-arrow-down" aria-hidden="true"></i>
+                    </span>
+                    <input [disabled]="vital?.updating" *ngIf="vital?.edit" type="number" class="form-control" [attr.id]="'edit_pr_' + i" [value]="vital?.heart_rate"/>
+                  </td>
+                  <td [class.text-danger]="vital?.respiratory_rate && (+vital?.respiratory_rate > +vital?.respiratory_rate_flag || +vital?.respiratory_rate < 16)">
+                    <span *ngIf="!vital?.edit">
+                      {{ vital?.respiratory_rate || '-' }}
+                      <i *ngIf="+vital.respiratory_rate > +vital.respiratory_rate_flag" class="ml-2 fa fa-arrow-up" aria-hidden="true"></i>
+                      <i *ngIf="+vital.respiratory_rate < 16 && vital.respiratory_rate" class="ml-2 fa fa-arrow-down" aria-hidden="true"></i>
+                    </span>
+                    <input [disabled]="vital?.updating" *ngIf="vital?.edit" type="number" class="form-control" [attr.id]="'edit_rr_' + i" [value]="vital?.respiratory_rate"/>
+                  </td>
+                  <td>
+                    {{ vital?.pain || '-' }}
+                    <input [disabled]="vital?.updating" *ngIf="vital?.edit" type="number" class="form-control" [attr.id]="'edit_pain_' + i" [value]="vital?.pain"/>
+                  </td>
+                  <td>
+                    {{ vital?.oxygen_saturation || '-' }}
+                    <input [disabled]="vital?.updating" *ngIf="vital?.edit" type="number" class="form-control" [attr.id]="'edit_oxygen_saturation_' + i" [value]="vital?.oxygen_saturation"/>
+                  </td>
+                  <td>
+                    {{ vital?.capillary_blood_glucose || '-' }}
+                    <input [disabled]="vital?.updating" *ngIf="vital?.edit" type="number" class="form-control" [attr.id]="'edit_capillary_blood_glucose_' + i" [value]="vital?.capillary_blood_glucose"/>
+                  </td>
+                  <td>
+                    {{ vital?.remarks || '-' }}
+                    <input [disabled]="vital?.updating" *ngIf="vital?.edit" type="number" class="form-control" [attr.id]="'edit_remarks_' + i" [value]="vital?.remarks"/>
+                  </td>
+                  <td *ngIf="withAction">{{ vital.updated_at | date: 'MMM-dd-yyyy hh:mm a' }}<br />{{ vital?.modified_by_initial }}</td>
+                  <td *ngIf="withAction">
+                    <div class="actions">
+                      <a *ngIf="vital?.edit" class="fa fa-save" role="button" (click)="update(vital, i)" title="Save"></a>
+                      <a *ngIf="vital?.edit" class="fas fa-times" role="button" (click)="onCancelEdit(vital)"></a>
+                      <a *ngIf="!vital.edit" class="fa fa-edit" role="button" (click)="onEdit(vital)" title="Edit"></a>
+                      <a *ngIf="!vital.deleting && !vital.edit" class="fa fa-trash" role="button" title="delete" (click)="delete(vital, i)"></a>
+                      <i *ngIf="vital?.deleting" class="nav-icon fas fa-circle-notch spinning"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="vitals?.value?.length < 1">
+                  <td colspan="10" class="text-left">No data.</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="align-items-center d-flex justify-content-end mt-2">
+                <div class="d-flex align-items-center">
+                    <pagination-controls
+                        (pageChange)="page = $event"
+                        id="paginator"
+                    ></pagination-controls>
+                </div>
+            </div>
+          </form>
+          <div class="paginator-container">
+            <!-- <pagination-controls (pageChange)="listAllVitalSigns($event)" id="server"></pagination-controls> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section *ngIf="withGraph">
+    <div class="container-fluid graph" [class.maximize-vital]="maximize">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="header clearfix" style="display: flex; justify-content: space-between">
+            <div style="flex-grow: 1">
+              <span class="fa fa-angle-up bold mr-2"></span>Vital Signs Graph
+            </div>
+            <div *ngIf="maximize" style="flex-grow: 1; display: flex; justify-content: center">
+              <div class="mr-3 btn-group">
+                <button class="btn btn-default" type="button" (click)="zoomOut()" title="zoom out">
+                  <i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-default" (click)="resetZoom()" title="reset">
+                  Reset
+                </button>
+                <button class="btn btn-default" type="button" (click)="zoomIn()" title="zoom in">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </div>
+              <select style="width: 120px; height: 33px" (change)="updateGraph($event.target.value)">
+                <option value="1">1 Day</option>
+                <option value="3" selected>3 Days</option>
+                <option value="7">1 Week</option>
+                <option value="31">1 Month</option>
+                <option value="0">Entire Visit</option>
+              </select>
+            </div>
+            <i
+              class="fa"
+              style="flex-grow: 1; text-align: right"
+              [class.fa-compress]="maximize"
+              [class.fa-expand]="!maximize"
+              aria-hidden="true"
+              role="button"
+              (click)="toggleMaxMin()"
+              [attr.title]="maximize ? 'Minimize' : 'Maximize'"
+            ></i>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <canvas
+            #charto
+            baseChart
+            height="150vh"
+            [chartType]="'line'"
+            [datasets]="chartData"
+            [options]="chartOptions"
+            [colors]="lineChartColors"
+            [legend]="true"
+          >
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+  

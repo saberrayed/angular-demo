@@ -1,0 +1,142 @@
+<div class="row">
+    <div class="col">
+        <div class="p-5" *ngIf="loading">
+            Loading profile..
+        </div>
+        <form [formGroup]="form" *ngIf="form">
+            <fieldset [disabled]="processing || loading">
+                <div class="row py-4" formGroupName="name">
+                    <div class="col-2 pr-1">
+                        <span for="prefix" class="mb-0 bold-400 text-muted">Prefix / Title</span>
+                        <b class="text-red ml-2" *ngIf="getControl('name.prefix')?.errors?.required">*</b>
+                        <input type="text" id="prefix" class="form-control form-control-lg" formControlName="prefix"/>
+                    </div>
+                    <div class="col-2 px-1">
+                        <span for="first" class="mb-0 bold-400 text-muted">First Name</span>
+                        <b class="text-red ml-2" *ngIf="getControl('name.first')?.errors?.required">*</b>
+                        <input type="text" class="form-control form-control-lg" formControlName="first"/>
+                    </div>
+                    <div class="col-3 px-1">
+                        <span for="middle" class="mb-0 bold-400 text-muted">Middle Name</span>
+                        <b class="text-red ml-2" *ngIf="getControl('name.middle')?.errors?.required">*</b>
+                        <input type="text" id="middle" class="form-control form-control-lg" formControlName="middle"/>
+                    </div>
+                    <div class="col-3 px-1">
+                        <span for="last" class="mb-0 bold-400 text-muted">Last Name</span>
+                        <b class="text-red ml-2" *ngIf="getControl('name.last')?.errors?.required">*</b>
+                        <input type="text" id="last" class="form-control form-control-lg" formControlName="last"/>
+                    </div>
+                    <div class="col-1 px-1">
+                        <span for="suffix" class="mb-0 bold-400 text-muted">Suffix</span>
+                        <b class="text-red ml-2" *ngIf="getControl('name.suffix')?.errors?.required">*</b>
+                        <input type="text" id="suffix" class="form-control form-control-lg" formControlName="suffix"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 pr-1" formGroupName="name">
+                        <span for="title-suffix" class="mb-0 bold-400 text-muted">Title Suffix (Degrees)</span>
+                        <b class="text-red ml-2" *ngIf="getControl('name.degrees')?.errors?.required">*</b>
+                        <input type="text" id="title-suffix" class="form-control form-control-lg" formControlName="degrees"/>
+                    </div>
+                    <div class="col-3 px-1" formGroupName="doctor">
+                        <span for="gender" class="mb-0 bold-400 text-muted">Sex</span>
+                        <b class="text-red ml-2" *ngIf="getControl('doctor.sex_code')?.errors?.required">*</b>
+                        <select class="form-control form-control-lg" formControlName="sex_code">
+                            <option value="null" hidden>Select Sex</option>
+                            <option *ngFor="let sex of sexList" [value]="sex?.value">{{ sex?.display }}</option>
+                        </select>
+                    </div>
+                    <div class="col-3 px-1" formGroupName="doctor">
+                        <span for="dob" class="mb-0 bold-400 text-muted">Date of Birth</span>
+                        <b class="text-red ml-2" *ngIf="getControl('doctor.date_of_birth')?.errors?.required">*</b>
+                        <input type="date" id="dob" class="form-control form-control-lg" formControlName="date_of_birth"/>
+                    </div>
+                </div>
+                <div class="row py-4" formGroupName="user">
+                    <div class="col-4 pr-1">
+                        <span for="languages" class="mb-0 bold-400 text-muted">Languages Spoken</span>
+                        <b class="text-red ml-2" *ngIf="getControl('user.languages_spoken')?.errors?.required">*</b>
+                        <p-multiSelect [options]="languageSpoken?.details" [(ngModel)]="selectedLanguages" [ngModelOptions]="{ standalone: true }" defaultLabel="Select Languages Spoken" optionLabel="text" optionValue="uid" display="chip">
+                        </p-multiSelect>
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <span class="bold-500 text-muted">E-Signature</span>
+                        <b class="text-red ml-2" *ngIf="getControl('doctor.profile_photo_renamed')?.errors?.required">*</b>
+                    </div>
+                    <div class="col-12">
+                        <app-file-upload (preview)="setImage($event,'eSignature','doctor.e_signature_renamed')" label="E-Signature" [image]="doctor?.e_signature_url"></app-file-upload>
+                    </div>
+                    <div class="col-12">
+                        <span class="bold-500">Note:</span>
+                        <span class="font-italic">
+                            Please upload your signature on a white background in black ink.
+                        </span>
+                    </div>
+                </div>
+                <div class="row py-4">
+                    <div class="col-12">
+                        <span class="bold-500 text-muted">PRC ID Image</span>
+                        <b class="text-red ml-2" *ngIf="getControl('license.file.rename')?.errors?.required">*</b>
+                    </div>
+                    <div class="col-12">
+                        <app-file-upload (preview)="setImageControl($event,'prcID','license.file')" label="PRC ID Image" [image]="doctor?.prc_license?.file?.file_url"></app-file-upload>
+                    </div>
+                    <div class="col-12">
+                        <span class="bold-500">Note:</span>
+                        <span class="font-italic">
+                            The fields below will be automatically populated after uploading the PRC ID.
+                        </span>
+                    </div>
+                </div>
+                <div class="row" formGroupName="license">
+                    <div class="col-4 pr-1">
+                        <span for="prc-number" class="mb-0 bold-400 text-muted">PRC Number</span>
+                        <b class="text-red ml-2" *ngIf="getControl('license.number')?.errors?.required">*</b>
+                        <input type="text" id="prc-number" class="form-control form-control-lg" formControlName="number"/>
+                    </div>
+                    <div class="col-4 px-1">
+                        <span for="license" class="mb-0 bold-400 text-muted">License</span>
+                        <input type="text" id="license" readonly class="form-control form-control-lg" value="Physician"/>
+                    </div>
+                </div>
+                <div class="row py-4" formGroupName="license">
+                    <div class="col-4 pr-1">
+                        <span for="registered-date" class="mb-0 bold-400 text-muted">Registered Date</span>
+                        <b class="text-red ml-2" *ngIf="getControl('license.validity_start_datetime')?.errors?.required">*</b>
+                        <input type="date" id="registered-date" class="form-control form-control-lg" formControlName="validity_start_datetime"/>
+                    </div>
+                    <div class="col-4 px-1">
+                        <span for="valid-until-date" class="mb-0 bold-400 text-muted">Valid Until Date</span>
+                        <b class="text-red ml-2" *ngIf="getControl('license.validity_expiry_datetime')?.errors?.required">*</b>
+                        <input type="date" id="valid-until-date" class="form-control form-control-lg" formControlName="validity_expiry_datetime"/>
+                    </div>
+                </div>
+                <div class="row py-4 pb-4">
+                    <div class="col-12 pb-2">
+                        <strong>Medical Document</strong>
+                    </div>
+                    <div class="col-12">
+                        <app-medical-documents-upload #medicalDocument></app-medical-documents-upload>
+                    </div>
+                </div>
+                <div class="row pt-4">
+                    <div class="col"></div>
+                    <div class="col-2">
+                        <button type="button" (click)="save()" class="btn btn-primary btn-flat btn-block btn-lg" [disabled]="form?.invalid || processing || loading" >
+                            Update Information<i *ngIf="processing" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+                        </button>
+                    </div>
+                    <div class="col-2 px-1">
+                        <button class="btn btn-outline-primary btn-flat btn-block btn-lg" (click)="back()" >
+                            Go Back
+                        </button>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

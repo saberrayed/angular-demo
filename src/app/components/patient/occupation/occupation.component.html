@@ -1,0 +1,35 @@
+<form [formGroup]="patientForm" *ngIf="patientForm">
+    <fieldset [disabled]="disableFields">
+      <h4>Present Job</h4>
+      <div class="row mt-3" formGroupName="occupation">
+        <div class="col">
+          <span>Industry</span><b class="text-red ml-2" *ngIf="!disableFields && getControl('occupation.industry')?.errors?.required">*</b>
+          <!-- <select
+            type="text"
+            class="form-control"
+            placeholder="Enter Industry"
+            formControlName="industry"
+          >
+            <option value="null" hidden>None</option>
+            <option [value]="industry?.uid" *ngFor="let industry of industries?.details">{{ industry?.text }}</option>
+          </select> -->
+          <!-- <app-industry-search #industrySearch (selectResult)="onSelectIndustry($event)" [initialValue]="patient?.occupation?.industry?.text" (clear)="onClearIndustry()"></app-industry-search> -->
+          <app-autocomplete #industryAutoComp (search)="searchIndustry($event)" [isMultiple]="false" [results]="industries" [field]="'text'" (select)="updateIndustry($event)" (unselect)="updateIndustry(null)"></app-autocomplete>
+        </div>
+      </div>
+      <div class="row mt-3" formGroupName="occupation">
+        <div class="col">
+          <span>Occupation</span><b class="text-red ml-2" *ngIf="!disableFields && getControl('occupation.occupation')?.errors?.required">*</b>
+          <input type="text" class="form-control" placeholder="Enter Occupation" formControlName="occupation"/>
+        </div>
+      </div>
+      <div class="row mt-3" formGroupName="occupation">
+        <div class="col">
+          <span>Employer</span><b class="text-red ml-2" *ngIf="!disableFields && getControl('occupation.employer')?.errors?.required">*</b>
+          <input type="text" class="form-control" placeholder="Enter Employer" formControlName="employer"/>
+        </div>
+      </div>
+      <!-- <div class="spacer" style="height: 15vh;"></div> -->
+    </fieldset>
+  </form>
+  

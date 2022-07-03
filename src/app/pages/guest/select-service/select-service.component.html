@@ -1,0 +1,51 @@
+<div class="p-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/guest']" >Home</a></li>
+          <li class="breadcrumb-item"><a [routerLink]="['/guest', patientID]" >Appointments</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Select Resource</li>
+        </ol>
+    </nav>
+</div>
+<div class="d-flex justify-content-center align-items-center flex-column body-wrapper p-5">
+    <h1 *ngIf="processing">
+        Loading..
+    </h1>
+    <div *ngIf="!processing" class="d-flex flex-wrap justify-content-center">
+        <!-- <div class="card light-shadow" *ngFor="let service of services?.data">
+            <div class="card-body">
+                <div class="text-center">
+                    <img src="assets/img/user-stock.jpg" width="130px">
+                </div>
+                <div class="mt-2">
+                    <b>{{ service?.resource?.resource_display }}</b><br>
+                    {{ service?.price?.toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-primary btn-block" [routerLink]="['book', service?.id]">
+                    <i class="fas fa-calendar-alt"></i>
+                    Book Now
+                </a>
+            </div>
+        </div> -->
+        <div class="card light-shadow m-1" *ngFor="let doctor of doctors?.data" style="width: 200px">
+            <div class="card-body">
+                <div class="text-center">
+                    <img src="assets/img/user-stock.jpg" width="130px">
+                </div>
+                <div class="mt-2">
+                    <b>{{ doctor?.primary_name?.full }}</b><br>
+                    {{ doctor?.consultation_price?.toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-primary btn-block" [routerLink]="['book', doctor?.service_id]">
+                    <i class="fas fa-calendar-alt"></i>
+                    Book Now
+                </a>
+            </div>
+        </div>
+        <div *ngIf="doctors?.data?.length < 1">No Available Doctors</div>
+    </div>
+</div>

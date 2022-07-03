@@ -1,0 +1,103 @@
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <span class="bold">PERSONAL AND SOCIAL HISTORY</span>
+            <a class="cursor-pointer" (click)="editMode = true" *ngIf="!editMode && !processing">Edit Details</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <tbody skeleton-loader [rows]="6" [columns]="2" *ngIf="processing"></tbody>
+            <tbody *ngIf="!processing">
+                <tr>
+                    <td class="bold" style="width: 200px; border-top: none;" *ngIf="!editMode">
+                        SMOKING
+                    </td>
+                    <td style="border-top: none;" [attr.colspan]="editMode ? 2 : 1">
+                        <span *ngIf="!editMode">{{ item?.smoking === 1 ? "Smoker, " + item?.pack_years + " Pack-Years (" + item?.sticks_day + " sticks/day for " + item?.years_of_smoking +  " years)" : "Non-Smoker" }}</span>
+                        <div class="form-row mb-0" [formGroup]="form" *ngIf="editMode && form">
+                            <div class="col">
+                                <small>Smoking?</small>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <div class="form-check mr-3">
+                                        <input class="form-check-input cursor-pointer" type="radio" id="not_smoking" [value]="0" formControlName="smoking" (click)="reset('sticks_day'); reset('years_of_smoking'); reset('pack_years')">
+                                        <label class="form-check-label cursor-pointer" for="not_smoking">
+                                            No
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input cursor-pointer" type="radio" id="smoking" [value]="1" formControlName="smoking">
+                                        <label class="form-check-label cursor-pointer" for="smoking">
+                                            Yes
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <small>Sticks/Day</small>
+                                <input type="number" class="form-control" formControlName="sticks_day" (change)="updatePackYears()" [attr.disabled]="form?.value?.smoking === 0 ? '' : null" >
+                            </div>
+                            <div class="col">
+                                <small>Years</small>
+                                <input type="number" step="2" class="form-control" formControlName="years_of_smoking" (change)="updatePackYears()" [attr.disabled]="form?.value?.smoking === 0 ? '' : null" >
+                            </div>
+                            <div class="col">
+                                <small>Pack-year/s</small>
+                                <input type="text" class="form-control" formControlName="pack_years" readonly>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bold" style="width: 200px">ALCOHOLIC BEVERAGE INTAKE</td>
+                    <td>
+                        <span *ngIf="!editMode">{{ item?.alcohol || 'None' }}</span>
+                        <div class="form-group mb-0" [formGroup]="form" *ngIf="editMode && form">
+                            <input type="text" class="form-control" *ngIf="editMode" formControlName="alcohol">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bold" style="width: 200px">ILLICIT DRUG USE</td>
+                    <td>
+                        <span *ngIf="!editMode">{{ item?.drugs || 'None' }}</span>
+                        <div class="form-group mb-0" [formGroup]="form" *ngIf="editMode && form">
+                            <input type="text" class="form-control" *ngIf="editMode" formControlName="drugs">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bold" style="width: 200px">DIET</td>
+                    <td>
+                        <span *ngIf="!editMode">{{ item?.diet || 'None' }}</span>
+                        <div class="form-group mb-0" [formGroup]="form" *ngIf="editMode && form">
+                            <input type="text" class="form-control" *ngIf="editMode" formControlName="diet">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bold" style="width: 200px">PHYSICAL ACTIVITY</td>
+                    <td>
+                        <span *ngIf="!editMode">{{ item?.physical_activity || 'None' }}</span>
+                        <div class="form-group mb-0" [formGroup]="form" *ngIf="editMode && form">
+                            <input type="text" class="form-control" *ngIf="editMode" formControlName="physical_activity">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bold" style="width: 200px">OTHERS/REMARKS</td>
+                    <td>
+                        <span *ngIf="!editMode">{{ item?.remarks || 'None' }}</span>
+                        <div class="form-group mb-0" [formGroup]="form" *ngIf="editMode && form">
+                            <input type="text" class="form-control" *ngIf="editMode" formControlName="remarks">
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-right mt-3" *ngIf="editMode">
+            <button class="btn btn-primary mr-2" (click)="save()">Save</button>
+            <button class="btn btn-default" (click)="cancel()">Cancel</button>
+        </div>
+    </div>
+</div>

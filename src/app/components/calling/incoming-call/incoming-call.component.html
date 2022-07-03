@@ -1,0 +1,19 @@
+<div class="card incoming-card mb-0" *ngIf="maximized">
+    <div class="card-header bg-warning text-white">
+        <p class="mb-0 float-left"><app-timer (finished)="timerOut()"></app-timer> left to accept the call</p>
+        <a class="cursor-pointer float-right"><i class="text-white icon fas fa-angle-down"></i></a>
+    </div>
+    <div class="card-body">
+        <div class="d-flex">
+            <i class="fas fa-phone text-info mr-3 ml-" style="font-size: 3rem"></i>
+            <div class="bold flex-grow-1">
+                <span class="mb-0">{{ data?.patient }}</span><br>
+                <small>Reason for Visit: {{ data?.complaint }}</small>
+            </div>
+        </div>
+        <div class="mt-3 d-flex justify-content-center">
+            <button class="btn btn-lg btn-primary mr-2" (click)="acceptCall()" [disabled]="processing">Accept Patient</button>
+            <button class="btn btn-lg btn-danger" (click)="declineCall()" [disabled]="processing">Decline Patient</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+<p-dialog
+  [baseZIndex]="2000"
+  [style]="{ maxWidth: '600px', marginTop: '30px'  }"
+  [(visible)]="modal"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [dismissableMask]="true"
+  [modal]="true"
+  [position]="'top'"
+  [draggable]="false"
+  closeIcon=""
+  (onHide)="onClose()"
+>
+  <div class="pr-3 pl-3">
+    <h3 class="text-primary bold">Sign {{ documentTemplate?.name }} Document</h3>
+    <p class="mt-4">
+      You are about to electronically sign the documentation with the following
+      details:
+    </p>
+    <table style="width: 80%; margin-left: 10%">
+      <tbody>
+        <tr>
+          <td class="bold">Patient Name:</td>
+          <td class="text-success bold">
+            {{ patient?.primary_name?.display }}
+          </td>
+        </tr>
+        <tr>
+          <td class="bold">Clinical Document:</td>
+          <td>{{ documentTemplate?.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+    <p>
+      By electronically signing on this document, you are confirming that you
+      have reviewed this document and have attested the information in this
+      document to be true and correct.
+    </p>
+    <p>
+      A copy of the documents will be sent to your patient's email.
+    </p>
+    <p>Please key in your password to electronically sign the document.</p>
+    <form [formGroup]="authGroup">
+        <div class="form-group">
+            <small>Your Password</small><br>
+            <input
+              type="password"
+              class="form-control"
+              formControlName="password"
+              placeholder="Enter password"
+            />
+            <small class="text-danger">{{ authError }}</small>
+        </div>
+    </form>
+  </div>
+  <p-footer>
+    <div class="w-100 pr-3 pl-3 pb-3">
+      <button
+          role="button"
+          class="btn btn-primary btn-lg w-100"
+          (click)="authenticate()"
+          [disabled]="autenticating || authGroup?.invalid"
+      >
+          Submit
+      </button>
+    </div>
+  </p-footer>
+</p-dialog>

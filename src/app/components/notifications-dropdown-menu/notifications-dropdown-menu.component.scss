@@ -1,0 +1,13 @@
+.dropdown {
+  .nav-link {
+    cursor: pointer;
+  }
+}
+
+.dropdown-menu {
+  border-radius: 15px;
+  min-width: 400px;
+  max-height: 80vh;
+  overflow: hidden;
+  overflow-y: auto;
+}

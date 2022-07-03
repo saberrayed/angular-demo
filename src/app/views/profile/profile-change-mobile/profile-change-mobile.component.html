@@ -1,0 +1,49 @@
+<div>
+    <button class="btn btn-default" (click)="goBack()">
+        <i class="fas fa-angle-left"></i>
+        <span class="bold-400 ml-2">Go Back</span>
+    </button>
+</div>
+<fieldset [disabled]="processing">
+    <div class="div mt-4 reset-password">
+        <div class="row">
+            <div class="col">
+                <h3 class="text-primary bold">Change Mobile Number</h3>
+                <form [formGroup]="form" *ngIf="form" class="mt-3">
+                    <div class="form-group">
+                        <span class="bold-400 text-muted">Mobile Number (10-digit)</span>
+                        <b class="text-red ml-2" *ngIf="getControl('contact_no')?.errors?.required">*</b>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1">+63</span>
+                            </div>
+                            <input [class.error]="getControl('contact_no')?.touched && getControl('contact_no')?.errors" maxlength="10" type="text" class="form-control" formControlName="contact_no" style="border-top-left-radius: 0px !important; border-bottom-left-radius: 0px !important;">
+                        </div>
+                        <div *ngIf="getControl('contact_no')?.touched && getControl('contact_no')?.errors?.required ">
+                            <small class="text-danger">Contact number is required</small>
+                        </div>
+                        <div *ngIf="getControl('contact_no')?.touched && getControl('contact_no')?.errors?.minlength ">
+                            <small class="text-danger">Mobile should be 10 digits excluding 63 or +63 or 0</small>
+                        </div>
+                        <div *ngIf="getControl('contact_no')?.touched && getControl('contact_no')?.errors?.maxlength ">
+                            <small class="text-danger">Mobile should not exceed 10 digits excluding 63 or +63 or 0</small>
+                        </div>
+                        <div *ngIf="getControl('contact_no')?.touched && getControl('contact_no')?.errors?.pattern ">
+                            <small class="text-danger">Mobile format is invalid, should be numerical</small>
+                        </div>
+                    </div>
+                    <div class="form-group position-relative">
+                        <input type="text" class="form-control code-input" style="padding-top: 25px; padding-bottom: 25px;" (keyup.enter)="verifyNumber()"  placeholder="Mobile verification code" [(ngModel)]="code" [ngModelOptions]="{ standalone: true }">
+                        <small class="text-danger" *ngIf="validateCode()">Invalid verification code</small>
+                        <button type="button" class="send-code btn">Send Code</button>
+                    </div>
+                </form>
+                <button class="mb-4 btn btn-primary btn-block mt-4" (click)="verifyNumber()" [disabled]="!code || +code !== +default">
+                    Submit<i *ngIf="processing" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+                </button>
+                <a class="text-warning cursor-pointer bold-500" (click)="didntReceive?.onOpen()" [attr.disabled]="processing ? '' : null">Didn't receive the code?</a>
+            </div>
+        </div>
+    </div>
+</fieldset>
+<app-didnt-receive-code-modal #didntReceive></app-didnt-receive-code-modal>

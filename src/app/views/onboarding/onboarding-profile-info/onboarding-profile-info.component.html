@@ -1,0 +1,170 @@
+<div class="bg2-img" [ngStyle]="{'background-image': 'url(assets/img/bg2.png)'}">
+    <div class="card light-shadow-blue">
+        <div class="card-body px-4 mx-4 text-center">
+            <div class="d-flex justify-content-center w-100">
+                <div class="icon-onboarding d-flex justify-content-center align-items-center"><i class="fas fa-user-md"></i></div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-4 pr-0 profile-text">
+                    <span>Profile Information</span>
+                </div>
+                <div class="col-1 px-0 pt-1">
+                    <i class="fa fa-chevron-right text-warning" aria-hidden="true"></i>
+                </div>
+                <div class="col-3 px-0 pt-2 profile-text-gray">
+                    <span>Credentials</span>
+                </div>
+                <div class="col-1 px-0 pt-1">
+                    <i class="fa fa-chevron-right text-lightgray" aria-hidden="true"></i>
+                </div>
+                <div class="col-3 px-0 profile-text-gray">
+                    <span>Service Agreement</span>
+                </div>
+            </div>
+            <div class="progress mb-4" style="height: 8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 37%" aria-valuenow="37" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <form [formGroup]="form" *ngIf="form" (ngSubmit)="onSubmit()">
+                <fieldset [disabled]="processing">
+                    <div class="row text-left text-sm">
+                        <div class="col-12">
+                            <span>PRC ID Image</span>
+                            <b class="text-red ml-2" *ngIf="getControl('license.file.rename')?.errors?.required">*</b>
+                        </div>
+                        <div class="col-12 pt-2">
+                            <app-file-upload (preview)="setImageControl($event,'prcID','license.file')" label="PRC ID Image" [image]="doctor?.prc_license?.file?.file_url"></app-file-upload>
+                        </div>
+                        <div class="col-12">
+                            <strong>Note:</strong>
+                            <span class="font-italic">
+                                The fields below will be automatically populated after uploading the PRC ID.
+                            </span>
+                        </div>
+                        <div class="col-12 pl-4 ml-4">
+                            <span class="font-italic">
+                                Kindly review and correct if needed. This information will be reviewed and validated.
+                            </span>
+                        </div>
+                        <div class="col-6 py-4" formGroupName="license">
+                            <label for="prc-number" class="font-weight-normal">PRC Number</label>
+                            <b class="text-red ml-2" *ngIf="getControl('license.number')?.errors?.required">*</b>
+                            <input type="text" id="prc-number" class="form-control form-control-lg" formControlName="number"/>
+                        </div>
+                        <div class="col-6 py-4" formGroupName="license">
+                            <label for="registered-date" class="font-weight-normal">Registered Date</label>
+                            <b class="text-red ml-2" *ngIf="getControl('license.validity_start_datetime')?.errors?.required">*</b>
+                            <input type="date" id="registered-date" class="form-control form-control-lg" formControlName="validity_start_datetime"/>
+                        </div>
+                        <div class="col-6">
+                            <label for="license" class="font-weight-normal">License</label>
+                            <b class="text-red ml-2" *ngIf="getControl('license.id_type_code')?.errors?.required">*</b>
+                            <input type="text" id="license" readonly class="form-control form-control-lg" value="Physician"/>
+                        </div>
+                        <div class="col-6" formGroupName="license">
+                            <label for="expiry-date" class="font-weight-normal">Expiry Date</label>
+                            <b class="text-red ml-2" *ngIf="getControl('license.validity_expiry_datetime')?.errors?.required">*</b>
+                            <input type="date" id="expiry-date" class="form-control form-control-lg" formControlName="validity_expiry_datetime"/>
+                        </div>
+                        <div class="col-12 py-4" formGroupName="name">
+                            <label for="lastname" class="font-weight-normal">Last Name</label>
+                            <b class="text-red ml-2" *ngIf="getControl('name.last')?.errors?.required">*</b>
+                            <input type="text" id="lastname" class="form-control form-control-lg" formControlName="last"/>
+                        </div>
+                        <div class="col-12" formGroupName="name">
+                            <label for="firstname" class="font-weight-normal">First Name</label>
+                            <b class="text-red ml-2" *ngIf="getControl('name.first')?.errors?.required">*</b>
+                            <input type="text" id="firstname" class="form-control form-control-lg" formControlName="first"/>
+                        </div>
+                        <div class="col-12 py-4" formGroupName="name">
+                            <label for="middlename" class="font-weight-normal">Middle Name</label>
+                            <b class="text-red ml-2" *ngIf="getControl('name.middle')?.errors?.required">*</b>
+                            <input type="text" id="middlename" class="form-control form-control-lg" formControlName="middle"/>
+                        </div>
+                        <div class="col-6" formGroupName="name">
+                            <label for="suffix" class="font-weight-normal">Suffix</label>
+                            <b class="text-red ml-2" *ngIf="getControl('name.suffix')?.errors?.required">*</b>
+                            <input type="text" id="suffix" class="form-control form-control-lg" formControlName="suffix"/>
+                        </div>
+                        <div class="col-6" formGroupName="doctor">
+                            <label for="dateofbirth" class="font-weight-normal">Date of Birth</label>
+                            <b class="text-red ml-2" *ngIf="getControl('doctor.date_of_birth')?.errors?.required">*</b>
+                            <input type="date" id="dateofbirth" class="form-control form-control-lg" formControlName="date_of_birth"/>
+                        </div>
+                        <div class="col-12 py-4" formGroupName="email">
+                            <label for="emailadd" class="font-weight-normal">Email Address</label>
+                            <b class="text-red ml-2" *ngIf="getControl('email.value')?.errors?.required">*</b>
+                            <input type="text" id="emailadd" class="form-control form-control-lg" formControlName="value"/>
+                        </div>
+                        <div class="col-12" formGroupName="mobile">
+                            <label for="mobilenumber" class="font-weight-normal">Mobile Number (10-digit)</label>
+                            <b class="text-red ml-2" *ngIf="getControl('mobile.value')?.errors?.required">*</b>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="basic-addon1">+63</span>
+                                </div>
+                                <input type="text" id="mobilenumber" class="form-control form-control-lg" formControlName="value" style="border-top-left-radius: 0px !important; border-bottom-left-radius: 0px !important;"/>
+                            </div>
+                            <div *ngIf="getControl('mobile.value')?.touched && getControl('mobile.value')?.errors?.required ">
+                                <small class="text-danger">Contact number is required</small>
+                            </div>
+                            <div *ngIf="getControl('mobile.value')?.touched && getControl('mobile.value')?.errors?.minlength ">
+                                <small class="text-danger">Mobile should be 10 digits excluding 63 or +63 or 0</small>
+                            </div>
+                            <div *ngIf="getControl('mobile.value')?.touched && getControl('mobile.value')?.errors?.maxlength ">
+                                <small class="text-danger">Mobile should not exceed 10 digits excluding 63 or +63 or 0</small>
+                            </div>
+                            <div *ngIf="getControl('mobile.value')?.touched && getControl('mobile.value')?.errors?.pattern ">
+                                <small class="text-danger">Mobile format is invalid, should be numerical</small>
+                            </div>
+                        </div>
+                        <div class="col-12 pt-4">
+                            <span>Profile Photo</span>
+                            <b class="text-red ml-2" *ngIf="getControl('doctor.profile_photo_renamed')?.errors?.required">*</b>
+                        </div>
+                        <div class="col-12 pt-2">
+                            <app-file-upload (preview)="setImage($event,'profilePhoto','doctor.profile_photo_renamed')" label="Profile Photo" [image]="doctor?.profile_photo_url"></app-file-upload>
+                        </div>
+                        <div class="col-12">
+                            <strong>Note:</strong>
+                                <span class="font-italic">
+                                    Your picture is an important part of your profile and will be displayd to patients. Please upload a headshot that ideally follows the below guidelines:
+                                </span>
+                                <ul>
+                                    <li>Headshot or half body photo with a white or plain background is preferred</li>
+                                    <li>Maximum photo size of 15MB with at least 200 x 200 pixels</li>
+                                    <li>Avoid using pictures that contain other people</li>
+                                </ul>
+                        </div>
+                        <div class="col-12 pt-4">
+                            <span>E-Signature</span>
+                            <b class="text-red ml-2" *ngIf="getControl('doctor.e_signature_renamed')?.errors?.required">*</b>
+                        </div>
+                        <div class="col-12 pt-2">
+                            <app-file-upload (preview)="setImage($event,'eSignature','doctor.e_signature_renamed')" label="E-Signature" [image]="doctor?.e_signature_url"></app-file-upload>
+                        </div>
+                        <div class="col-12">
+                            <strong>Note:</strong>
+                            <span class="font-italic">
+                                Please upload your signature on a white background in black ink.
+                            </span>
+                        </div>
+                        <div class="col"></div>
+                        <div class="col-4 pt-4">
+                            <button
+                                style="min-width: 200px"
+                                type="button"
+                                (click)="save()"
+                                class="btn btn-primary btn-flat btn-block btn-lg"
+                                [disabled]="form?.invalid || processing"
+                                >
+                                Next 
+                                <i *ngIf="processing" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

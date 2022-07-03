@@ -1,0 +1,31 @@
+<p-dialog
+  [baseZIndex]="2000"
+  [(visible)]="modal"
+  [style]="{ maxWidth: '600px' }"
+  [modal]="true"
+  position="center"
+  [draggable]="false"
+  [dismissableMask]="false"
+  [closable]="false"
+  closeIcon=""
+>
+    <div class="p-5">
+        <div class="d-flex justify-content-center align-items-center flex-column w-100">
+            <div class="icon d-flex justify-content-center align-items-center"><i class="fas fa-envelope-square"></i></div>
+            <h5 class="mt-4">Didn't Receive the SMS code?</h5>
+        </div>
+        <p class="mt-4">If you have not received the code after several attempts, please try the following:</p>
+        <ul>
+            <li>Make sure that the mobile number that you have entered is correct.</li>
+            <li>The message may have been delayed for a few minutes. Please check your phone after 15 minutes.</li>
+            <li>If you have low signal reception, try to move to a location with a stronger signal.</li>
+        </ul>
+    </div>
+    <p-footer>
+        <div class="w-100 pr-3 pl-3 pb-3">
+            <button class="btn btn-primary btn-lg w-100" (click)="modal = false">
+                Okay
+            </button>
+        </div>
+    </p-footer>
+</p-dialog>

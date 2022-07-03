@@ -1,0 +1,75 @@
+<form [formGroup]="form" *ngIf="form">
+    <div class="p-3">
+        <h3 class="text-primary text-left bold mt-5">Get started for free!</h3>
+        <p class="text-left text-muted">Fill in the required fields to create your account. Please ensure that your details match what is registered in your PRC license.</p>
+        <div class="form-group mt-5">
+            <small class="bold-500">Last Name</small>
+            <b class="text-red ml-2" *ngIf="getControl('last')?.errors?.required">*</b>
+            <input [class.error]="getControl('last')?.touched && getControl('last')?.errors"  type="text" class="form-control" formControlName="last">
+        </div>
+        <div class="form-group">
+            <small class="bold-500">First Name</small>
+            <b class="text-red ml-2" *ngIf="getControl('first')?.errors?.required">*</b>
+            <input [class.error]="getControl('first')?.touched && getControl('first')?.errors"  type="text" class="form-control" formControlName="first">
+        </div>
+        <div class="form-group">
+            <small class="bold-500">Middle Name</small>
+            <b class="text-red ml-2" *ngIf="getControl('middle')?.errors?.required">*</b>
+            <input [class.error]="getControl('middle')?.touched && getControl('middle')?.errors"  type="text" class="form-control" formControlName="middle">
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <small class="bold-500">Suffix</small>
+                <b class="text-red ml-2" *ngIf="getControl('suffix')?.errors?.required">*</b>
+                <input [class.error]="getControl('suffix')?.touched && getControl('suffix')?.errors"  type="text" class="form-control" formControlName="suffix">
+            </div>
+            <div class="col">
+                <small class="bold-500">Date of Birth</small>
+                <b class="text-red ml-2" *ngIf="getControl('date_of_birth')?.errors?.required">*</b>
+                <input [class.error]="getControl('date_of_birth')?.touched && getControl('date_of_birth')?.errors"  type="date" class="form-control" formControlName="date_of_birth">
+            </div>
+        </div>
+        <div class="form-group mt-2">
+            <small class="bold-500">Email Address</small>
+            <b class="text-red ml-2" *ngIf="getControl('email')?.errors?.required">*</b>
+            <input [class.error]="getControl('email')?.touched && getControl('email')?.errors"  type="email" class="form-control" formControlName="email">
+            <div *ngIf="getControl('email')?.touched && getControl('email')?.errors?.email ">
+                <small class="text-danger">Please enter a correct email address</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <small class="bold-500">Mobile Number (10-digit)</small>
+            <b class="text-red ml-2" *ngIf="getControl('contact_no')?.errors?.required">*</b>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">+63</span>
+                </div>
+                <input [class.error]="getControl('contact_no')?.touched && getControl('contact_no')?.errors" maxlength="10" type="text" class="form-control" formControlName="contact_no" style="border-top-left-radius: 0px !important; border-bottom-left-radius: 0px !important;">
+            </div>
+            <div *ngIf="getControl('contact_no')?.touched && getControl('contact_no')?.errors?.required ">
+                <small class="text-danger">Contact number is required</small>
+            </div>
+            <div *ngIf="getControl('contact_no')?.touched && getControl('contact_no')?.errors?.minlength ">
+                <small class="text-danger">Mobile should be 10 digits excluding 63 or +63 or 0</small>
+            </div>
+            <div *ngIf="getControl('contact_no')?.touched && getControl('contact_no')?.errors?.maxlength ">
+                <small class="text-danger">Mobile should not exceed 10 digits excluding 63 or +63 or 0</small>
+            </div>
+            <div *ngIf="getControl('contact_no')?.touched && getControl('contact_no')?.errors?.pattern ">
+                <small class="text-danger">Mobile format is invalid, should be numerical</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <small class="bold-500">Password</small>
+            <b class="text-red ml-2" *ngIf="getControl('password')?.errors?.required">*</b>
+            <p-password [class.error]="getControl('password')?.touched && getControl('password')?.errors"  styleClass="password-style" [feedback]="false" inputStyleClass="form-control" [toggleMask]="true" formControlName="password"></p-password>
+        </div>
+        <div class="form-group">
+            <re-captcha [siteKey]="siteKey" formControlName="recaptcha"></re-captcha>
+        </div>
+        <button type="button" (click)="next()" class="btn btn-primary btn-block btn-lg mt-5" [disabled]="form?.invalid">
+            Next
+            <i class="fas fa-circle-notch spinning" *ngIf="processing"></i>
+        </button>
+    </div>
+</form>

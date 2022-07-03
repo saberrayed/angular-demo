@@ -1,0 +1,48 @@
+<div class="text-center mt-5 mb-5"><img class="logo" src="assets/img/logo.png" width="200px"></div>
+<div class="card no-border sign-up-content light-shadow mt-auto">
+    <div class="card-body pr-5 pl-5 pt-2">
+        <div id="signUpCarousel" class="carousel slide" data-ride="carousel" data-interval="false" >
+            <ol class="carousel-indicators" style="display: none">
+                <li
+                  data-target="#signUpCarousel"
+                  data-slide-to="0"
+                  class="active"
+                  #termsIndicator
+                ></li>
+                <li
+                  data-target="#signUpCarousel"
+                  data-slide-to="1"
+                  #signUpIndicator
+                ></li>
+                <li
+                  data-target="#signUpCarousel"
+                  data-slide-to="2"
+                  #smsVerificationIndicator
+                ></li>
+                <li
+                  data-target="#signUpCarousel"
+                  data-slide-to="3"
+                  #checkEmailIndicator
+                ></li>
+            </ol>
+            <form [formGroup]="form" *ngIf="form" (keydown.enter)="$event.preventDefault()">
+                <fieldset [disabled]="processing">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <app-privacy-policy (agree)="agreeTerms()"></app-privacy-policy>
+                        </div>
+                        <div class="carousel-item">
+                            <app-sign-up-form [form]="form" [processing]="processing" (submit)="register()"></app-sign-up-form>
+                        </div>
+                        <div class="carousel-item">
+                            <app-sms-verification-form [form]="form" [processing]="processing" #verifyNumber (verify)="verify()"></app-sms-verification-form>
+                        </div>
+                        <div class="carousel-item">
+                            <app-verify-email-notice [form]="form" [user]="user"></app-verify-email-notice>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

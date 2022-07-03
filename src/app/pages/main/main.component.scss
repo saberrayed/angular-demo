@@ -1,0 +1,19 @@
+.content-wrapper {
+  min-height: calc(100vh - 57px);
+  height: 100%;
+  position: relative;
+}
+
+.incoming-call {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  transition: all ease-in-out .3s;
+}
+
+.content-wrapper-no-ml {
+  min-height: calc(100vh - 57px);
+  height: 100%;
+  position: relative;
+  margin-left: 0rem !important;
+}

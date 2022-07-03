@@ -1,0 +1,66 @@
+<p-dialog
+  [baseZIndex]="2000"
+  [style]="{ minWidth: '600px', marginTop: '30px'  }"
+  [(visible)]="modal"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [dismissableMask]="false"
+  [modal]="true"
+  [position]="'center'"
+  [draggable]="false"
+>
+    <fieldset [disabled]="processing">
+        <div class="pr-3 pl-3">
+            <h3 class="text-primary bold">Schedule Consult</h3>
+            <div class="form-group">
+                <small class="text-muted">Clinic <b *ngIf="!clinic" class="ml-2 text-danger" (change)="slot = null; item = null;">*</b></small>
+                <select class="form-control" [(ngModel)]="clinic">
+                    <option value="null" hidden selected>Select Clinic</option>
+                    <option [ngValue]="clinic" *ngFor="let clinic of activeClinics()">{{ clinic?.name_display }} ({{ clinic?.type_text }})</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <small class="text-muted">Service<b *ngIf="!item" class="ml-2 text-danger">*</b></small>
+                <select class="form-control" [(ngModel)]="item" [disabled]="!clinic" (change)="slot = null;">
+                    <option value="null" hidden selected>Select Service</option>
+                    <option [ngValue]="service" *ngFor="let service of clinic?.resource?.services">{{ service?.service_item?.service_item_name }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <small class="text-muted">Complaint <b class="ml-2 text-danger" *ngIf="!complaint">*</b></small>
+                <input type="text" class="form-control" [(ngModel)]="complaint" [disabled]="!item">
+            </div>
+            <div class="form-group">
+                <small class="text-muted">New Appointment Date <b class="ml-2 text-danger" *ngIf="!date">*</b></small>
+                <input type="date" class="form-control" [(ngModel)]="date" (change)="getServiceSchedule()" >
+            </div>
+            <div class="form-group" *ngIf="!item?.is_auto_booking && item && schedule?.slots?.length > 0">
+                <small class="text-muted">Slot <b class="ml-2 text-danger" *ngIf="!slot">*</b></small>
+                <select class="form-control" [(ngModel)]="slot" *ngIf="!searching" [disabled]="searaching">
+                    <option hidden selected value="null">Select Slot</option>
+                    <option [ngValue]="slot" *ngFor="let slot of schedule?.slots">{{ slot?.slot_start_time_string }} - {{ slot?.slot_end_time_string }}</option>
+                </select>
+                <div class="d-flex justify-content-center" *ngIf="searching" >
+                    Updating <i class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+                </div>
+            </div>
+            <div *ngIf="!item?.is_auto_booking && item && schedule?.slots?.length < 1">
+                <span *ngIf="!searching">No slots for the selected date</span>
+                <div class="d-flex justify-content-center" *ngIf="searching" >
+                    Updating <i class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <p-footer>
+        <div class="w-100 text-right pr-3 pl-3 pb-3">
+        <button role="button" class="btn btn-primary btn-lg mr-2" (click)="createAppointment()" [disabled]="processing || (!slot && !item?.is_auto_booking)">
+            Create
+            <i *ngIf="processing" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+        </button>
+        <button role="button" class="btn btn-outline-primary btn-lg" (click)="onClose()" [disabled]="processing">
+            Close
+        </button>
+        </div>
+    </p-footer>
+</p-dialog>

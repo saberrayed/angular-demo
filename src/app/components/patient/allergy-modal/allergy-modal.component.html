@@ -1,0 +1,21 @@
+<p-dialog
+  [baseZIndex]="2000"
+  [style]="{ minWidth: '600px', marginTop: '30px'  }"
+  [(visible)]="modal"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [dismissableMask]="false"
+  [modal]="true"
+  [position]="'center'"
+  [draggable]="false"
+>
+    <div class="pr-3 pl-3">
+        <app-allergies #allergy [patientID]="patientID" (saved)="onClose()"></app-allergies>
+    </div>
+    <p-footer>
+        <div class="w-100 text-right pr-3 pl-3 pb-3">
+            <button role="button" class="btn btn-primary btn-lg" (click)="allergy?.save()" [disabled]="processing">Save</button>
+            <button role="button" class="btn btn-outline-primary btn-lg" (click)="onClose()" [disabled]="processing">close</button>
+        </div>
+    </p-footer>
+</p-dialog>

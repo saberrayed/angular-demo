@@ -1,0 +1,178 @@
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <span class="bold">OB/GYN History</span>
+            <a class="cursor-pointer" (click)="startEdit()" *ngIf="!editMode && !processing">Edit Details</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <div *ngIf="!editMode">
+                <span class="bold">Obstetric Score</span>
+                <table class="table mt-2">
+                    <tr>
+                        <td class="bold">
+                            <span class="mr-2">G{{ item?.gravida || '-' }}</span>
+                            <span class="mr-2">P{{ item?.para || '-' }}</span>
+                            <span>({{ item?.term || '0' }}-{{ item?.premature_births || '0' }}-{{ item?.abortions || '0' }}-{{ item?.living_children || '0' }})</span>
+                        </td>
+                    </tr>
+                </table>
+                <span class="bold">Menstrual History</span>
+                <table class="table mt-2">
+                    <tr>
+                        <td style="width: 100px">Menarch</td><td colspan="3">{{ item?.menarche || '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100px">Menopause</td><td colspan="3">{{ item?.menopause || '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100px">Regular</td><td [attr.colspan]="+item?.is_regular ? 2 : 5">{{ +item?.is_regular === 1 ? 'YES' : 'NO' }}</td>
+                    </tr>
+                    <tr *ngIf="+item?.is_regular === 1" >
+                        <td style="width: 200px">Interval</td><td >{{ item?.interval || '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100px">Duration</td><td>{{ item?.duration || '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100px">Amount</td><td>{{ item?.amount || '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100px">Pain</td><td>{{ item?.pain || '-' }}</td>
+                    </tr>
+                </table>
+                <span class="bold">Sexual and Contraceptive History</span>
+                <table class="table mt-2">
+                    <tr><td style="width: 250px">Last Pap Smear Date and Findings</td><td>{{ item?.last_pap_smear || '-' }}</td></tr>
+                    <tr><td style="width: 250px">Vaginal Discharge</td><td>{{ item?.vaginal_discharge || '-' }}</td></tr>
+                    <tr><td style="width: 250px">Vaginal Bleeding</td><td>{{ item?.vaginal_bleeding || '-' }}</td></tr>
+                    <tr><td style="width: 250px">Sexual Status and Activities</td><td>{{ item?.sexual_status_activities || '-' }}</td></tr>
+                    <tr><td style="width: 250px">Contraceptive Used</td><td>{{ item?.contraceptives_used || '-' }}</td></tr>
+                </table>
+            </div>
+            <div *ngIf="editMode">
+                <form [formGroup]="form" *ngIf="form">
+                    <fieldset [disabled]="processing">
+                        <span class="bold">Obstetric Score</span>
+                        <div class="form-row mt-2 mb-4">
+                            <div class="col">
+                                <small class="text-muted">Gravida</small>
+                                <input type="text" class="form-control" formControlName="gravida">
+                            </div>
+                            <div class="col">
+                                <small class="text-muted">Para</small>
+                                <input type="text" class="form-control" formControlName="para">
+                            </div>
+                            <div class="col d-flex align-items-center">
+                                <div class="parenthesis mr-2 text-muted"><div>(</div></div>
+                                <div>
+                                    <small class="text-muted">Term Births</small>
+                                    <input type="text" class="form-control" formControlName="term">
+                                </div>
+                            </div>
+                            <div class="col">
+                                
+                                <small class="text-muted">Premature Birth</small>
+                                <input type="text" class="form-control" formControlName="premature_births">
+                            </div>
+                            <div class="col">
+                                <small class="text-muted">Abortions</small>
+                                <input type="text" class="form-control" formControlName="abortions">
+                            </div>
+                            <div class="col d-flex align-items-center">
+                                <div>
+                                    <small class="text-muted">Living Children</small>
+                                    <input type="text" class="form-control" formControlName="living_children">
+                                </div>
+                                <div class="parenthesis ml-2 text-muted"><div>)</div></div>
+                            </div>
+                        </div>
+                        <span class="bold">Menstrual History</span>
+                        <div class="form-row mt-2">
+                            <div class="col">
+                                <small class="text-muted">Menarche</small>
+                                <input type="text" class="form-control" formControlName="menarche">
+                            </div>
+                            <div class="col">
+                                <small class="text-muted">Menopause</small>
+                                <input type="text" class="form-control" formControlName="menopause">
+                            </div>
+                        </div>
+                        <div class="form-row mt-2">
+                            <div class="col">
+                                <div class="d-flex mt-3">
+                                    <div class="form-check mr-3">
+                                        <input class="form-check-input cursor-pointer" type="radio" id="regular" [value]="1" formControlName="is_regular">
+                                        <label class="form-check-label cursor-pointer" for="regular">
+                                            Regular
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input cursor-pointer" type="radio" id="irregular" [value]="0" formControlName="is_regular" (click)="reset('interval')">
+                                        <label class="form-check-label cursor-pointer" for="irregular">
+                                            Irregular
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <small class="text-muted">Interval</small>
+                                <input type="text" class="form-control" formControlName="interval" [attr.disabled]="+form?.value?.is_regular === 0 ? '' : null">
+                            </div>
+                        </div>
+                        <div class="form-row mt-2">
+                            <div class="col">
+                                <small class="text-muted">Last Normal Menstrual Period (LNMP)</small>
+                                <input type="date" class="form-control" formControlName="lnmp">
+                            </div>
+                            <div class="col">
+                                <small class="text-muted">Previous Menstrual Period (PMP)</small>
+                                <input type="date" class="form-control" formControlName="pmp">
+                            </div>
+                        </div>
+                        <div class="form-row mt-2 mb-4">
+                            <div class="col">
+                                <small class="text-muted">Duration</small>
+                                <input type="text" class="form-control" formControlName="duration">
+                            </div>
+                            <div class="col">
+                                <small class="text-muted">Amount</small>
+                                <input type="text" class="form-control" formControlName="amount">
+                            </div>
+                            <div class="col">
+                                <small class="text-muted">Pain</small>
+                                <input type="text" class="form-control" formControlName="pain">
+                            </div>
+                        </div>
+                        <span class="bold">Sexual and Contraceptive History</span>
+                        <div class="form-group mt-2">
+                            <small class="text-muted">Last Pap Smear Date and Findings</small>
+                            <input type="text" class="form-control" formControlName="last_pap_smear">
+                        </div>
+                        <div class="form-group">
+                            <small class="text-muted">Vaginal Discharge</small>
+                            <input type="text" class="form-control" formControlName="vaginal_discharge">
+                        </div>
+                        <div class="form-group">
+                            <small class="text-muted">Vaginal Bleeding</small>
+                            <input type="text" class="form-control" formControlName="vaginal_bleeding">
+                        </div>
+                        <div class="form-group">
+                            <small class="text-muted">Sexual Status and Activities</small>
+                            <input type="text" class="form-control" formControlName="sexual_status_activities">
+                        </div>
+                        <div class="form-group">
+                            <small class="text-muted">Contraceptive Used</small>
+                            <app-autocomplete #autocomp (search)="search($event)" [forceSelection]="false" [results]="results" [field]="'text'" (select)="updateContraceptives()" (unselect)="updateContraceptives()"></app-autocomplete>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="text-right mt-3" *ngIf="editMode">
+            <button class="btn btn-primary mr-2" (click)="save()" [disabled]="processing">Save</button>
+            <button class="btn btn-default" (click)="cancel()" [disabled]="processing">Cancel</button>
+        </div>
+    </div>
+</div>

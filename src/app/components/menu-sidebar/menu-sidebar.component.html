@@ -1,0 +1,113 @@
+<aside #mainSidebar class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- <a [routerLink]="['/dashboard']" class="brand-link d-flex justify-content-center"> -->
+    <!-- <span class="brand-text font-weight-light bold">Mwell MD</span> -->
+  <!-- </a> -->
+  <div class="sidebar mt-0 os-scrollbar">
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img src="assets/img/logo.png" alt="User Image" />
+      </div>
+      <!-- <div class="info">
+        <a [routerLink]="['/profile']" class="d-block">Alexander Pierce</a>
+      </div> -->
+    </div>
+    <nav class="mt-2">
+      <ul
+        class="nav nav-pills nav-sidebar flex-column"
+        data-widget="treeview"
+        role="menu"
+        data-accordion="false"
+      >
+        <li class="nav-item mt-2">
+          <a [routerLink]="['/home']" class="nav-link cursor-pointer" [class.active]="isCurrentPath('home')">
+            <i class="nav-icon fa fa-home mr-2"></i>
+            <p style="white-space: nowrap">
+             Home
+            </p>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a [routerLink]="['/consults']" class="nav-link cursor-pointer" [class.active]="isCurrentPath('consults')">
+            <i class="nav-icon fas fa-list-alt mr-2"></i>
+            <p style="white-space: nowrap">
+              Consults
+            </p>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link cursor-pointer">
+            <i class="nav-icon fas fa-h-square mr-2"></i>
+            <p style="white-space: nowrap">
+              Inpatients
+            </p>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a [routerLink]="['/patients']" class="nav-link cursor-pointer" [class.active]="isCurrentPath('patients') || isCurrentPath('patient')">
+            <i class="nav-icon fas fa-users mr-2"></i>
+            <p style="white-space: nowrap">
+              Patients
+            </p>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link cursor-pointer">
+            <i class="nav-icon fas fa-calculator mr-2"></i>
+            <p style="white-space: nowrap">
+              Medical Billing
+            </p>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link cursor-pointer">
+            <i class="nav-icon fas fa-id-badge mr-2"></i>
+            <p style="white-space: nowrap">
+              Professional Fees
+            </p>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link cursor-pointer">
+            <i class="nav-icon fas fa-envelope mr-2"></i>
+            <p style="white-space: nowrap">
+              Inbox/Messages
+            </p>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link cursor-pointer">
+            <i class="nav-icon fas fa-notes-medical mr-2"></i>
+            <p style="white-space: nowrap">
+              Reports
+            </p>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a [routerLink]="['/profile']" class="nav-link cursor-pointer" [class.active]="isCurrentPath('profile') && (isCurrentPath('information') || isCurrentPath('credentials') || isCurrentPath('security'))">
+            <i class="nav-icon fas fa-user-md mr-2"></i>
+            <p style="white-space: nowrap">
+              My Profile
+            </p>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link cursor-pointer">
+            <i class="nav-icon fas fa-cog mr-2"></i>
+            <p style="white-space: nowrap">
+              Settings
+            </p>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link cursor-pointer" (click)="logout()" [attr.disabled]="processing">
+            <i *ngIf="!processing" class="nav-icon fas fa-sign-out-alt mr-2"></i>
+            <i *ngIf="processing" class="nav-icon fas fa-circle-notch spinning"></i>
+            <p style="white-space: nowrap">
+              Log out
+            </p>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</aside>

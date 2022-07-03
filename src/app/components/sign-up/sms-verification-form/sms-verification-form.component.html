@@ -1,0 +1,20 @@
+<div class="p-5">
+    <div class="p-3">
+        <div class="d-flex justify-content-center w-100">
+            <div class="icon d-flex justify-content-center align-items-center"><i class="fas fa-comment-dots"></i></div>
+        </div>
+        <h3 class="text-primary text-center bold mt-3">SMS Verification</h3>
+        <p class="text-center text-muted">Please enter the verification code that you<br> received on your mobile phone.</p>
+        <div class="form-group mt-5 position-relative">
+            <input type="text" class="form-control code-input" (keyup.enter)="verifyNumber()"  placeholder="Mobile verification code" [(ngModel)]="code">
+            <small class="text-danger" *ngIf="validateCode()">Invalid verification code</small>
+            <button type="button" class="send-code btn">Send Code</button>
+        </div>
+        <button type="button" (click)="verifyNumber()" class="btn btn-primary btn-block btn-lg mt-5 mb-3" [disabled]="!code || +code !== +default">
+            Submit
+            <i class="fas fa-circle-notch spinning" *ngIf="processing"></i>
+        </button>
+        <!-- <a class="text-warning cursor-pointer bold-500" (click)="didntReceive?.onOpen()" [attr.disabled]="processing ? '' : null">Didn't receive the code?</a> -->
+    </div>
+</div>
+<app-didnt-receive-code-modal #didntReceive></app-didnt-receive-code-modal>

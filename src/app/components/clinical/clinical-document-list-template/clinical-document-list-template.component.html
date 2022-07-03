@@ -1,0 +1,235 @@
+<section class="clinical-documents">
+  <div class="document-header align-items-center d-flex justify-content-between">
+    <h5 class="mb-0 bold">{{ title }}</h5>
+    <div class="d-flex align-items-center" *ngIf="!processing">
+      <select
+        class="form-control unbold ml-3"
+        style="margin-right: -20px; width: 80px; height: 30px; padding-top: 3px"
+        [(ngModel)]="perPage"
+        (change)="updatePerPage()"
+      >
+        <option [ngValue]="per" *ngFor="let per of perPages">
+          {{ per }}
+        </option>
+      </select>
+      <pagination-controls
+        (pageChange)="list($event)"
+        id="paginator_controls"
+      ></pagination-controls>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column" *ngIf="processing">
+    <div class="mb-2" *ngFor="let spaces of [1, 2, 3, 4, 5]">
+      <p-skeleton height="3rem"></p-skeleton>
+    </div>
+  </div>
+
+  <div class="accordion-wrapper" *ngIf="!processing">
+    <div
+      class="alert alert-warning"
+      *ngIf="clinicalDocuments && clinicalDocuments?.data?.length < 1"
+    >
+      No document.
+    </div>
+    <div
+      class="accordion-container"
+      id="accordion_{{ clinicalDocument?.id }}_{{ i }}"
+      *ngFor="
+        let clinicalDocument of clinicalDocuments?.data
+          | paginate
+            : {
+                id: 'paginator_controls',
+                itemsPerPage: clinicalDocuments?.per_page,
+                currentPage: clinicalDocuments?.current_page,
+                totalItems: clinicalDocuments?.total
+              };
+        let i = index
+      "
+    >
+      <div class="card documents-panel mb-0">
+        <div class="card-header" id="header_{{ i }}">
+          <table class="w-100 mb-0">
+            <tr>
+              <td style="width: 33.3%; vertical-align: middle">
+                <label class=" text-color">
+                  {{ clinicalDocument?.title || clinicalDocument?.template?.name }}
+                  <span class="badge bg-red ml-3 pl-3 pr-3 pt-2 pb-2" style="opacity: 0" >DRAFT</span>
+                </label>
+              </td>
+              <td style="width: 33.3%" class="text-center">
+                <span class=" text-color">Created at {{ clinicalDocument?.created_at_string }}</span>
+              </td>
+              <td style="width: 33.3%" class="text-center">
+                <span class=" text-color">{{ clinicalDocument?.document_status_string }}</span>
+              </td>
+              <td style="width: 33.3%">
+                <div class="d-flex justify-content-end align-items-center actions">
+                  <button class="btn p-2 text-color mr-2" role="button" title="Edit document" *ngIf="canEdit(clinicalDocument)" (click)="onReopenDocument(clinicalDocument)">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <div class="btn-group mr-2" *ngIf="+clinicalDocument?.template?.document_type?.can_view_pdf === 1">
+                    <button
+                      type="button"
+                      class="p-2 btn dropdown-toggle text-color"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      title="Print document"
+                      aria-expanded="false"
+                      [disabled]="hasDisable(clinicalDocument?.pdfs)"
+                    >
+                      <i class="fa fa-file-pdf"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" style="border-radius: 20px; padding: 15px;" (click)="$event.stopPropagation();">
+                      <a class="dropdown-item text-color" type="button" [attr.href]="pdf?.pdf_url" target="_blank" *ngFor="let pdf of clinicalDocument?.pdfs">
+                        <i class="far fa-file-pdf mr-2"></i>{{ pdf?.name }}
+                      </a>
+                      <span *ngIf="clinicalDocument?.pdfs?.length < 1" class="pl-3" >None</span>
+                    </div>
+                  </div>
+                  <div class="btn-group mr-2" *ngIf="+clinicalDocument?.template?.document_type?.can_view_pdf === 1">
+                    <button
+                      type="button"
+                      class="p-2 btn dropdown-toggle text-color"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      title="Email document"
+                      aria-expanded="false"
+                      [disabled]="hasDisable(clinicalDocument?.pdfs)"
+                    >
+                      <i class="fa fa-envelope"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" style="border-radius: 20px; padding: 15px;" (click)="$event.stopPropagation();">
+                        <span class="dropdown-item text-color" *ngFor="let pdf of clinicalDocument?.pdfs">
+                          <input type="checkbox" class="mr-2" [(ngModel)]="pdf.selected">
+                          <i class="far fa-file-pdf mr-2"></i>{{ pdf?.name }}
+                        </span>
+                        <span *ngIf="clinicalDocument?.pdfs?.length < 1" class="pl-3" >None</span>
+                        <div class="pr-3 pl-3 mt-2" *ngIf="clinicalDocument?.pdfs?.length > 0">
+                          <button class="btn btn-sm btn-primary btn-block pt-2 pb-2" style="border-radius: 15px;" (click)="sendDocument(clinicalDocument)" [disabled]="clinicalDocument?.sending || getSelectedDocuments(clinicalDocument)?.length < 1">
+                            {{ clinicalDocument?.sending ? 'Sending' : 'Send' }}
+                            <i *ngIf="clinicalDocument?.sending" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+                          </button>
+                        </div>
+                    </div>
+                  </div>
+                  <button
+                    class="btn p-2 text-color d-none"
+                    role="button"
+                    title="Search document"
+                  >
+                    <i class="fa fa-search"></i>
+                  </button>
+                  <button
+                    class="btn p-2 text-color d-none"
+                    role="button"
+                    title="Bookmark document"
+                  >
+                    <i class="fa fa-bookmark"></i>
+                  </button>
+                  <button
+                    class="parent-btn p-2 btn collapsed d-flex align-items-center text-color "
+                    data-toggle="collapse"
+                    [attr.data-target]="'#request_' + clinicalDocument?.id + '_' + i"
+                    aria-expanded="false"
+                    title="Quick preview result"
+                  >
+                    <i class="fas fa-caret-square-down"></i>
+                  </button>
+                  <!-- <a class="fa fa-caret-square-o-down"role="button" #collapsableBtn [attr.data-collapse]="clinicalDocument?.toggle" (click)="toggleCollapse(clinicalDocument)" title="Quick preview result" data-toggle="collapse" href="#finalize_{{ i }}" aria-expanded="false" ></a> -->
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div
+          id="request_{{ clinicalDocument?.id}}_{{ i }}"
+          class="collapse"
+          [attr.data-parent]="'#accordion_' + clinicalDocument?.id + '_' + i"
+          style=""
+        >
+          <div class="card-body p-0">
+            <div class="container-fluid bordered-bottom">
+              <div class="row">
+                <div class="col-md-12 p-0 pt-4 pb-4">
+                  <app-clinical-document-html-viewer
+                    [document]="clinicalDocument"
+                  ></app-clinical-document-html-viewer>
+                  <div class="clearfix"></div>
+                  <div class="p-4" style="background-color: white">
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <table style="width: 100%; font-size: 0.9em">
+                            <tr>
+                              <td class="pb-2" style="width: 160px">Document Version:</td>
+                              <td class="text-black bold">Version 2</td>
+                              <td class="text-right" style="width: 160px">Created Date/Time:</td>
+                              <td style="padding-left: 15px;width: 1%;white-space: nowrap;">
+                                <span class="text-black bold mr-2">{{ clinicalDocument?.created_at | date: 'EEEE, MMM-dd-yyyy hh:mm a' }}</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="pb-2" style="width: 160px">Document Status:</td>
+                              <td class="text-primary bold">
+                                {{ +clinicalDocument?.document_status_code === +draftCode ? 'Draft' : 'Final'}}
+                              </td>
+                              <td class="text-right" style="width: 160px">Signed Date/Time:</td>
+                              <td style="padding-left: 15px; width: 1%; white-space: nowrap;">
+                                <span class="text-black bold mr-2">{{ clinicalDocument?.finalized_at | date: 'EEEE, MMM-dd-yyyy hh:mm a'}}</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="width: 160px">Linked Visit:</td>
+                              <td class="bold" style="white-space: nowrap;">
+                                {{
+                                  clinicalDocument?.visit?.admission_datetime
+                                    | date: 'MMM-dd-yyyy'
+                                }}
+                              </td>
+                              <td class="text-right" style="width: 200px">Last updated Date/Time:</td>
+                              <td style="padding-left: 15px;width: 1%;white-space: nowrap;">
+                                <span class="text-black bold mr-2">{{
+                                  clinicalDocument?.updated_at
+                                    | date: 'EEEE, MMM-dd-yyyy hh:mm a'
+                                }}</span>
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-3 d-flex justify-content-end">
+    <div class="d-flex align-items-center" *ngIf="!processing">
+      <select
+        class="form-control unbold ml-3"
+        style="
+          margin-right: -20px;
+          width: 80px;
+          height: 30px;
+          padding-top: 3px;
+        "
+        [(ngModel)]="perPage"
+        (change)="updatePerPage()"
+      >
+        <option [ngValue]="per" *ngFor="let per of perPages">
+          {{ per }}
+        </option>
+      </select>
+      <pagination-controls
+        (pageChange)="list($event)"
+        id="paginator_controls"
+      ></pagination-controls>
+    </div>
+  </div>
+</section>
+  

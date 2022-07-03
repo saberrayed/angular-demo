@@ -1,0 +1,54 @@
+<p-dialog
+  [baseZIndex]="2000"
+  [style]="{ minWidth: '600px', marginTop: '30px'  }"
+  [(visible)]="modal"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [dismissableMask]="false"
+  [modal]="true"
+  [position]="'center'"
+  [draggable]="false"
+>
+    <div class="pr-3 pl-3">
+        <h3 class="text-primary bold">Upload Document</h3>
+        <div class="form-group mt-4">
+            <span class="text-muted">Document</span><b class="text-red ml-2" *ngIf="!file">*</b>
+            <div class="upload-container d-flex justify-content-center">
+                <a class="btn btn-dark bg-lightgray bold" (click)="uploader.click()" *ngIf="!preview" [attr.disabled]="processing">
+                    <i class="fa fa-download pr-3" aria-hidden="true"></i>Upload Document
+                </a>
+
+                <div class="text-center">
+                    <img *ngIf="file?.type !== 'application/pdf' && preview" [src]="preview" (click)="uploader.click()" alt="" class="img-preview cursor-pointer"  title="Click to upload"/>
+                    <i class="fas fa-file-pdf text-danger cursor-pointer" *ngIf="file?.type === 'application/pdf' && preview" (click)="uploader.click()"  title="Click to upload" ></i><br>
+                    <span *ngIf="preview">{{ file?.name }}</span>
+                </div>
+
+                <input type='file' accept="image/*,.pdf" (change)="previewUploadFile($event)" #uploader hidden  [disabled]="processing"/>
+            </div>
+        </div>
+        <div class="form-group" [formGroup]="form" *ngIf="form">
+            <span class="text-muted">Name</span><b class="text-red ml-2" *ngIf="getControl('name')?.errors?.required">*</b>
+            <input type="text" class="form-control" formControlName="name" [disabled]="processing">
+        </div>
+        <div class="form-group" [formGroup]="form" *ngIf="form">
+            <span class="text-muted">Description</span>
+            <textarea class="form-control" rows="4" formControlName="description" [disabled]="processing"></textarea>
+        </div>
+        <div class="form-group">
+            <span class="text-muted">Tags</span>
+            <p-chips inputStyleClass="form-control" [(ngModel)]="tags" (onAdd)="updateTags()" (onRemove)="updateTags()" [disabled]="processing"></p-chips>
+        </div>
+    </div>
+    <p-footer>
+        <div class="w-100 text-right pr-3 pl-3 pb-3">
+            <button role="button" class="btn btn-primary btn-lg mr-2" (click)="upload()" [disabled]="processing || form?.invalid || !file">
+                Upload
+                <i *ngIf="processing" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+            </button>
+            <button role="button" class="btn btn-outline-primary btn-lg" (click)="onClose()" [disabled]="processing">
+                Close
+            </button>
+        </div>
+    </p-footer>
+</p-dialog>

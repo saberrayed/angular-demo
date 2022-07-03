@@ -1,0 +1,15 @@
+.incoming-card {
+    max-width: 500px;
+    border-radius: 20px;
+    overflow: hidden;
+
+    .card-header {
+        a {
+            height: 24px;
+            
+            .icon {
+                font-size: 1.5rem;
+            }
+        }
+    }
+}

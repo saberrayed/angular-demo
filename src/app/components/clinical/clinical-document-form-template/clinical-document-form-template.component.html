@@ -1,0 +1,470 @@
+<form [formGroup]="formGroup" class="form" *ngIf="formGroup && !loading">
+  <div *ngFor="let section of documentTemplate?.sections" class="text-color">
+    <ng-container
+      *ngIf="!either(section?.type, ['tab'])"
+      [ngTemplateOutlet]="sectionTemplate"
+      [ngTemplateOutletContext]="{ section: section, fg: formGroup }"
+    ></ng-container>
+    <ng-container
+      *ngIf="either(section?.type, ['tab'])"
+      [ngTemplateOutlet]="tab"
+      [ngTemplateOutletContext]="{ section: section, fg: formGroup }"
+    ></ng-container>
+    <div class="clearfix"></div>
+  </div>
+</form>
+  
+<div *ngIf="loading">
+  <div class="card mr-3 ml-3">
+    <div class="card-header">
+      <p-skeleton height="2rem"></p-skeleton>
+    </div>
+    <div class="card-body">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col" *ngFor="let count of [1, 2, 3, 4]">
+            <p-skeleton height="2rem"></p-skeleton>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-sm-3 offset-sm-3">
+            <p-skeleton height="2rem"></p-skeleton>
+          </div>
+          <div class="col-sm-3"><p-skeleton height="2rem"></p-skeleton></div>
+          <div class="col-sm-3"><p-skeleton height="2rem"></p-skeleton></div>
+        </div>
+        <hr />
+        <div class="row mt-2">
+          <div class="col" *ngFor="let count of [1, 2, 3, 4]">
+            <p-skeleton height="2rem"></p-skeleton>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col" *ngFor="let count of [1, 2, 3, 4]">
+            <p-skeleton height="2rem"></p-skeleton>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-sm-9 offset-sm-3">
+            <p-skeleton height="12rem"></p-skeleton>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<ng-template #elementTemplate let-element="element" let-fg="fg" let-index="index">
+  <ng-container
+    *ngIf="element?.section && either(element?.section?.type, ['division', 'section', 'field-group'])"
+    [ngTemplateOutlet]="sectionTemplate"
+    [ngTemplateOutletContext]="{
+      section: element?.section,
+      parent: element,
+      fg: fg
+    }"
+  ></ng-container>
+  <ng-container
+    *ngIf="element?.section && either(element?.section?.type, ['array'])"
+    [ngTemplateOutlet]="sectionTemplate"
+    [ngTemplateOutletContext]="{
+      section: element?.section,
+      parent: element,
+      fg: fg
+    }"
+  ></ng-container>
+  <ng-container
+    *ngIf="element?.section && either(element?.section?.type, ['tab'])"
+    [ngTemplateOutlet]="tab"
+    [ngTemplateOutletContext]="{
+      section: element?.section,
+      parent: element,
+      fg: fg
+    }"
+  ></ng-container>
+  <ng-container
+    *ngIf="element?.section && either(element?.section?.type, ['table'])"
+    [ngTemplateOutlet]="tableTemplate"
+    [ngTemplateOutletContext]="{
+      section: element?.section,
+      parent: element,
+      fg: fg
+    }"
+  ></ng-container>
+  <ng-container
+    *ngIf="element?.field"
+    [ngTemplateOutlet]="field"
+    [ngTemplateOutletContext]="{
+      field: element?.field,
+      parent: element,
+      fg: fg,
+      index: index
+    }"
+  ></ng-container>
+  <ng-container
+    *ngIf="element?.row"
+    [ngTemplateOutlet]="rowTemplate"
+    [ngTemplateOutletContext]="{ row: element?.row }"
+  ></ng-container>
+</ng-template>
+
+<ng-template #sectionTemplate let-section="section" let-parent="parent" let-fg="fg">
+  <div *ngIf="parent?.title" [class.pl-3]="section?.type === 'section'" [class.section-form-header]="section?.type === 'section'" [class.mb-3]="section?.type !== 'section'">
+    <span>{{ parent?.title }}</span>
+  </div>
+  <fieldset>
+    <div [class.container-fluid]="!either(section?.type, ['array', 'field-group'])" [class.mb-5]="section?.type === 'section'" *ngIf="section" [formGroup]="fg">
+      <!-- normal section -->
+      <div class="row" *ngIf="!either(section?.type, ['array'])">
+        <div class="col-sm-12 mb-3" *ngIf="parent?.label">
+          {{ parent?.label }}
+        </div>
+        <div class="{{ element?.custom_class }}" [class.hidden]="conditionalEvent(element?.field, 'hidden')"  [style.display]="section?.type === 'field-group' ? 'inline-block' : ''" *ngFor="let element of section?.elements; let field_index = index">
+          <ng-container [ngTemplateOutlet]="elementTemplate" [ngTemplateOutletContext]="{element: element, fg: fg, parentType: section?.type, index: field_index}"></ng-container>
+          <div class="text-right">
+            <button class="btn btn-primary" *ngFor="let button of section?.buttons" (click)="componentClick(button?.component_name, section?.name)">
+              <i class="{{ button?.icon_name }} mr-2" *ngIf="button?.icon_name"></i>{{ button?.button_name }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- array section -->
+      <div class="row array-class" *ngIf="either(section?.type, ['array'])" [formArrayName]="section?.name">
+        <div class="clearfix array-child col-sm-12" *ngFor="let item of fg.get(section?.name).controls; let i = index" style="position: relative">
+          <!-- <div
+            *ngIf="i > 0"
+            class="pt-2 clearfix"
+            style="
+              height: 10px;
+              border-top: 1px dashed #ccc;
+              margin-left: 12px;
+              margin-right: 12px;
+            "
+          >
+            <i
+              class="fa fa-minus-circle text-red float-right"
+              (click)="removeArraySection(fg.get(section?.name), i)"
+              style="
+                cursor: pointer;
+                position: absolute;
+                right: -3px;
+                top: 35%;
+                z-index: 2000;
+              "
+            ></i>
+          </div> -->
+          <div class="row">
+            <div class="{{ element?.custom_class }}" *ngFor="let element of section?.elements; let field_index = index">
+              <ng-container [ngTemplateOutlet]="elementTemplate" [ngTemplateOutletContext]="{ element: element, fg: item, parentType: section?.type, index: i }"></ng-container>
+            </div>
+          </div>
+          <!-- <button class="float-right btn btn-danger" style="cursor: pointer; position: absolute; right: -3px; top: 35%; z-index: 2000;" (click)="removeArraySection(fg.get(section?.name), i)">
+            <i class="fa fa-times-circle"></i>
+          </button> -->
+          <button *ngIf="i > 0" type="button" class="btn btn-danger" title="Remove" style="height: 90%; position: absolute; top: 3%; right: -10px; padding-left: 3px; padding-right: 3px;" (click)="removeArraySection(fg.get(section?.name), i)">
+            <!-- <small style="writing-mode: vertical-rl;text-orientation: mixed;">REMOVE</small> -->
+            <small class="fas fa-minus-circle"></small>
+          </button>
+        </div>
+        <div class="col-sm-12 mb-3 text-right">
+          <button type="button" class="btn btn-secondary" style="min-width: 100px" (click)="addArraySection(parent)">
+            <i class="fas fa-plus-circle mr-2"></i>{{ parent.label }}
+          </button>
+          <button class="ml-2 btn btn-primary" *ngFor="let button of section?.buttons" (click)="componentClick(button?.component_name, section?.name)">
+            <i class="{{ button?.icon_name }} mr-2" *ngIf="button?.icon_name"></i>{{ button?.button_name }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</ng-template>
+  
+<ng-template #tableTemplate let-section="section" let-parent="parent" let-fg="fg">
+  <table class="table table-bordered table-border-black">
+    <tbody class="{{ tbElement?.custom_class }}" *ngFor="let tbElement of section?.elements">
+      <ng-container *ngFor="let trElement of tbElement?.section?.elements">
+        <ng-container *ngIf="trElement?.section?.type !== 'row-array'">
+          <tr class="{{ trElement?.custom_class }}">
+            <td class="{{ tdElement?.custom_class }}" *ngFor="let tdElement of trElement?.section?.elements">
+              <ng-container [ngTemplateOutlet]="elementTemplate" [ngTemplateOutletContext]="{ element: tdElement, fg: fg, parentType: trElement?.section?.type, index: null}"></ng-container>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="trElement?.section?.type === 'row-array'">
+          <tr class="{{ trElement?.custom_class }}" *ngFor="let item of fg.get(trElement?.element_name).controls; let i = index">
+            <td class="{{ tdElement?.custom_class }}" style="position: relative" *ngFor="let tdElement of trElement?.section?.elements;let j = index">
+              <ng-container [ngTemplateOutlet]="elementTemplate" [ngTemplateOutletContext]="{ element: tdElement, fg: item, parentType: trElement?.section?.type, index: i }"></ng-container>
+              <i *ngIf="j === trElement.section.elements.length - 1" class="fa fa-minus-circle text-red" (click)="removeArraySection(fg.get(trElement.element_name), i)" style="cursor: pointer; position: absolute; right: -20px; top: 45%; "></i>
+            </td>
+          </tr>
+          <tr>
+            <td [attr.colspan]="trElement.section.elements.length">
+              <button class="btn btn-success btn-block" (click)="addArraySection(trElement)">Add More</button>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+</ng-template>
+  
+<ng-template #field let-field="field" let-required="required" let-parent="parent" let-index="index" let-fg="fg">
+  <table class="w-100 mt-2" *ngIf="field && !conditionalEvent(field, 'hidden')" [formGroup]="fg">
+    <tr class="field-title" *ngIf="parent?.title || field?.field_type === 'text-editor'">
+      <td class="p-0 d-flex align-items-center" colspan="2">
+        <div class="mr-3" *ngIf="field?.field_type === 'text-editor' && parent?.title" style="margin-top: 10px">
+          <span [innerHtml]="parent?.title || '&nbsp;'"></span><span class="text-red" *ngIf="!parent?.label && required">*</span>
+        </div>
+        <div class="mb-1 mr-3" *ngIf="field?.field_type != 'text-editor' && parent?.title">
+          <span [innerHtml]="parent?.title || '&nbsp;'"></span><span class="text-red" *ngIf="!parent?.label && required">*</span>
+        </div>
+        <div *ngIf="field?.field_type === 'text-editor'">
+          <app-clinical-document-text-template
+            (insertTemplate)="insertTextTemplate(field, $event)"
+            [templates]="field?.text_templates"
+            [originalTemplates]="field?.text_templates"
+            [title]="
+              parent?.title
+                ? parent?.title
+                : parent?.label
+                ? parent?.label
+                : 'Content'
+            "
+          ></app-clinical-document-text-template>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="pr-3 field-label" [class.pt-3]="field?.field_type === 'select' || field?.field_type === 'radio'"
+        [style.minWidth.px]="parent?.min_label_width"
+        *ngIf="parent?.label && field?.field_type !== 'checkbox'"
+        style="vertical-align: middle; white-space: nowrap; width: 1%"
+      >
+        <div class="mr-3 form-group" style="display: inline-block" [innerHtml]="parent?.label"></div>
+        <span class="text-red" *ngIf="required">*</span>
+      </td>
+      <td class="field-content">
+        <!-- Input Groups -->
+        <div class="form-group" *ngIf="field?.field_type === 'input'">
+          <span *ngIf="field?.data_type === 'hidden'">{{formula(parent?.element_name, parent?.formula, index)}}</span>
+          <input
+            *ngIf="!parent?.unit_measurement"
+            class="form-control"
+            [attr.type]="field?.data_type"
+            [formControlName]="parent?.element_name"
+            [attr.placeholder]="parent?.placeholder"
+            [attr.disabled]="conditionalEvent(field, 'disabled') ? '' : null"
+          />
+
+          <div class="input-group mb-3" *ngIf="parent?.unit_measurement">
+            <input
+              class="form-control"
+              [formControlName]="parent?.element_name"
+              [attr.type]="field?.data_type"
+              [attr.placeholder]="parent?.placeholder"
+              [attr.disabled]="conditionalEvent(field, 'disabled') ? '' : null"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">{{ parent?.unit_measurement }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Select -->
+        <select class="form-control" *ngIf="field?.field_type === 'select'" [formControlName]="parent?.element_name" [attr.disabled]="conditionalEvent(field, 'disabled') ? '' : null">
+          <option class="hidden" value="null">{{ parent?.placeholder }}</option>
+          <option *ngFor="let value of field?.values" [value]="value?.value">
+            {{ value?.display_name }}
+          </option>
+        </select>
+
+        <!-- Radio button -->
+        <div *ngIf="field?.field_type === 'radio'">
+          <div class="form-row">
+            <div class="form-check mr-3" *ngFor="let value of field?.values; let i = index">
+              <input
+                class="form-check-input cursor-pointer"
+                [attr.id]="parent?.element_name + '_' + field?.name + '_' + i"
+                type="radio"
+                [value]="value?.value"
+                [formControlName]="parent?.element_name"
+                [attr.disabled]="
+                  conditionalEvent(field, 'disabled') ? '' : null
+                "
+              />
+              <label class="form-check-label cursor-pointer" [attr.for]="parent?.element_name + '_' + field?.name + '_' + i">{{ value?.display_name }}</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checkboxes -->
+        <div *ngIf="field?.field_type === 'checkbox'">
+          <div class="form-check">
+            <input
+              class="form-check-input cursor-pointer"
+              [attr.id]="parent?.element_name + '_' + parent?.id"
+              type="checkbox"
+              [attr.disabled]="conditionalEvent(field, 'disabled') ? '' : null"
+              [formControlName]="parent?.element_name"
+            />
+            <label class="form-check-label cursor-pointer" [attr.for]="parent?.element_name + '_' + parent?.id">
+              {{ parent?.label }}
+            </label>
+          </div>
+        </div>
+
+        <!-- Textarea -->
+        <div class="form-group" *ngIf="field?.field_type === 'textarea'">
+          <textarea
+            [formControlName]="parent?.element_name"
+            class="form-control"
+            rows="6"
+            style="resize: none; width: 100%"
+            [attr.placeholder]="parent?.placeholder"
+            [attr.disabled]="conditionalEvent(field, 'disabled') ? '' : null"
+            [innerHtml]="parent?.default_value"
+          ></textarea>
+        </div>
+
+        <!-- Texteditor -->
+        <div class="form-group mt-2" *ngIf="field?.field_type === 'text-editor'">
+          <p-editor
+            [readonly]="savingDocument"
+            [formControlName]="parent?.element_name"
+            [style]="{ height: '320px'}"
+          >
+            <ng-template pTemplate="header">
+              <span class="ql-formats">
+                <button title="Bold" class="ql-bold"></button>
+                <button title="Italic" class="ql-italic"></button>
+                <button title="Underline" class="ql-underline"></button>
+                <button title="Strike" class="ql-strike"></button>
+                <button title="Blockqoute" class="ql-blockquote"></button>
+                <button title="Clear Format" class="ql-clean"></button>
+              </span>
+              <span class="ql-formats">
+                <button title="Indent" class="ql-indent" value="-1"></button>
+                <button title="Indent" class="ql-indent" value="+1"></button>
+              </span>
+              <span class="ql-formats">
+                <button title="Sub" class="ql-script" value="sub"></button>
+                <button title="Super" class="ql-script" value="super"></button>
+              </span>
+            </ng-template>
+          </p-editor>
+          <!-- <ckeditor [editor]="editor" [formControlName]="parent?.element_name" [attr.disabled]="conditionalEvent(field,'disabled') ? '' : null"></ckeditor> -->
+        </div>
+
+        <app-clinical-documentation-uploader
+          *ngIf="field?.field_type === 'file-uploader'"
+          [multiple]="true"
+          [url]="uploadUrl"
+          [name]="'files[]'"
+          [label]="''"
+          [fileUrl]="formGroup.value[parent.element_name]"
+          [folder]="'attachments'"
+          (upload)="onUpload(parent?.element_name, $event)"
+          (remove)="onRemove(parent?.element_name, $event)"
+        ></app-clinical-documentation-uploader>
+
+        <div style="margin-top: -15px; margin-bottom: 15px" *ngIf="parent?.description">
+          <small class="text-muted">{{ parent?.description }}</small>
+        </div>
+      </td>
+    </tr>
+  </table>
+</ng-template>
+  
+<ng-template #rowTemplate let-row="row">
+  <span *ngIf="row?.type === 'label'" [innerHTML]="row?.value"></span>
+  <div
+    *ngIf="row?.type === 'line-break'"
+    style="border-top: 1px solid #ccc; height: 10px"
+  ></div>
+  <div *ngIf="row?.type === 'microservice'">
+    <app-vital-signs
+      *ngIf="row?.value === 'vital-sign'"
+      [parentFormGroup]="formGroup"
+      [patient]="patient"
+      [visit]="visit"
+      [key]="row?.name"
+      [documentTemplate]="documentTemplate"
+      [withGraph]="+documentTemplate?.document_subtype?.with_graph"
+      (onUpdate)="onMicroserviceUpdate()"
+    ></app-vital-signs>
+    <app-vital-signs
+      *ngIf="row?.value === 'opd-vital-sign'"
+      [parentFormGroup]="formGroup"
+      [patient]="patient"
+      [visit]="visit"
+      [withAction]="false"
+      [key]="row?.name"
+      [documentTemplate]="documentTemplate"
+      [withGraph]="documentTemplate?.document_subtype?.with_graph"
+      (onUpdate)="onMicroserviceUpdate()"
+    ></app-vital-signs>
+
+    <!-- <cbg-monitoring *ngIf="row?.value === 'cbg-monitoring'"
+        [parentFormGroup]="formGroup"
+        [patient]="patient"
+        [visit]="visit"
+        (onUpdate)="onMicroserviceUpdate()"
+        ></cbg-monitoring>
+        <intravenous-fluid *ngIf="row?.value === 'intravenous-fluid'"
+        [parentFormGroup]="formGroup"
+        [patient]="patient"
+        [visit]="visit"
+        (onUpdate)="onMicroserviceUpdate()"
+        ></intravenous-fluid>
+        <neurologic-monitoring *ngIf="row?.value === 'neurologic-monitoring'"
+        [parentFormGroup]="formGroup"
+        [patient]="patient"
+        [visit]="visit"
+        (onUpdate)="onMicroserviceUpdate()"
+        ></neurologic-monitoring>
+      <app-opd-vital-signs *ngIf="row?.value === 'opd-vital-sign'"
+        [parentFormGroup]="formGroup"
+        [document]="document"
+        [patient]="patient"
+        [visit]="visit"
+        [checkSaved]="loading"
+        (onUpdate)="onOpdVitalSignsUpdate()"
+      ></app-opd-vital-signs>
+      --->
+  </div>
+</ng-template>
+  
+<ng-template #tab let-section="section" let-parent="parent" let-fg="fg">
+  <div class="container-fluid">
+    <div class="row" *ngIf="section">
+      <div class="col-md-12">
+        <div>
+          <ul class="nav nav-tabs">
+            <li [class.active]="tabIndex === 0" *ngFor="let element of section?.elements; let tabIndex = index">
+              <a *ngIf="element?.section" [attr.href]="element?.section ? '#' + element?.section?.code : ''" data-toggle="tab">{{ element?.title }}</a>
+            </li>
+          </ul>
+          <div class="tab-content" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;border-bottom: 1px solid #ddd;">
+            <div class="tab-pane" [class.hidden]="element?.section ? element?.section?.type === 'tab-pane' ? false : true: true"
+              [class.active]="tabIndex === 0"
+              [attr.id]="element?.section ? element?.section?.code : ''"
+              *ngFor="let element of section?.elements; let tabIndex = index"
+            >
+              <div class="container-fluid" *ngIf="element?.section">
+                <div class="row">
+                  <div class="{{ content?.custom_class }}" *ngFor="let content of element?.section?.elements;let field_index = index">
+                    <ng-container [ngTemplateOutlet]="elementTemplate" [ngTemplateOutletContext]="{ element: content, fg: fg, parentType: element?.section?.type, index: null}" ></ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<app-clinical-prescription-history-modal #prescriptionHistoryModal [patientID]="patient?.patient_id" [document]="document" [form]="formGroup" [formValidator]="formValidator"></app-clinical-prescription-history-modal>
+  

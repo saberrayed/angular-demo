@@ -1,0 +1,442 @@
+<div class="bg2-img scrollable" [ngStyle]="{'background-image': 'url(assets/img/bg2.png)'}">
+    <div class="card light-shadow-blue">
+        <div class="card-body px-4 mx-4 text-center">
+            <div class="d-flex justify-content-center w-100">
+                <div class="icon-onboarding d-flex justify-content-center align-items-center"><i class="fas fa-handshake"></i></div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-4 pr-0 profile-text">
+                    <span>Profile Information</span>
+                </div>
+                <div class="col-1 px-0 pt-1">
+                    <i class="fa fa-chevron-right text-warning" aria-hidden="true"></i>
+                </div>
+                <div class="col-3 px-0 pt-2 profile-text">
+                    <span>Credentials</span>
+                </div>
+                <div class="col-1 px-0 pt-1">
+                    <i class="fa fa-chevron-right text-warning" aria-hidden="true"></i>
+                </div>
+                <div class="col-3 px-0 profile-text">
+                    <span>Service Agreement</span>
+                </div>
+            </div>
+            <div class="progress mb-4" style="height: 8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <form [formGroup]="form" *ngIf="form" (ngSubmit)="onSubmit()">
+                <fieldset [disabled]="processing">
+                    <div class="row text-left">
+                        <div class="col-12 text-center text-primary bold h4 pb-0 mb-0">
+                            <span>Service Agreement</span>
+                        </div>
+                        <div class="col-12 pt-4 mt-4">
+                            Please read and review the Service Agreement of mWell MD. A copy of this document will be sent to your email once you have accepted this agreement.
+                        </div>
+                        <div class="col-12 py-2 my-2">
+                            Terms and conditions use
+                        </div>
+                        <div class="col-12 text-sm">
+                            <div class="scrollable service-agreement-container" formGroupName="service_agreement">
+                                <h6 class="text-center"><strong>MEMORANDUM OF AGREEMENT</strong></h6>
+
+                                <div class="py-4">
+                                    This <strong> MEMORANDUM OF AGREEMENT</strong> (hereinafter this “Agreement”), is entered into this <input readonly type="text" name="day" id="day" class="day-input" formControlName="agreement_day"> day of <input readonly type="text" name="month" id="month" class="month-input" formControlName="agreement_month"> 2022 between: <strong>METRO PACIFIC HEALTH TECH CORPORATION DOING BUSINESS UNDER MWELL PH</strong>, a corporation organized and existing under Philippine laws, with business address at 10th Floor MGO Building, Legazpi cor. Dela Rosa Streets, Legazpi Village, Makati City, (hereinafter referred to as “MPHTC”); and <input readonly type="text" name="day" id="day" class="name-input" formControlName="name">, Filipino, of legal age, with office address at <input readonly type="text" name="day" id="day" class="address-input" formControlName="address"> (hereinafter referred to as the “Physician”). MPHTC and the Physician shall be individually referred to as a “Party” and collectively as the “Parties”. 
+                                </div>
+
+                                <div class="pl-4 ml-4"><strong>RECITALS:</strong></div>
+                                <div class="pl-4">
+                                    <ol type="A" class="mb-0">
+                                        <li>MPHTC is the owner of a mobile health application (“Application”) which offers, among  others, telemedicine services to its users (the “Users”, “Patients”);</li>
+                                        <li>MPHTC has offered the Application as a telemedicine platform and the Physician has  accepted under the terms and conditions set forth in this Agreement.</li>
+                                    </ol>
+                                    <div class="pl-4 py-2">NOW, THEREFORE, for and in consideration of the foregoing premises, the Parties hereby agree  as follows:</div>
+                                    <div class="pl-4"><strong>Section 1.</strong> Use of the Application. The Physician shall access and use the Application for sole purposes of offering and providing medical consultations to the Users. The Application shall allow the  Physician to maintain an online presence on the Application, answer queries of Patients, access medical  profile and history of Patients, and conduct online consultations through the Application. </div>
+                                    <div class="pl-4 py-2">
+                                        To access and use the Application as a medical practitioner, the Physician must share the following  information and submit the following documents to MPHTC upon execution of this Agreement:  
+                                    </div>
+                                    <ol type="1">
+                                        <li>Area of specialization;</li>
+                                        <li>Affiliated hospitals and/or clinics;</li>
+                                        <li>Years of work experience;</li>
+                                        <li>Professional Regulatory Commission identification card;</li>
+                                        <li>Any government-issued identification card with photo and signature; and (6) Other information and documents as may be reasonably required by MPHTC.</li>
+                                    </ol>
+                                    <div class="pl-4"><strong>Section 2.</strong> Professional Fees of Independent Physicians. The professional fee of Independent  Physicians (as defined below) shall amount to <input readonly type="text" name="amount" id="amount" class="month-input" formControlName="professional_fee">. Independent Physicians may, in their sole  discretion, change the amount of the professional fee, effective immediately. </div>
+                                    <div class="pl-4 py-2">
+                                        The Independent Physician shall be paid in accordance with the Schedule of Payment indicated in  Schedule A, which forms part of this Agreement. The professional fees shall be paid only upon completion  of the consultation. Professional fees shall be remitted to the Independent Physician’s account in accordance  with the schedule of payments indicated in Schedule A. For remittance purposes, the Independent Physician  shall provide his/her bank account details to MPHTC. 
+                                    </div>
+                                    <div class="pl-4">
+                                        It is understood and agreed that the amount remitted shall be inclusive of applicable taxes and fees,  dispute costs, refunds, and discount provided, if any. MPHTC reserves the right at any time to withhold or  cancel any remittance for any act or omission which violate the terms of this Agreement. 
+                                    </div>
+                                    <div class="pl-4 py-2"><strong>Section 3.</strong> Professional Fees of hospital/clinic-acquired Physicians. The rate of the professional  fees of hospital/clinic-acquired Physicians (as defined below), including any changes to its amount and  effectivity shall be subject to written negotiations between MPHTC and MPHTC Partners. The professional  fees of hospital/clinic-acquired Physicians shall be paid directly to the MPHTC Partners in accordance with  their agreement with MPHTC.  </div>
+                                    <div class="pl-4">
+                                        For purposes of this Agreement, “Independent Physicians” shall mean the Physicians who are  solo practitioners and “hospital/clinic-acquired Physicians” means Physicians employed and/or salaried  by partner hospitals/clinics of MPHTC (“MPHTC Partners”). 
+                                    </div>
+                                    <div class="pl-4 py-2"><strong>Section 4.</strong> Service Fees. In consideration of the Platform services, MPHTC shall charge the  Patients a service fee on top of the Physician’s professional fee (the “Service Fee”). The Service Fee shall  range from Fifty Pesos to Five Hundred Pesos (Php50 to Php 500), which may be subject to change  depending on MPHTC sole discretion. </div>
+                                    <div class="pl-4"><strong>Section 5.</strong> Term. This Agreement shall become effective on the date of its execution and shall  continue in force and effect for a period of one year (the “Initial Term”) from the date hereof, unless sooner  pre-terminated by the appropriate Party in accordance with Section 11 of this Agreement. After the Initial  Term, this Agreement shall be deemed renewed automatically each year for an additional one-year period  unless MPHTC or the Physician elects not to renew this Agreement. </div>
+                                    <div class="pl-4 py-2">
+                                        For avoidance of doubt, the term of this Agreement for all Physicians employed by Metro Sanitas  Corporation shall be until 1 August 2021.
+                                    </div>
+                                    <div class="pl-4"><strong>Section 6.</strong> Representations and Warranties of the Physician. The Physician represents and  warrants that: </div>
+                                    <ol type="a">
+                                        <li>He/she is duly licensed to practice medicine by the Philippine Regulatory Commission;</li>
+                                        <li>He/she is a member in good standing of the Philippine Medical Association;</li>
+                                        <li>He/she has the specialized skills, expertise and experience to provide medical advice to the  Users on this background;</li>
+                                        <li>He/she has no pending or decided cases and/or complaint for medical negligence and/or  medical offenses; and </li>
+                                        <li>He/she is complying with all applicable laws and regulations while using the Application  or while providing services through the Application.</li>
+                                    </ol>
+                                    <div class="pl-4">
+                                        The foregoing representations and warranties of the Physician are deemed made on the date of  this Agreement and shall continue to be effective for the duration of this Agreement. 
+                                    </div>
+                                    <div class="pl-4 py-2"><strong>Section 7.</strong> Obligations of MPHTC. In consideration of the Client’s undertakings under this  Agreement, MPHTC shall provide the Application as a telemedicine platform in accordance with this  Agreement and applicable laws, and procure all required certificates, permits, licenses and registrations as  may be required for the proper conduct of its business. </div>
+                                    <div class="pl-4"><strong>Section 8.</strong> Obligations of the Physician. The Physician undertakes the following:  </div>
+                                    <ol type="a">
+                                        <li>conduct himself in a professional manner and shall observe the International Code of Medical Ethics and the Code of Ethics as approved by the Philippine Medical Association; </li>
+                                        <li>comply with all laws and regulations relating to the practice of medicine;</li>
+                                        <li>comply with applicable industry standards imposed by the Department of Health, including  standards and regulations for Coronavirus (COVID-19);</li>
+                                        <li>comply with other relevant laws, including, but not limited to, the Data Privacy Act of 2012  and its implementing rules and regulations; </li>
+                                        <li>comply with all guidelines that MPHTC shall prescribe in connection with the use of the  Application; </li>
+                                        <li>make himself available at the days and times scheduled for teleconsultations; and </li>
+                                        <li>comply with the terms of Service Level Agreement attached herein as Annex “A”, as  may be amended from time to time. </li>
+                                    </ol>
+                                    <div class="pl-4 py-2"><strong>Section 9.</strong> Schedule; Disclosure of Information. To ensure effective and efficient service to the  Users, the Physician is expected to attend all confirmed booked appointments. For clarity, hospital/clinic acquired Physicians should be available at the days and times scheduled for teleconsultations with the  Users. </div>
+                                    <div class="pl-4">The Physician hereby consents to the disclosure of his/her relevant personal information and details  (such as full name, specialty, contact details, address, etc.) in the Application and MPHTC’s website and  other platforms. </div>
+                                    <div class="pl-4 py-2"><strong>Section 10.</strong> Service Level Agreement. The Parties shall comply with the terms of the Service  Level Indicators attached as Annex “A”, which shall form an integral part of this Agreement. Violation of  the Service Level Indicators as provided in Annex A shall be considered as a ground for termination of the  Agreement. </div>
+                                    <div class="pl-4"><strong>Section 11.</strong> Suspension. MPHTC may, at its sole discretion, suspend the Physician’s ability to use  or access the Application at any time pending investigation of any potential violation of this Agreement or  other applicable laws and regulations. </div>
+                                    <div class="pl-4 py-2"><strong>Section 12.</strong> Termination. Notwithstanding the Term provided in Section 4, this Agreement may  be terminated: </div>
+                                    <ol type="a" class="mb-0">
+                                        <li>By the Physician:
+                                            <ol type="i">
+                                                <li>in case MPHTC commits a breach of any of its warranties or material obligations  under this Agreement, which breach is not remediable, or if remediable, is not  cured by the MPHTC within thirty (30) days from receipt of written notice from  the Physician;</li>
+                                                <li>in case any act or proceeding by or against MPHTC for bankruptcy, insolvency,  relief of debtors or the appointment of a receiver, trustee or custodian for it or for  all or any substantial part of its assets is commenced and such action or proceeding  (if commenced by a third party) is not dismissed or set aside within sixty (60) days  from the institution thereof or if MPHTC has been adjudged bankrupt or insolvent,  or if any execution affecting a substantial part of its assets is issued against it, or if  MPHTC assigns its assets for the benefit of its creditors; </li>
+                                                <li>in case of Force Majeure as provided in Section 12 of this Agreement;</li>
+                                            </ol>
+                                        </li>
+                                        <li>By MPHTC:
+                                            <ol type="i">
+                                                <li>in case the services of the Physician be found unsatisfactory on the basis of general  professional standards within thirty (30) days from receipt of written notice from  MPHTC, including, but not limited to, the Physician committing five (5)  consecutive no shows as provided in Section 8;</li>
+                                                <li>in case the Physician is permanently disabled or incapacitated to perform his  services;</li>
+                                                <li>in case the Physician commits a breach of any of its material obligations under this  Agreement (other than (i) above), which breach is not remediable, or if remediable,  is not cured by the Physician within thirty (30) days from receipt of written notice  from MPHTC;</li>
+                                                <li>in case the Physician is found guilty of medical malpractice and/or medical  negligence, effective immediately; </li>
+                                                <li>in case of Force Majeure as provided in Section 12 of this Agreement;</li>
+                                                <li>in case of the revocation or suspension of the Physician’s license to practice  medicine for any reason, effective immediately, and for this purpose, the Physician  undertakes to promptly inform MPHTC of any revocation or suspension of his/her  license to practice medicine; or </li>
+                                            </ol>
+                                        </li>
+                                        <li>By mutual agreement of the Parties.
+                                            <ol type="i">
+                                                <li>Termination of hospital/clinic-acquired Physicians shall be governed by the definitive agreement  between MPHTC and MPHTC Partners.</li>
+                                            </ol>
+                                        </li>
+                                    </ol>
+                                    <div class="pl-4 py-2"><strong>Section 13.</strong> Data Privacy. The Parties agree to comply with, and have adequate measures in place  to ensure that its directors, officers, employees, and representatives comply at all times with: (a) the  provisions and obligations contained in Republic Act No. 10173, otherwise known as the Data Privacy Act  of the Philippines and its implementing rules and regulations with respect to any personal data, and (b)  other applicable data privacy laws and regulations, as may be promulgated and/or amended from time to  time. By entering into this Agreement, the Parties agree that any information exchanged among them may  be collected, processed, shared and used but only (i) for the performance of the services, and (ii) for  statistical, marketing, and scientific research purposes. Each Party warrants that all consents necessary to  be obtained for the disclosure of personal data required under all relevant privacy laws and regulations have  been obtained prior to any disclosure thereof, and agrees to hold the other Party free and harmless from any  costs or liability arising from its failure to comply with the requirements of the Data Privacy Act of the  Philippines. </div>
+                                    <div class="pl-4">By accepting the healthcare platform services of MPHTC, the Physician further agrees to be bound  by the terms and conditions, and privacy policy of the Application in accordance with the Data Privacy Act  of the Philippines.  </div>
+                                    <div class="pl-4 py-2"> The Parties shall likewise abide by the terms of the data sharing agreement provided in Schedule  B, which shall form an integral part of this Agreement. </div>
+                                    <div class="pl-4"><strong>Section 14.</strong> Force Majeure. </div>
+                                    <ol type="a">
+                                        <li>Neither party shall be considered in breach of this Agreement to the extent that performance  of their respective obligations (excluding payment obligations) is prevented by an Event of Force Majeure  that arises after the commencement date. The Party (“Affected Party”) prevented from carrying out its  obligations hereunder shall give notice to the other Party of an Event of Force Majeure upon it being  foreseen by, or becoming known to, the Affected Party.</li>
+                                        <li>If and to the extent that a Party is prevented from providing the Services by the Event of  Force Majeure, while such Party is so prevented, it shall be relieved of its obligations to provide the services  but shall endeavor to continue to perform its obligations as far as reasonably practicable. Should the Party  incur additional costs in so doing, such Party shall be entitled to the amount of such actual, reasonable and  documented costs incurred provided notice shall as much as practicable be given to the other Party prior to  incurring such cost.</li>
+                                        <li>In case the Event of Force Majeure prevents a Party from rendering the Services or any  material portion thereof for a continuous period of sixty (60) days, the Parties may terminate this  Agreement. </li>
+                                        <li>For this purpose, the term “Event of Force Majeure” means an event beyond the control  of either Party, which prevents a party from complying with its obligations.</li>
+                                    </ol>
+                                    <div class="pl-4 py-2"><strong>Section 15.</strong> Indemnification. The Physician undertakes to indemnify, defend and hold harmless  MPHTC and its officers, directors, shareholders, employees and agents (the “MPHTC Representatives”) from and against any and all demands, claims, complaints, actions or causes of action, suits, proceedings,  investigations, arbitrations, assessments, losses, damages, liabilities, costs and expenses (including, but not  limited to, interest, penalties and reasonable attorneys’ fees and disbursements), asserted against, imposed  upon or incurred by MPHTC, by reason of or resulting from material breach or gross negligence by the Physician with or of any covenants, agreements or undertakings of the Physician contained in, or made  pursuant to, this Agreement. </div>
+                                    <div class="pl-4">Without prejudice to the generality of the above, the Physician shall indemnify, defend and save  harmless MPHTC and the MPHTC Representatives from any loss, damages, costs, charges, expenses and  injury that MPHTC may suffer due to the Physician’s acts, including the following acts:</div>
+                                    <ol type="i">
+                                        <li>any wrong medication or treatment, or any medical negligence on part of the Physician;</li>
+                                        <li>any misrepresentations, misconduct or inappropriate behavior by the Physician;</li>
+                                        <li>cancellation or rescheduling of booked appointment or any variance in the fees charged;  and</li>
+                                        <li>any direct or indirect medical eventualities that might occur subsequent to the provision of  services by the Physician to the Users through the Application.</li>
+                                    </ol>
+                                    <div class="pl-4 py-2"><strong>Section 16.</strong> Miscellaneous. </div>
+                                    <ol type="a">
+                                        <li>Entire Agreement. This Agreement constitutes the entire agreement and understanding  between the Parties and supersedes all previous agreements, understandings and undertakings.</li>
+                                        <li>Governing Law. This Agreement shall be governed, interpreted and construed in accordance  with the laws of the Philippines.</li>
+                                        <li>Dispute Resolution. Any dispute, controversy, difference or claim arising out of or relating to  this contract, including the existence, validity, interpretation, performance, breach or termination thereof or  any dispute regarding non-contractual obligations arising out of or relating to it (“Dispute”) shall be settled,  to the extent possible, through amicable negotiations or discussions of the Parties senior executive officers. In case the Dispute cannot be resolved in this manner within thirty (30) days from referral of the  same for settlement, the Dispute shall be resolved by arbitration in accordance with the rules of the  Philippine Dispute Resolution, Inc. (“PDRCI Rules”) in force when the notice of arbitration is submitted.  Any award rendered by the arbitrator(s) shall be final and binding upon the Parties, and judgment upon the  award rendered may be entered in any court having jurisdiction thereof or having jurisdiction over the  Parties or their assets. The seat of arbitration shall be in Makati City. The proceedings shall be conducted  by three (3) arbitrators, with each Party appointing an arbitrator, and such appointed arbitrators selecting  the third. The arbitration proceedings shall be conducted in the English language.</li>
+                                        <li>No Waiver. No waiver of any breach of these provisions will be effective unless such waiver  is in writing and signed by the Party against whom such waiver is claimed. No waiver of any breach shall  be deemed to be a waiver of any other or subsequent breach.</li>
+                                        <li>Amendment. No amendment, modifications, waiver, change or addition hereto shall be  effective and binding on any of the Parties hereto unless the same is in writing and signed by the Parties.</li>
+                                        <li>Relation of the Parties. Unless otherwise agreed, no Party shall be deemed to be a  representative, an agent or an employee of any other Party or to have any fiduciary obligations toward any  other Party. Unless otherwise expressly specified herein, no Party shall have any authority or right to bind  any other Party in any respect, without the specific prior written authorization of the other Party.</li>
+                                        <li>Counterparts. This Agreement may be executed in counterparts, which when taken together,  shall constitute one instrument.</li>
+                                    </ol>
+                                    <div class="pl-4">METRO PACIFIC HEALTH TECH CORPORATION</div>
+                                    <div class="pl-4 d-flex">
+                                        By:
+                                        <div class="justify-content-center align-items-center ml-2 d-flex flex-column">
+                                            <input readonly type="text" name="by1" id="by1" class="name-input" formControlName="name">
+                                            <span>Physician</span>
+                                        </div>
+                                        <div class="justify-content-center align-items-center ml-2 d-flex flex-column">
+                                            <input readonly type="text" name="by2" id="by2" class="name-input" formControlName="signed_date_string">
+                                            <span>&nbsp;</span>
+                                        </div>
+                                    </div>
+                                    <div class="pl-4 py-2"><strong>SCHEDULE A</strong></div>
+                                    <div class="pl-4">SCHEDULE OF PAYMENT</div>
+                                    <div class="pl-4 py-2">[OPTION 1]</div>
+                                    <div class="pl-4">The Physician shall be paid a professional fee net of MPHTC’s commission every 15th and 30th calendar day. Payment shall be deposited in the bank provided in the Application. In the event a User cancels the scheduled appointment with the Physician within six (6) hours before the appointment, the Physician shall be entitled to fifty percent (50%) of his professional fee.</div>
+                                    <div class="pl-4 py-2">[OPTION 2]</div>
+                                    <div class="pl-4">The Physician shall be paid a professional fee net of MPHTC’s commission within 48 hours after completion of a consultation. Payment shall be transferred to the Physician’s PayMaya account as agreed and provided through the Application. In the event a User cancels the scheduled appointment with the Physician within six (6) hours before the appointment, the Physician shall be entitled to fifty percent (50%) of his professional fee.</div>
+                                    <div class="pl-4 py-2"><strong>SCHEDULE B</strong></div>
+                                    <div class="pl-4">DATA SHARING AGREEMENT</div>
+                                    <div class="pl-4 py-2">
+                                        This Data Sharing Agreement (the “Agreement”) is executed and entered this <input readonly type="text" name="scheduleB_day" id="scheduleB_day" class="day-input" formControlName="agreement_day"> day of <input readonly type="text" name="scheduleB_month" id="scheduleB_month" class="month-input" formControlName="agreement_month"> 2022 in <input readonly type="text" name="scheduleB_address" id="scheduleB_address" class="address-input" formControlName="address">, by and between:
+                                    </div>
+                                    <div class="pl-4">METRO PACIFIC HEALTH TECH CORPORATION, a corporation existing under  and by virtue of the laws of the Philippines, with principal offices at 10/F MGO Bldg.,  Legaspi cor. Dela Rosa St. Legaspi Village, Makati, represented herein by its President,  Jose Ma. K. Lim (hereinafter referred to as “MPHTC”);</div>
+                                    <div class="pl-4 py-2">-  and  -</div>
+                                    <div class="pl-4"> <input readonly type="text" name="scheduleB_name" id="scheduleB_name" class="name-input" formControlName="name">, Filipino, of legal age, with office address at  <input readonly type="text" name="scheduleB_address2" id="scheduleB_address2" class="address-input" formControlName="address"> (hereinafter referred to as the  “PHYSICIAN”).</div>
+                                    <div class="pl-4 py-2"> (Each of MPHTC and the PHYSICIAN shall be referred to as a “Party”, and collectively  as the “Parties”). </div>
+                                    <div class="pl-4"><strong>RECITALS:</strong></div>
+                                    <ol type="A">
+                                        <li>MPHTC and the PHYSICIAN intend to share Personal Information and Sensitive Personal  Information which is owned, collected, and processed by MPHTC from its customers (the “Data  Subjects”).</li>
+                                        <li>The Parties are aware of Republic Act No. 10173, otherwise known as the “Data Privacy Act of  2012 (the “Data Privacy Act”), and understand the need to comply with the requirements of the  same, including the execution of a data sharing agreement.</li>
+                                        <li>The Parties have agreed that the further processing, access, safekeeping, sharing, transfer, and  disposal of any Personal Information and/or Sensitive Personal Information collected from the Data  Subjects shall be governed by terms of this Agreement and all applicable laws.</li>
+                                    </ol>
+                                    <div class="pl-4">NOW, THEREFORE, for and in consideration of the foregoing premises and the provisions  hereinafter contained, the parties to this Agreement hereby agree, as follows:</div>
+                                    <ol type="1" >
+                                        <li>DEFINITION OF TERMS <br>
+                                            As used herein, the following terms shall have the following meanings:
+                                            <ol type="a">
+                                                <li>“Agreement” shall have the meaning ascribed to it in the preamble of this Agreement.</li>
+                                                <li>“Data” shall have the meaning ascribed to it in Section 2 of this Agreement.</li>
+                                                <li>“Data Privacy Act” shall refer to Republic Act No. 10173, otherwise known as the “Data Privacy Act of  2012, approved on 15 August 2012, and subsequent amendments thereto.</li>
+                                                <li>“Data Subject” shall refer to MPHTC’s customers whose personal information is collected and processed.  </li>
+                                                <li>“IRR” shall refer to the Implementing Rules and Regulations of the Data Privacy Act, which was  promulgated on 24 August 2016, and subsequent amendments thereto.</li>
+                                                <li>“NPC” shall refer to the National Privacy Commission of the Philippines.</li>
+                                                <li>“Party” or “Parties” shall have the meaning ascribed to it in the preamble of this Agreement.</li>
+                                                <li>“Personal Data Breach” shall refer to a breach of security leading to the accidental or unlawful  destruction, loss, alteration, unauthorized disclosure of, or access to Personal Information and/or Sensitive  Personal Information transmitted, stored, or otherwise processed.</li>
+                                                <li>“Personal Information” shall refer to any information whether recorded in a material form or not, from  which the identity of an individual is apparent or can be reasonably and directly ascertained by the entity  holding the information, or when put together with other information would directly and certainly identify  an individual.</li>
+                                                <li>“Processing” shall refer to any operation or any set of operations performed upon personal information  including, but not limited to, the collection, recording, organization, storage, updating or modification,  retrieval, consultation, use, consolidation, blocking, erasure, or destruction of data.</li>
+                                                <li>“Sensitive Personal Information” shall refer to personal information: (a) about an individual’s race, ethnic  origin, marital status, age, color, and religious, philosophical, or political affiliations; (b) about an  individual’s health, education, genetic or sexual life of a person, or to any proceeding for any offense  committed or alleged to have been committed by such individual, the disposal of such proceedings, or the  sentence of any court in such proceedings; (c) issued by government agencies peculiar to an individual  which includes, but is not limited to, social security numbers, previous or current health records, licenses  or its denials, suspension or revocation, and tax returns; and (d) specifically established by an executive  order or an act of Congress to be kept classified.</li>
+                                            </ol>
+                                        </li>
+                                        <li>COVERAGE <br>
+                                            The Parties agree that the Personal Information and/or Sensitive Personal Information of the Data Subjects,  subject of this Agreement, that is owned, collected, and otherwise processed by MPHTC from the Data  Subjects shall be limited to the following (collectively referred to as the “Data”):
+                                            <ol type="a">
+                                                <li>Name;</li>
+                                                <li>Age;</li>
+                                                <li>Gender;</li>
+                                                <li>Medical information and medical history;</li>
+                                                <li>Major health complaint/s; </li>
+                                                <li>Vital signs;</li>
+                                                <li>Result of x-ray, scans, laboratory tests and other diagnostic procedures; and</li>
+                                                <li>Other information which is necessary for accurate diagnosis of users of MPHTC’s mobile  application.</li>
+                                            </ol>
+                                        </li>
+                                        <li>DUTIES AND OBLIGATIONS OF THE PARTIES
+                                            <ol type="1">
+                                                <li>MPHTC shall share with, or otherwise to transfer or transmit to the PHYSICIAN the Data described  in Section 2 of this Agreement.
+                                                    <ol type="a">
+                                                        <li>The Data collected, processed and shared pursuant to this Agreement shall be processed and shared  exclusively for the purpose of the performance of the services, unless otherwise provided by  applicable laws, rules, regulations, or relevant issuances by the National Privacy Commission of  the Philippines (“NPC”) or any separate agreement with the Data Subject.  </li>
+                                                        <li>The Data may be accessed through a database dashboard by the employees and authorized  representatives of both Parties to render the services to the Data Subjects. Authorized personnel  with access to the Data shall verify identity using a secure encrypted link and multi-level  authentication. </li>
+                                                    </ol>
+                                                </li>
+                                                <li>The PHYSICIAN shall:
+                                                    <ol type="a">
+                                                        <li>Unless otherwise provided by law, not disclose, trade, sell, or transfer any Data to any person  or entity without the written instructions of MPHTC;</li>
+                                                        <li>Not use or process the Data, except in connection with the purposes as provided under this  Agreement; </li>
+                                                        <li>As applicable, allow Data Subjects to access and correct the Data in its custody and to exercise  their rights as provided under the Data Privacy Act, its IRR and relevant issuances of the NPC; and</li>
+                                                        <li>Notify MPHTC, if through mistake or negligence, information not covered by this Agreement  was sent to it by MPHTC. </li>
+                                                    </ol>
+                                                </li>
+                                            </ol>
+                                        </li>
+                                        <li>MODE OF DATA SHARING
+                                            <ol type="a">
+                                                <li>The Data shall be shared between MPHTC and the PHYSICIAN through a database dashboard using a  secure email facility with encryption of the data or other means of preventing unauthorized access,  including any or all attachments. Facsimile technology shall not be used for transmitting documents  containing personal data.</li>
+                                            </ol>
+                                        </li>
+                                        <li>REPRESENTATIONS AND WARRANTIES
+                                            <ol type="1">
+                                                <li>Each of MPHTC and the PHYSICIAN represent and warrant that:
+                                                    <ol type="a">
+                                                        <li>The collection and processing of the Data under this Agreement adheres to the principles of  transparency, legitimate purpose, and proportionality.</li>
+                                                        <li>It shall fully comply with the provisions of this Agreement, the Data Privacy Act and its IRR,  and all other issuances of the NPC.</li>
+                                                        <li>This Agreement shall be made available for the review of the NPC in cases required under the  Data Privacy Act.</li>
+                                                        <li>The rights of the Data Subject shall be upheld without compromising research integrity.  Personal Data collected from parties other than the Data Subjects for the purpose of research  was either publicly available or obtained through the consent of the Data Subject.</li>
+                                                    </ol>
+                                                </li>
+                                                <li>MPHTC represents and warrants that:
+                                                    <ol type="a">
+                                                        <li>Prior to collecting the Data, or prior to the sharing of Data, it shall secure the consent of the  Data Subject with respect to the collection and further processing of the Data and the sharing,  storage, transfer, and transmission of the same in accordance with this Agreement. It shall  secure the Data Subject’s consent through written, electronic, or recorded means.</li>
+                                                        <li>It has provided the following information to the Data Subjects prior to collection or sharing of  the Data:
+                                                            <ol type="i">
+                                                                <li>Identity of the third parties that will be given access to the Data;</li>
+                                                                <li>Purpose of the data sharing;</li>
+                                                                <li>Categories of Data concerned;</li>
+                                                                <li>Intended recipients or categories of recipients of the Data;</li>
+                                                                <li>Existence of the rights of the Data Subjects, including the right to access and to correct  the Data, and the right to object to data sharing or further processing;</li>
+                                                                <li>If applicable, the automated processing of the Data for profiling; and</li>
+                                                                <li>Other information that would sufficiently notify the Data Subject of the nature and  extent of data sharing and the manner of processing.</li>
+                                                            </ol>
+                                                        </li>
+                                                    </ol>
+                                                </li>
+                                            </ol>
+                                        </li>
+                                        <li>SECURITY MEASURES
+                                            <ol type="a">
+                                                <li>Each Party, as a personal information controller, shall implement reasonable and appropriate physical,  technical, and organizational measures for the protection of personal data. Security measures aim to  maintain the availability, integrity, and confidentiality of personal data and protect them against natural  dangers such as accidental loss or destruction, and human dangers such as unlawful access, fraudulent  misuse, unlawful destruction, alteration, and contamination.</li>
+                                            </ol>
+                                        </li>
+                                        <li>PERSONAL DATA BREACH
+                                            <ol type="a">
+                                                <li>In the event of a Personal Data Breach involving the Data while the same is being processed by or is in the  custody or control of the PHYSICIAN, the PHYSICIAN shall notify MPHTC in writing within six (6)  hours upon knowledge of, or when there is reasonable belief by the PHYSICIAN that a Personal Data  Breach has occurred.</li>
+                                                <li>The notification shall describe the nature of the breach, the Personal Information and/or Sensitive Personal  Information possibly involved, the list of Data Subjects involved, the possible risks, harm, or damage to the  Data Subjects, and the measures taken by the PHYSICIAN to address the breach. The notification shall  also state whether the PHYSICIAN shall need to notify the NPC and the Data Subjects of the breach and shall attach a draft of the notification for MPHTC’s comment.</li>
+                                            </ol>
+                                        </li>
+                                        <li>TERM
+                                            <ol type="a">
+                                                <li>This Agreement shall be effective on the date of its execution. This Agreement shall be coterminous with  the Memorandum of Agreement between MPHTC and the PHYSICIAN. This Agreement may be renewed  if the purposes of this Agreement subsists. The term of this Agreement or any subsequent extension thereof  shall in no case be for more than five (5) years, without prejudice to a new data sharing agreement that may  be entered into by the Parties. </li>
+                                            </ol>
+                                        </li>
+                                        <li>DESTRUCTION OR DISPOSAL OF THE SHARED DATA
+                                            <ol type="a">
+                                                <li>Upon the termination of this Agreement, or upon MPHTC’s request, the PHYSICIAN shall promptly  destroy, dispose, or surrender to MPHTC, as applicable, the Data and any other property, information, and  documents containing the Data and/or copies thereof in the PHYSICIAN’s possession, custody, or control.  If requested by MPHTC, the PHYSICIAN shall deliver to MPHTC a certificate confirming the  PHYSICIAN’s compliance with the obligation to destroy, dispose, surrender, or return under this Section.</li>
+                                            </ol>
+                                        </li>
+                                        <li>INDEMNITY AND LIABILITY
+                                            <ol type="a">
+                                                <li>The PHYSICIAN shall indemnify, defend and/or settle, and hold harmless MPHTC, its directors, officers,  employees, agents, and representatives, from and against any and all actual, reasonable, and documented  assessments, claims, demands or suits, liabilities, damages, and obligations (including, without limitation,  reasonable attorneys’ fees) resulting from or arising out of any breach by the PHYSICIAN of its obligations,  duties, representations, or warranties under this Agreement; provided, however that the indemnity in this  Section shall not apply to any loss, claim, damage, or liability caused by the negligence or wilful misconduct  of the PHYSICIAN.</li>
+                                            </ol>
+                                        </li>
+                                        <li>RIGHTS OF A DATA SUBJECT <br>
+                                            As applicable, each of MPHTC and the PHYSICIAN shall ensure that the following rights of the Data  Subjects are upheld:
+                                            <ol type="a">
+                                                <li>Availability of the Agreement <br>
+                                                    A copy of this Agreement may be accessed by a Data Subject through email upon written request, provided  that the Parties have a right to prevent the disclosure of any detail or information that could endanger the  Security Measures set out in Section 6 of this Agreement or expose to harm the integrity, availability, or  confidentiality of Data under its control or custody.
+                                                </li>
+                                                <li>Access to Information <br>
+                                                    Upon the request of a Data Subject, the concerned Party may release to the requesting Data Subject the  following information with respect to his Data:
+                                                    <ol type="i">
+                                                        <li>Contents of his/her Data that were processed;</li>
+                                                        <li>Sources from which his/her Data were obtained;</li>
+                                                        <li>Names and addresses of the recipients of his/her Data;</li>
+                                                        <li>Manner by which his/her Data was processed;</li>
+                                                        <li>Reasons for the disclosure of his/her Data to recipients, if any;</li>
+                                                        <li>Date when his/her Data was last accessed or modified; and</li>
+                                                        <li>The identity and address of the owner of the Data.</li>
+                                                    </ol>
+                                                </li>
+                                                <li>Correction of Data <br>
+                                                    The concerned Party may provide to the Data Subject the means and methods whereby the Data Subject  may dispute the inaccuracy or error in the Data and correct the Data immediately and accordingly, unless  the request is vexatious or otherwise unreasonable. The concerned Party shall inform the other Party of the correction or rectification. 
+                                                </li>
+                                                <li>Deletion of Data <br>
+                                                    The concerned Party may provide to the Data Subject the means and methods whereby the Data Subject  may order the blocking, removal, or destruction of his/her Data.
+                                                </li>
+                                                <li>Remedies <br>
+                                                    The concerned Party may provide to the Data Subject the means and methods whereby the Data Subject  may report any security breach or violation of his rights with respect to the Processing of his/her Data, as  well as the procedures whereby such reports are timely and adequately addressed.
+                                                </li>
+                                            </ol>
+                                        </li>
+                                        <li>AMENDMENTS <br>
+                                            This Agreement cannot be modified, amended, or changed except in writing and signed by the Parties.
+                                        </li>
+                                        <li>SEVERABILITY <br>
+                                            In case any one or more of the provisions contained in this Agreement shall be invalid, illegal, or  unenforceable in any respect, the validity, legality, or enforceability of the remaining provisions herein and  therein shall not in any way be affected or impaired hereby.
+                                        </li>
+                                        <li>ASSIGNMENT <br>
+                                            Neither the rights nor the obligations of either party may be assigned or delegated in whole or in part without  the prior written consent of the other party unless otherwise expressly permitted under the Agreement. Any  delegation without written permission shall be null and void and of no effect unless otherwise expressly  permitted under the Agreement.
+                                        </li>
+                                        <li>GOVERNING LAW <br>
+                                            This Agreement and any dispute or claim arising out of or in connection with it (including any non contractual disputes or claims obligations arising out of or in connection with the same) shall be governed  by and construed in accordance with the laws of the Philippines. The parties hereby submit irrevocably to  the exclusive jurisdiction of the Philippine Courts in respect of any claim, dispute, or difference concerning  this Agreement or any matter arising therefrom.
+                                        </li>
+                                    </ol>
+                                    <div class="pl-4">
+                                        IN WITNESS WHEREOF, the Parties, acting through their representatives, have caused this Data Sharing  Agreement to be duly executed at <input readonly type="text" name="witness" id="witness" class="name-input" formControlName="address">, this  <input readonly type="text" name="witness-day" id="witness-day" class="day-input" formControlName="agreement_day"> day of <input readonly type="text" name="witness-month" id="witness-month" class="month-input" formControlName="agreement_month"> 2020.
+                                    </div>
+                                    <div class="pl-4 py-2">METRO PACIFIC HEALTH TECH  CORPORATION</div>
+                                    <div class="pl-4">By:</div>
+                                    <div class="pl-4 ml-4">[NAME]</div>
+                                    <div class="pl-4">SIGNED IN THE PRESENCE OF:</div>
+                                    <div class="pl-4 pt-2"><input readonly type="text" name="signed1" id="signed1" class="name-input" /> <span style="color: white;">-</span> <input readonly type="text" name="signed2" id="signed2" class="name-input" /> </div>
+                                    <div class="pl-4">Republic of the Philippines</div>
+                                    <div class="pl-4"><input readonly type="text" name="city" id="city" class="month-input" />City ) S.S.</div>
+                                    <div class="pl-4">ACKNOWLEDGMENT</div>
+                                    <div class="pl-4">BEFORE ME, a Notary Public for and in <input readonly type="text" name="notary1" id="notary1" class="month-input" />, this <input readonly type="text" name="notary2" id="notary2" class="month-input" /> personally  appeared the following:</div>
+                                    <div class="pl-4">Name</div>
+                                    <div class="pl-4">Community Tax Certificate No. /  Passport No.</div>
+                                    <div class="pl-4">Date / Place Issued</div>
+                                    <div class="pl-4">METRO PACIFIC HEALTH  TECH CORPORATION By:</div>
+                                    <div class="pl-4 pb-4 mb-4">Jose Ma. K. Lim</div>
+                                    <div class="pl-4">[Name]</div>
+                                    <div class="pl-4 pt-4 mt-4">All known to me, and to me known to be the same persons who executed the foregoing Data Sharing  Agreement, and they acknowledged to me that the same is their free and voluntary act and deed as well as  that of the corporations herein represented.</div>
+                                    <div class="pl-4">The foregoing instrument pertains to a Data Sharing Agreement and consists of [●] ([●]) pages,  including the page on which this Acknowledgment is written, and is signed by the parties and their material  witnesses on each and every page thereof.</div>
+                                    <div class="pl-4">WITNESS MY HAND AND SEAL on the date and place first above-written.</div>
+                                    <div class="pl-4">Doc. No. <input readonly type="text" name="docno" id="docno" class="day-input" />;</div>
+                                    <div class="pl-4">Page No. <input readonly type="text" name="pageno" id="pageno" class="day-input" />;</div>
+                                    <div class="pl-4">Book No. <input readonly type="text" name="bookno" id="bookno" class="day-input" />;</div>
+                                    <div class="pl-4">Series of. <input readonly type="text" name="seriesno" id="seriesno" class="day-input" autocomplete="new-password"/>;</div>
+                                    <div class="pl-4 py-2">ANNEX A</div>
+                                    <div class="pl-4">SERVICE LEVEL INDICATORS</div>
+                                    <ol type="I">
+                                        <li>Training <br>
+                                            PHYSICIAN should complete the MPHTC training module before account is activated.
+                                        </li>
+                                        <li>Technical requirements <br>
+                                            The PHYSICIAN shall comply, and continue to comply during the duration of this Agreement,  with the following technical requirements:
+                                            <ol type="a">
+                                                <li>minimum internet speed of 2Mbps;</li>
+                                                <li>access to a laptop, desktop, tablet, or a smartphone; and</li>
+                                                <li>ability to access and use Google Chrome or Safari browser.</li>
+                                            </ol>
+                                        </li>
+                                        <li>Availability <br>
+                                            <ol type="a">
+                                                <li>The PHYSICIAN should be readily available during the scheduled agreed upon in Section 8 of the  Agreement. In case the PHYSICIAN arrives late for at least three (3) consultations in a month, a  warning shall be issued by MPHTC. If the PHYSICIAN is late for an appointment for the fourth  time in a month, MPHTC may terminate this Agreement.</li>
+                                                <li>Failure to show up for five (5) consultations in a month shall also be a ground for termination of  this Agreement.</li>
+                                            </ol>
+                                        </li>
+                                        <li>Consultation Guidelines
+                                            <ol type="a">
+                                                <li>PHYSICIAN must be able to respond to the User’s queries within the allotted consultation  timeslot;</li>
+                                                <li>PHYSICIAN must ensure that s/he is performing the consultation in a conducive  environment (e.g. well lit, minimal noise, etc.);</li>
+                                                <li>PHYSICIAN must provide a thorough diagnosis as permitted by the telemedicine platform.  When necessary, s/he has the ability to provide the following through the same platform:
+                                                    <ol type="1">
+                                                        <li>e-prescription</li>
+                                                        <li>e-laboratory request</li>
+                                                        <li>e-medical certificate</li>
+                                                    </ol>
+                                                </li>
+                                                <li>When necessary, PHYSICIAN should always seek the expert medical advice/opinion of  an appropriate specialist.</li>
+                                                <li>PHYSICIAN should be upright, diligent, sober, modest and well-versed when speaking to  a User.</li>
+                                            </ol>
+                                        </li>
+                                    </ol>
+                                    <br>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="col-12">
+                            If you agree to the MOA, please enter your password below and click the “Next” button.
+                        </div>
+                        <div class="col-5" formGroupName="auth">
+                            <input type="password" id="password" class="form-control form-control-lg" formControlName="password" />
+                        </div>
+                        <div class="col"></div>
+                        <div class="col-8"></div>
+                        <div class="col-12 pt-4 pb-4">
+                            <div class="d-flex justify-content-between w-100">
+                                <button
+                                    style="min-width: 200px"
+                                    type="button"
+                                    class="btn btn-outline-warning btn-lg"
+                                    [routerLink]="['/onboarding/credentials']" routerLinkActive="router-link-active" >
+                                        Back
+                                </button>
+                                <button
+                                    style="min-width: 200px"
+                                    type="submit"
+                                    class="btn btn-primary btn-lg"
+                                    [disabled]="form?.invalid || processing">
+                                    Next
+                                    <i *ngIf="processing" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,208 @@
+// scss file for html global style override
+
+.sidebar-collapse {
+    .main-sidebar {
+        .image {
+            transition: padding ease-in-out .2s;
+            padding: 0px;
+        }
+    }
+}
+  
+.verify-email-container {
+    min-height: 100vh;
+    width: 100vw;
+    position: relative;
+    background-image: url(/assets/img/bg3.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center 300px;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sign-up-container {
+    min-height: 100vh;
+    width: 100vw;
+    background-image: url(/assets/img/bg1.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top center;
+  
+    display: flex;
+    justify-content: center;
+}
+  
+.login-container {
+    min-height: 100vh;
+    width: 100vw;
+    background-image: url(/assets/img/bg1.png);
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.main-sidebar {
+    background-color: white;
+  
+    .brand-link  {
+        background-color: white !important;
+  
+        .img {
+            width: 150px;
+            max-height: 0;
+        }
+        
+    }
+}
+
+.patient-container {
+  .content-wrapper {
+    background-color: var(--mwell-content-wrapper-color);
+  }
+}
+  
+.ngx-pagination {
+    margin-bottom: 0px !important;
+}
+
+.p-editor-toolbar {
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
+}
+
+.p-editor-content {
+    overflow: hidden;
+    border-bottom-left-radius: 15px !important;
+    border-bottom-right-radius: 15px !important;
+}
+
+.p-editor-container,.p-editor-toolbar,.p-editor-content {
+    border-color: var(--mwell-border-color) !important;
+}
+  
+.p-dialog {
+    border-radius: 30px !important;
+    overflow: hidden;
+}
+  
+.select-template-dialog {
+    .p-dialog-header {
+      padding-top: .5rem;
+      padding-bottom: .5rem;
+    }
+}
+  
+.clinical-documents {
+    .accordion-wrapper {
+        // border-radius: 20px;
+        // overflow: hidden;
+        .accordion-container {
+            // &:not(:first-child):not(:last-child) {
+            //     .documents-panel {
+            //         border-radius: 0px !important;
+            //     }
+            // }
+            .documents-panel {
+                // overflow: hidden;
+                border-radius: 0px;
+                border: none;
+                border-left: 1px solid var(--mwell-border-color);
+                border-right: 1px solid var(--mwell-border-color);
+            }
+
+            &:first-child {
+                .documents-panel {
+                    border-top: 1px solid var(--mwell-border-color);
+                    // border-top-left-radius: 20px;
+                    // border-top-right-radius: 20px;
+                    // border-bottom-left-radius: 0px;
+                    // border-bottom-right-radius: 0px;
+                }
+            }
+            &:last-child {
+                .documents-panel {
+                    // border-top-left-radius: 0px;
+                    // border-top-right-radius: 0px;
+                    // border-bottom-left-radius: 20px;
+                    // border-bottom-right-radius: 20px;
+                }
+            }
+        }
+    }
+}
+
+.p-timeline-event-content {
+  flex: 7 !important;
+}
+
+.password-style {
+    width: 100%;
+}
+
+.error {
+    border-color: var(--mwell-danger-color) !important;
+}
+
+.icon-onboarding {
+    background-color: #a8c1db;
+    border: 10px solid #cfddeb;
+    border-radius: 100%;
+    width: 90px;
+    height: 90px;
+
+    i {
+        font-size: 2rem;
+        color: var(--mwell-primary-color);
+    }
+}
+
+.on-call {
+    margin-top: 5px;
+    &.p-inputswitch-checked {
+        .p-inputswitch-slider {
+            background-color: var(--mwell-success-color) !important;
+        }
+    }
+}
+
+.autocomplete-form {
+    width: 100% !important;
+}
+
+.p-autocomplete-multiple-container {
+    border-radius: 15px !important;
+    width: 100% !important;
+}
+
+.p-dropdown {
+    border-radius: 10px !important;
+    padding: 5px !important;
+    width: 100% !important;
+}
+
+.p-autocomplete-token {
+    font-weight: 700;
+}
+
+.my-patient-btn-group {
+    .dropdown-menu {
+        transform: translate3d(-83px, 37px, 0px) !important;
+        left: -30px !important;
+    }
+}
+
+.p-chips {
+    width: 100%;
+
+    .p-chips-multiple-container {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+}

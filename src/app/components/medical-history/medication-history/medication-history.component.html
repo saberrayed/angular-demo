@@ -1,0 +1,137 @@
+
+<form [formGroup]="form" *ngIf="form">
+    <fieldset [disabled]="processing">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <span class="bold">MEDICATION HISTORY</span>
+                    <a class="cursor-pointer" (click)="editMode = true" *ngIf="!editMode && !processing">Edit Details</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <section>
+                    <span class="bold">SIGNIFICANT MEDICATIONS HISTORY</span>
+                    <div class="table-responsive scrollable" *ngIf="!editMode">
+                        <table class="table table-bordered mt-3">
+                            <tbody style="border: none">
+                                <tr style="border: none">
+                                    <td class="no-border bold">DATE PRESCRIBED</td>
+                                    <td class="no-border bold">GENERIC NAME</td>
+                                    <td class="no-border bold">STRENGTH/DOSAGE FORM</td>
+                                    <td class="no-border bold">BRAND NAME</td>
+                                    <td class="no-border bold">SIGNA</td>
+                                    <td class="no-border bold">QUANTITY</td>
+                                </tr>
+                            </tbody>
+                            <tbody skeleton-loader [rows]="3" [columns]="6" *ngIf="processing"></tbody>
+                            <tbody *ngIf="!processing">
+                                <tr *ngFor="let item of items?.data | paginate : {
+                                    id: 'paginator_controls',
+                                    itemsPerPage: items?.per_page,
+                                    currentPage: items?.current_page,
+                                    totalItems: items?.total
+                                };">
+                                    <td>{{ item?.date_prescribed }}</td>
+                                    <td>{{ item?.generic_name }}</td>
+                                    <td>{{ item?.str_form }}</td>
+                                    <td>{{ item?.brand_name }}</td>
+                                    <td>{{ item?.signa }}</td>
+                                    <td>{{ item?.quantity }}</td>
+                                </tr>
+                                <tr *ngIf="items?.data?.length < 1">
+                                    <td colspan="6">No Medication</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="document-header align-items-center d-flex justify-content-end mt-2" *ngIf="!editMode && !processing">
+                        <div class="d-flex align-items-center">
+                            <pagination-controls
+                                (pageChange)="list($event)"
+                                id="paginator_controls"
+                            ></pagination-controls>
+                        </div>
+                    </div>
+                    <div class="table-responsive scrollable" *ngIf="editMode">
+                        <table class="table table-bordered">
+                            <tbody class="no-border">
+                                <tr class="no-border">
+                                    <td class="no-border bold">DATE PRESCRIBED</td>
+                                    <td class="no-border bold">GENERIC NAME</td>
+                                    <td class="no-border bold">STRENGTH/DOSAGE FORM</td>
+                                    <td class="no-border bold">BRAND NAME</td>
+                                    <td class="no-border bold">SIGNA</td>
+                                    <td class="no-border bold">QUANTITY</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                            <tbody skeleton-loader [rows]="3" [columns]="7" *ngIf="processing"></tbody>
+                            <tbody *ngIf="!processing">
+                                <tr *ngFor="let control of medication?.controls; let i = index" [formGroup]="control">
+                                    <td><input type="text" class="form-control" formControlName="date_prescribed"/></td>
+                                    <td><input type="text" class="form-control" formControlName="generic_name"/></td>
+                                    <td><input type="text" class="form-control" formControlName="str_form"/></td>
+                                    <td><input type="text" class="form-control" formControlName="brand_name"/></td>
+                                    <td><input type="text" class="form-control" formControlName="signa"/></td>
+                                    <td><input type="text" class="form-control" formControlName="quantity"/></td>
+                                    <td>
+                                        <button class="btn btn-default" (click)="add()" *ngIf="i === medication?.controls?.length - 1"><i class="fas fa-plus text-primary"></i></button>
+                                        <button class="btn btn-default" (click)="remove(i)" *ngIf="i < medication?.controls?.length - 1"><i class="fas fa-minus text-danger"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-right mt-3" *ngIf="editMode">
+                        <button class="btn btn-primary mr-2" (click)="save()">Save</button>
+                        <button class="btn btn-default" (click)="cancel()">Cancel</button>
+                    </div>
+                </section>
+                <section>
+                    <span class="bold">PRESCRIPTION HISTORY</span>
+                    <div class="table-responsive scrollable">
+                        <table class="table table-bordered mt-3">
+                            <tbody style="border: none">
+                                <tr style="border: none">
+                                    <td class="no-border bold">DATE PRESCRIBED</td>
+                                    <td class="no-border bold">GENERIC NAME</td>
+                                    <td class="no-border bold">STRENGTH/DOSAGE FORM</td>
+                                    <td class="no-border bold">BRAND NAME</td>
+                                    <td class="no-border bold">SIGNA</td>
+                                    <td class="no-border bold">QUANTITY</td>
+                                </tr>
+                            </tbody>
+                            <tbody skeleton-loader [rows]="3" [columns]="6" *ngIf="prescriptionProcessing"></tbody>
+                            <tbody *ngIf="!prescriptionProcessing">
+                                <tr *ngFor="let item of vitals?.data | paginate : {
+                                    id: 'vital_pagination_controls',
+                                    itemsPerPage: vitals?.per_page,
+                                    currentPage: vitals?.current_page,
+                                    totalItems: vitals?.total
+                                };">
+                                    <td>{{ item?.created_at | date: 'mediumDate'}}</td>
+                                    <td>{{ item?.generic_name }}</td>
+                                    <td>{{ item?.strength_dosage_form }}</td>
+                                    <td>{{ item?.brand_name }}</td>
+                                    <td>{{ item?.signa }}</td>
+                                    <td>{{ item?.quantity }}</td>
+                                </tr>
+                                <tr *ngIf="vitals?.data?.length < 1">
+                                    <td colspan="6">No Medication</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="document-header align-items-center d-flex justify-content-end mt-2" *ngIf="!prescriptionProcessing">
+                        <div class="d-flex align-items-center">
+                            <pagination-controls
+                                (pageChange)="listPrescriptions($event)"
+                                id="vital_pagination_controls"
+                            ></pagination-controls>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </fieldset>
+</form>

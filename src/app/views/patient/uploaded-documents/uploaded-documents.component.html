@@ -1,0 +1,95 @@
+<div class="card mt-4 bg-white">
+    <div class="card-body pb-5 pt-0">
+        <div class="container-fluid mt-3">
+            <div class="row pb-4">
+                <div class="col right-container">
+                    <div class="btn-group mt-1 bg-white" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID , 'clinical-documentation']" >Clinical Notes</button>
+                        <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID ,'anthropometric-measurements']">Anthropometric Measurements</button>
+                        <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID ,'vital-signs']">Vital Signs</button>
+                        <button type="button" class="btn btn-primary btn-xl bold-500" [routerLink]="['/patient', patientID ,'uploaded-documents']">Attachments</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="bold">Documents</h5>
+                        <button class="btn btn-primary" (click)="uploader?.onOpen()"><i class="fas fa-file-upload mr-2"></i>Add document</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>File</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Tags</th>
+                                <th>Type</th>
+                                <th style="width: 150px;" >Uploaded On</th>
+                                <th style="width: 280px;" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody skeleton-loader [rows]="4" [columns]="7" *ngIf="processing"></tbody>
+                        <tbody *ngIf="!processing">
+                            <tr *ngFor="let file of files?.data | paginate : {
+                                    id: 'paginator_controls',
+                                    itemsPerPage: files?.per_page,
+                                    currentPage: files?.current_page,
+                                    totalItems: files?.total
+                                }">
+                                <td style="width: 100px;" class="text-center">
+                                    <img [src]="file?.url" width="100px" *ngIf="file?.type !== 'application/pdf'">
+                                    <i class="fas fa-file-pdf text-danger" *ngIf="file?.type === 'application/pdf'" style="font-size: 3rem"></i>
+                                </td>
+                                <td>{{ file?.name }}</td>
+                                <td>{{ file?.description }}</td>
+                                <td>{{ file?.tags }}</td>
+                                <td>{{ file?.type }}</td>
+                                <td>{{ file?.created_at | date: 'MMM d, y h:mm:ssa' }}</td>
+                                <td>
+                                    <div class="text-center">
+                                        <button class="btn btn-primary mr-2" (click)="download(file)" [disabled]="file?.processing">
+                                            <span *ngIf="!file?.processing"><i class="fas fa-arrow-circle-down mr-2"></i>Download</span>
+                                            <span *ngIf="file?.processing">Downloading <i class="ml-2 nav-icon fas fa-circle-notch spinning"></i></span>
+                                        </button>
+                                        <button class="btn btn-danger" (click)="delete(file)"><i class="fas fa-times mr-2"></i>Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="files?.data?.length < 1">
+                                <td colspan="7">No Files</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row pb-3">
+                <div class="col">
+                    <div class="document-header align-items-center d-flex justify-content-end">
+                        <div class="d-flex align-items-center">
+                        <select
+                            class="form-control ml-3"
+                            style="margin-right: -20px; width: 80px; height: 30px; padding-top: 3px"
+                            [(ngModel)]="perPage"
+                            (change)="list()"
+                        >
+                            <option [ngValue]="per" *ngFor="let per of perPages">
+                            {{ per }}
+                            </option>
+                        </select>
+                        <pagination-controls
+                            (pageChange)="list($event)"
+                            id="paginator_controls"
+                        ></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-document-uploader #uploader (uploaded)="list()" [patientID]="patientID"></app-document-uploader>

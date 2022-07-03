@@ -1,0 +1,47 @@
+<form [formGroup]="form" *ngIf="form">
+    <fieldset [disabled]="disableFields">
+        <div class="row pt-3 pb-3">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-auto">
+                        <small class="text-muted">Visit Date/Document Date</small><br />
+                        <select class="form-control unbold" formControlName="visit_id" (change)="onFilter()">
+                            <option value="null">All Visits</option>
+                            <option [value]="visit?.visit_id" *ngFor="let visit of visits?.data">
+                                {{ visit?.admission_date_string }} ({{visit?.patient_class_code }} - {{ visit?.visit_id_string }})
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-auto" style="min-width: 300px">
+                        <small class="text-muted">Document Name</small><br />
+                        <input
+                            type="text"
+                            class="form-control unbold"
+                            formControlName="document_name"
+                            placeholder="Enter document name"
+                            (keyup.enter)="onFilter()"
+                        />
+                    </div>
+                    <div class="col-auto" [class.hidden]="isTracking">
+                        <small class="text-muted">Document Type</small><br />
+                        <select class="form-control unbold" formControlName="document_type" (change)="onFilter()">
+                            <option value="null">All Document Type</option>
+                            <option [value]="type?.code" *ngFor="let type of documentTypes?.data">
+                                {{ type?.display_name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-auto" [class.hidden]="isTracking">
+                        <small class="text-muted">Document Status</small><br />
+                        <select class="form-control unbold" formControlName="document_status" (change)="onFilter()">
+                            <option value="null">All</option>
+                            <option value="611100">Draft</option>
+                            <option value="611101">Final</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+  </form>
+  

@@ -1,0 +1,22 @@
+<div class="wrapper">
+  <app-header (toggleMenuSidebar)="toggleMenuSidebar()"></app-header>
+
+  <app-menu-sidebar
+    (mainSidebarHeight)="mainSidebarHeight($event)"
+    *ngIf="+user?.is_new_user === 0" 
+  ></app-menu-sidebar>
+
+  <div #contentWrapper 
+    [class.content-wrapper]="+user?.is_new_user === 0"
+    [class.content-wrapper-no-ml]="+user?.is_new_user === 1"
+    class="scrollable">
+    <router-outlet></router-outlet>
+  </div>
+
+  <app-incoming-call [data]="call" (timeout)="removeCall(i)" (decline)="decline.onOpen($event, i)" (accept)="removeCall(i)" *ngFor="let call of incomingCalls; let i = index" class="ml-2 incoming-call"></app-incoming-call>
+
+  <!-- <app-footer></app-footer> -->
+  <aside class="control-sidebar control-sidebar-dark"></aside>
+  <div id="sidebar-overlay" (click)="toggleMenuSidebar()"></div>
+</div>
+<app-deline-patient-modal #decline (decline)="declineCall($event)"></app-deline-patient-modal>

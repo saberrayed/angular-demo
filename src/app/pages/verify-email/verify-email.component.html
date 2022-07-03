@@ -1,0 +1,26 @@
+<img class="logo" src="assets/img/logo.png" width="200px">
+<div class="card no-border verify-content light-shadow mt-auto">
+    <div class="card-body p-5">
+        <div class="d-flex justify-content-center flex-column align-items-center w-100">
+            <img class="mb-5" src="assets/img/logo-title.png" width="150px">
+
+            <div *ngIf="!processing && !invalid" class="d-flex justify-content-center align-items-center flex-column">
+                <div class="icon d-flex justify-content-center align-items-center"><i class="far fa-check-circle"></i></div>
+                    
+                <h3 class="text-primary text-center bold mt-5">Welcome to mWell MD</h3>
+                <p class="text-center text-color" style="width: 75%;">Congratulations! You have successfully created mWell MD account. Please login to get started.</p>
+                <button type="button" class="btn btn-primary btn-block btn-lg mt-5 mb-3" [routerLink]="['/login']">Login</button>
+            </div>
+            <div *ngIf="!processing && invalid" class="d-flex justify-content-center align-items-center flex-column">
+                <div class="icon d-flex justify-content-center align-items-center"><i class="far fa-times-circle"></i></div>
+                    
+                <h3 class="text-primary text-center bold mt-5">Unsuccessful</h3>
+                <p class="text-center text-muted">Something is wrong with your verification link.</p>
+            </div>
+            <div class="text-center mb-5" *ngIf="processing" >
+                <i class="mt-5 mb-5 fas fa-circle-notch spinning verify-spinner"></i>
+                <h5>Verifying your account..</h5>
+            </div>
+        </div>
+    </div>
+</div>

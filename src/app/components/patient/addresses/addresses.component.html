@@ -1,0 +1,379 @@
+<form [formGroup]="patientForm" *ngIf="patientForm">
+    <fieldset [disabled]="disableFields">
+      <div formArrayName="addresses">
+        <h4>PRESENT ADDRESS</h4>
+        <div class="row mt-3" formGroupName="0">
+          <div class="col">
+            <span>Country</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.0.country_code')?.errors?.required
+              "
+              >*</b
+            >
+            <select class="form-control" formControlName="country_code">
+              <option value="null" hidden>Select</option>
+              <option
+                *ngFor="let country of countries?.data"
+                [value]="country?.code"
+              >
+                {{ country?.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col">
+            <span>State / Province / Region</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.0.state_province_code')?.errors?.required
+              "
+              >*</b
+            >
+            <select
+              *ngIf="patientForm?.value?.addresses[0]?.country_code === 'PHL'"
+              class="form-control"
+              formControlName="state_province_code"
+              [attr.disabled]="!patientForm?.value?.addresses[0]?.country_code ? '' : null && countries?.data?.length < 1"
+              (change)="listMunicipalities(0)"
+            >
+              <option value="null" hidden>Select</option>
+              <option
+                *ngFor="let province of provinces?.data"
+                [value]="province?.code"
+              >
+                {{ province?.display }}
+              </option>
+            </select>
+            <input
+              *ngIf="patientForm?.value?.addresses[0]?.country_code !== 'PHL'"
+              type="text"
+              class="form-control"
+              formControlName="state_province_code"
+              placeholder="Enter State"
+            />
+          </div>
+          <div class="col">
+            <span>City</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.0.city_code')?.errors?.required
+              "
+              >*</b
+            >
+            <select
+              *ngIf="patientForm?.value?.addresses[0]?.country_code === 'PHL'"
+              class="form-control"
+              formControlName="city_code"
+              [attr.disabled]="!patientForm?.value?.addresses[0]?.state_province_code ? '' : null"
+              (change)="listBarangay(0)"
+            >
+              <option value="null" hidden>Select</option>
+              <option
+                *ngFor="let muni of addressArray.at(0).value?.cities?.data"
+                [value]="muni?.code"
+              >
+                {{ muni?.display }}
+              </option>
+            </select>
+            <input
+              *ngIf="patientForm?.value?.addresses[0]?.country_code !== 'PHL'"
+              type="text"
+              class="form-control"
+              formControlName="city_code"
+              placeholder="Enter City"
+            />
+          </div>
+          <div class="col-1">
+            <span>Zip Code</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.0.zip_code')?.errors?.required
+              "
+              >*</b
+            >
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Zip Code"
+              formControlName="zip_code"
+            />
+          </div>
+        </div>
+        <div class="row mt-3" formGroupName="0">
+          <div class="col">
+            <span>Address Line 1</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.0.line1')?.errors?.required
+              "
+              >*</b
+            >
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Line 1"
+              formControlName="line1"
+            />
+          </div>
+          <div class="col">
+            <span>Address Line 2</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.0.line2')?.errors?.required
+              "
+              >*</b
+            >
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Line 2"
+              formControlName="line2"
+            />
+          </div>
+          <div class="col">
+            <span>Barangay</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.0.barangay_code')?.errors?.required
+              "
+              >*</b
+            >
+            <select
+              *ngIf="patientForm?.value?.addresses[0]?.country_code === 'PHL'"
+              class="form-control"
+              formControlName="barangay_code"
+              [attr.disabled]="!patientForm?.value?.addresses[0]?.city_code ? '' : null"
+            >
+              <option value="null" hidden>Select</option>
+              <option
+                *ngFor="let barangay of addressArray.at(0).value?.barangays?.data"
+                [value]="barangay?.code"
+              >
+                {{ barangay?.display }}
+              </option>
+            </select>
+            <input
+              *ngIf="patientForm?.value?.addresses[0]?.country_code !== 'PHL'"
+              type="text"
+              class="form-control"
+              formControlName="barangay_code"
+              placeholder="Enter Barangay"
+            />
+          </div>
+        </div>
+        <hr />
+        <div class="row mt-3">
+          <div class="col-auto">
+            <h4>PERMANENT ADDRESS</h4>
+          </div>
+          <div class="col" formGroupName="1">
+            <div class="form-group" style="padding-top: 3px">
+              <div class="custom-control custom-checkbox">
+                <input
+                  class="custom-control-input"
+                  type="checkbox"
+                  id="same-present-address"
+                  value="option1"
+                  formControlName="is_same_present"
+                  (change)="updatePermantentAdderess()"
+                />
+                <label for="same-present-address" class="custom-control-label">
+                  <span style="font-weight: none !important"
+                    >Same as Present Address</span
+                  >
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3" formGroupName="1">
+          <div class="col">
+            <span>Country</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.1.country_code')?.errors?.required
+              "
+              >*</b
+            >
+            <select class="form-control" formControlName="country_code">
+              <option value="null" hidden>Select</option>
+              <option
+                *ngFor="let country of countries?.data"
+                [value]="country?.code"
+              >
+                {{ country?.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col">
+            <span>State / Province / Region</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.1.state_province_code')?.errors?.required
+              "
+              >*</b
+            >
+            <select
+              *ngIf="patientForm?.value?.addresses[1]?.country_code === 'PHL'"
+              class="form-control"
+              formControlName="state_province_code"
+              [attr.disabled]="!patientForm?.value?.addresses[1]?.country_code ? '' : null && countries?.data?.length < 1"
+              (change)="listMunicipalities(1)"
+            >
+              <option value="null" hidden>Select</option>
+              <option
+                *ngFor="let province of provinces?.data"
+                [value]="province?.code"
+              >
+                {{ province?.display }}
+              </option>
+            </select>
+            <input
+              *ngIf="patientForm?.value?.addresses[1]?.country_code !== 'PHL'"
+              type="text"
+              class="form-control"
+              formControlName="state_province_code"
+              placeholder="Enter State"
+            />
+          </div>
+          <div class="col">
+            <span>City</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.1.city_code')?.errors?.required
+              "
+              >*</b
+            >
+            <select
+              *ngIf="patientForm?.value?.addresses[1]?.country_code === 'PHL'"
+              class="form-control"
+              formControlName="city_code"
+              (change)="listBarangay(1)"
+              [attr.disabled]="!patientForm?.value?.addresses[1]?.state_province_code ? '' : null"
+            >
+              <option value="null" hidden>Select</option>
+              <option
+                *ngFor="let muni of addressArray.at(1).value?.cities?.data"
+                [value]="muni?.code"
+              >
+                {{ muni?.display }}
+              </option>
+            </select>
+            <input
+              *ngIf="patientForm?.value?.addresses[1]?.country_code !== 'PHL'"
+              type="text"
+              class="form-control"
+              formControlName="city_code"
+              placeholder="Enter City"
+            />
+          </div>
+          <div class="col-1">
+            <span>Zip Code</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.1.zip_code')?.errors?.required
+              "
+              >*</b
+            >
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Suffix"
+              formControlName="zip_code"
+            />
+          </div>
+        </div>
+        <div class="row mt-3" formGroupName="1">
+          <div class="col">
+            <span>Address Line 1</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.1.line1')?.errors?.required
+              "
+              >*</b
+            >
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Line 1"
+              formControlName="line1"
+            />
+          </div>
+          <div class="col">
+            <span>Address Line 2</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.1.line2')?.errors?.required
+              "
+              >*</b
+            >
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Line 2"
+              formControlName="line2"
+            />
+          </div>
+          <div class="col">
+            <span>Barangay</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('addresses.1.barangay_code')?.errors?.required
+              "
+              >*</b
+            >
+            <select
+              *ngIf="patientForm?.value?.addresses[1]?.country_code === 'PHL'"
+              class="form-control"
+              formControlName="barangay_code"
+              [attr.disabled]="!patientForm?.value?.addresses[1]?.city_code ? '' : null"
+            >
+              <option value="null" hidden>Select</option>
+              <option
+                *ngFor="let barangay of addressArray.at(1).value?.barangays?.data"
+                [value]="barangay?.code"
+              >
+                {{ barangay?.display }}
+              </option>
+            </select>
+            <input
+              *ngIf="patientForm?.value?.addresses[1]?.country_code !== 'PHL'"
+              type="text"
+              class="form-control"
+              formControlName="barangay_code"
+              placeholder="Enter Barangay"
+            />
+          </div>
+        </div>
+      </div>
+    </fieldset>
+</form>
+  

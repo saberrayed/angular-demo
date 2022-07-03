@@ -1,0 +1,82 @@
+<p-dialog
+  [baseZIndex]="2000"
+  [style]="{ maxWidth: '80%', marginTop: '30px'  }"
+  [(visible)]="modal"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [dismissableMask]="false"
+  [modal]="true"
+  [position]="'center'"
+  [draggable]="false"
+>
+    <section>
+        <span class="bold">PRESCRIPTION HISTORY</span>
+        <div class="table-responsive scrollable">
+            <table class="table table-bordered mt-3">
+                <tbody style="border: none">
+                    <tr style="border: none">
+                        <th class="no-border bold">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input cursor-pointer" type="checkbox" id="select-all" [(ngModel)]="selectAll" (change)="toggleSelectAll()" [disabled]="processing">
+                                    <label for="select-all" class="custom-control-label cursor-pointer"></label>
+                                </div>
+                            </div>
+                        </th>
+                        <td class="no-border bold">DATE PRESCRIBED</td>
+                        <td class="no-border bold">GENERIC NAME</td>
+                        <td class="no-border bold">STRENGTH/DOSAGE FORM</td>
+                        <td class="no-border bold">BRAND NAME</td>
+                        <td class="no-border bold">SIGNA</td>
+                        <td class="no-border bold">QUANTITY</td>
+                    </tr>
+                </tbody>
+                <tbody skeleton-loader [rows]="3" [columns]="7" *ngIf="processing"></tbody>
+                <tbody *ngIf="!processing">
+                    <tr *ngFor="let item of items?.data | paginate : {
+                        id: 'paginator',
+                        itemsPerPage: items?.per_page,
+                        currentPage: items?.current_page,
+                        totalItems: items?.total
+                    }; let i = index">
+                        <td>
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input cursor-pointer" type="checkbox" id="checkbox_{{i}}" [(ngModel)]="item.selected" (change)="toggleSelection()">
+                                    <label for="checkbox_{{i}}" class="custom-control-label cursor-pointer"></label>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ item?.created_at | date: 'mediumDate'}}</td>
+                        <td>{{ item?.generic_name }}</td>
+                        <td>{{ item?.strength_dosage_form }}</td>
+                        <td>{{ item?.brand_name }}</td>
+                        <td>{{ item?.signa }}</td>
+                        <td>{{ item?.quantity }}</td>
+                    </tr>
+                    <tr *ngIf="items?.data?.length < 1">
+                        <td colspan="7">No Medication</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="document-header align-items-center d-flex justify-content-end mt-2" *ngIf="!processing">
+            <div class="d-flex align-items-center">
+                <pagination-controls
+                    (pageChange)="list($event)"
+                    id="paginator"
+                ></pagination-controls>
+            </div>
+        </div>
+    </section>
+    <p-footer>
+        <div class="w-100 text-right pr-3 pl-3 pb-3">
+            <button role="button" class="btn btn-primary btn-lg" (click)="copy()" [disabled]="processing || getSelected()?.length < 1">
+                Copy Item/s
+            </button>
+            <button role="button" class="btn btn-outline-primary btn-lg" (click)="onClose()" [disabled]="processing">
+                Close
+            </button>
+        </div>
+    </p-footer>
+</p-dialog>

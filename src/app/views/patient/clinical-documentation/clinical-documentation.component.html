@@ -1,0 +1,34 @@
+<div class="card mt-4 pt-3 bg-white">
+    <div class="card-body pt-0">
+        <div class="container-fluid">
+            <div class="row pb-4">
+                <div class="col right-container">
+                    <div class="btn-group mt-1 bg-white" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-primary btn-xl bold-500" [routerLink]="['/patient', patientID , 'clinical-documentation']" >Clinical Notes</button>
+                        <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID ,'anthropometric-measurements']">Anthropometric Measurements</button>
+                        <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID ,'vital-signs']">Vital Signs</button>
+                        <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID ,'uploaded-documents']" >Attachments</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col"><h4 class="text-color bold">CLINICAL NOTES LIST</h4></div>
+                <div class="col text-right">
+                    <button class="btn btn-primary" (click)="onSelectTemplate()">Create New Note</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <app-clinical-document-filter #filter (filter)="listDocuments()"></app-clinical-document-filter>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <app-clinical-document-list-template #listTemplate></app-clinical-document-list-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-clinical-document-select-modal #dialog (selectForm)="selectTemplate($event)"></app-clinical-document-select-modal>

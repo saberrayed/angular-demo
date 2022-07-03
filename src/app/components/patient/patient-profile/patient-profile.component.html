@@ -1,0 +1,182 @@
+<div class="card mt-4 bg-white">
+    <div class="card-header bg-transparent pt-3">
+        <div class="d-flex" *ngIf="patient">
+            <div style="width: 139px;">
+                <img
+                    [attr.src]="patient?.photo_url"
+                    onerror="this.src='./assets/img/user-stock.png';"
+                    class="w-100 pt-2"
+                    style="border-radius: 15px; width: 139px;"                    
+                />
+            </div>
+            <div class="pl-3 flex-grow-1">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="p-2 text-left text-uppercase pr-4"><small class="text-muted">Last Name</small><h4 class="mb-0"><b>{{ patient?.primary_name?.last }},</b></h4></div>
+                        <div class="p-2 text-left pr-4"><small class="text-muted">First Name</small><h4 class="mb-0"><b>{{ patient?.primary_name?.first }}</b></h4></div>
+                        <div class="p-2 text-left"><small class="text-muted">Middle Name</small><h4 class="mb-0"><b>{{ patient?.primary_name?.middle }}</b></h4></div>
+                    </div>
+                    <div class="pt-2">
+                        <a type="button" class="btn btn-primary pl-5 pr-5 font-weight-bold" [routerLink]="['/patient', patient?.patient_id, 'edit']">Edit Profile</a>
+                    </div>
+                </div>
+            
+                <div class="d-flex pt-2">
+                    <div class="p-2 text-muted">Patient ID<br>Age / Sex<br>Date of Birth</div>
+                    <div class="p-2 font-weight-bold flex-grow-1">{{ patient?.patient_id }} <br>{{ patient?.age_sex }}<br>{{ patient?.date_of_birth | date: 'longDate' }}</div>
+                    <div class="p-2 text-muted" style="width: 130px;">Nationality<br>Religion<br>Civil Status</div>
+                    <div class="p-2 font-weight-bold flex-grow-1">{{ getAttribute('Nationality') || '-' }}<br>{{ getAttribute('Religion') || '-' }}<br>{{ getAttribute('Marital Status') || '-' }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex w-100" *ngIf="!patient">
+            <div style="width: 163px;">
+                <p-skeleton height="163px" borderRadius="15px"></p-skeleton>
+            </div>
+            <div class="pl-3 flex-grow-1">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="p-2 text-center text-uppercase pr-4"><p-skeleton height="1.5rem" width="120px"></p-skeleton><p-skeleton height="1.2rem" width="100px" [style]="{ marginTop: '5px', marginLeft: '10px' }"></p-skeleton></div>
+                        <div class="p-2 text-center pr-4"><p-skeleton height="1.5rem" width="100px"></p-skeleton><p-skeleton height="1.2rem" width="80px" [style]="{ marginTop: '5px', marginLeft: '10px' }"></p-skeleton></div>
+                        <div class="p-2 text-center"><p-skeleton height="1.5rem" width="150px"></p-skeleton><p-skeleton height="1.2rem" width="130px" [style]="{ marginTop: '5px', marginLeft: '10px' }"></p-skeleton></div>
+                    </div>
+                    <div class="pt-2">
+                        <p-skeleton height="57px" borderRadius="20px" width="200px"></p-skeleton>
+                    </div>
+                </div>
+                <div class="d-flex pt-2">
+                    <div class="p-2 text-muted" style="width: 130px;">Age / Sex<br>Date of Birth<br>Civil Status</div>
+                    <div class="p-2 text-muted font-weight-bold flex-grow-1"><p-skeleton height="1.2rem" width="90px" styleClass="mt-1"></p-skeleton><p-skeleton height="1.2rem" width="90px" styleClass="mt-1"></p-skeleton><p-skeleton height="1.2rem" width="90px" styleClass="mt-1"></p-skeleton></div>
+                    <div class="p-2 text-muted" style="width: 130px;">Nationality<br>Religion</div>
+                    <div class="p-2 text-muted font-weight-bold flex-grow-1"><p-skeleton height="1.2rem" width="90px" styleClass="mt-1"></p-skeleton><p-skeleton height="1.2rem" width="90px" styleClass="mt-1"></p-skeleton></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <p class="bold text-color">Occupation Information</p>
+        <table class="w-100" *ngIf="patient">
+            <tr>
+                <td style="width: 200px; vertical-align: top;" class="text-muted">Present job</td>
+                <td class="font-weight-bold">{{ patient?.occupation?.occupation || '-' }}</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Industry</td>
+                <td class="font-weight-bold">{{ patient?.occupation?.industry_type?.text || '-' }}</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Employer</td>
+                <td class="font-weight-bold">{{ patient?.occupation?.employer || '-' }}</td>
+            </tr>
+    
+        </table>
+        <table class="w-100" *ngIf="!patient">
+            <tr>
+                <td style="width: 200px; vertical-align: top;" class="text-muted">Present job</td>
+                <td class="font-weight-bold"><p-skeleton height="1.2rem" width="300px" styleClass="mt-1"></p-skeleton></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Industry</td>
+                <td class="font-weight-bold"><p-skeleton height="1.2rem" width="300px" styleClass="mt-1"></p-skeleton></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Employer</td>
+                <td class="font-weight-bold"><p-skeleton height="1.2rem" width="300px" styleClass="mt-1"></p-skeleton></td>
+            </tr>        
+        </table>
+    </div>
+    <hr>
+    <div class="card-body">
+        <p class="bold text-color">Address Infromation</p>
+        <table class="w-100" *ngIf="patient">
+
+            <tr>
+                <td style="width: 200px; vertical-align: top;" class="text-muted">Present Address</td>
+                <td class="font-weight-bold">{{ patient?.present_address?.complete_address || '-' }}</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Permanent Address</td>
+                <td class="font-weight-bold">{{ patient?.permanent_address?.complete_address || "-" }}</td>
+            </tr>
+        </table>
+        <table class="w-100" *ngIf="!patient">        
+            <tr>
+                <td style="width: 200px; vertical-align: top;" class="text-muted">Present Address</td>
+                <td class="font-weight-bold"><p-skeleton height="1.2rem" width="300px" styleClass="mt-1"></p-skeleton></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Permanent Address</td>
+                <td class="font-weight-bold"><p-skeleton height="1.2rem" width="300px" styleClass="mt-1"></p-skeleton></td>
+            </tr>
+        </table>
+    </div>
+    <hr>
+    <div class="card-body">
+        <p class="bold text-color">Patient Contact Information</p>
+        <table class="w-100" *ngIf="patient">
+            <tr>
+                <td style="width: 200px; vertical-align: top;" class="text-muted">Mobile Phone</td>
+                <td class="font-weight-bold">{{ getContact('M')?.contact_number_format || 'None' }}</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Email Address</td>
+                <td class="font-weight-bold">{{ getContact('E')?.contact_details || 'None' }}</td>
+            </tr>         
+        </table>
+        <table class="w-100" *ngIf="!patient">
+            <tr>
+                <td style="width: 200px; vertical-align: top;" class="text-muted">Mobile Phone</td>
+                <td class="font-weight-bold"><p-skeleton height="1.2rem" width="300px" styleClass="mt-1"></p-skeleton></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Email Address</td>
+                <td class="font-weight-bold"><p-skeleton height="1.2rem" width="300px" styleClass="mt-1"></p-skeleton></td>
+            </tr>        
+        </table>
+    </div>
+    <hr>
+    <div class="card-body pb-5">
+        <p class="bold text-color">CONTACT IN CASE OF EMERGENCY</p>
+        <table class="w-100" *ngIf="patient">
+            <tr>
+                <td style="width: 200px; vertical-align: top;" class="text-muted">Contact Person Name</td>
+                <td class="font-weight-bold">{{ patient?.emergency_contact?.display  ||  '-' }}</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Relationship</td>
+                <td class="font-weight-bold">{{ patient?.emergency_contact?.relationship?.text || '-' }}</td>
+            </tr>         
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Purpose</td>
+                <td class="font-weight-bold">{{ patient?.emergency_contact?.purpose?.text || '-' }}</td>
+            </tr>         
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Contact Number</td>
+                <td class="font-weight-bold">{{ patient?.emergency_contact?.contact_number_format || '-' }}</td>
+            </tr>         
+            <!-- <tr>
+                <td style="vertical-align: top;" class="text-muted">PIN Number</td>
+                <td class="font-weight-bold">{{ patient?.emergency_contact?.contact_patient_id || '-' }}</td>
+            </tr>          -->
+        </table>
+
+        <table class="w-100" *ngIf="!patient">
+            <tr>
+                <td style="width: 200px; vertical-align: top;" class="text-muted">Contact Person Name</td>
+                <td class="font-weight-bold"><p-skeleton height="1.2rem" width="300px" styleClass="mt-1"></p-skeleton></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Relationship</td>
+                <td class="font-weight-bold"><p-skeleton height="1.2rem" width="300px" styleClass="mt-1"></p-skeleton></td>
+            </tr>        
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Purpose</td>
+                <td class="font-weight-bold"><p-skeleton height="1.2rem" width="300px" styleClass="mt-1"></p-skeleton></td>
+            </tr>        
+            <tr>
+                <td style="vertical-align: top;" class="text-muted">Contact Number</td>
+                <td class="font-weight-bold"><p-skeleton height="1.2rem" width="300px" styleClass="mt-1"></p-skeleton></td>
+            </tr>        
+        </table>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="form-group">
+  <div
+    *ngIf="disableFields && uploadedFiles?.length > 0"
+    class="d-flex align-items-center justify-content-center"
+  >
+    <a
+      *ngFor="let file of uploadedFiles"
+      class="file-view"
+      style="
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <a
+        *ngIf="!isPDF(attachUrl(file))"
+        class="file-view-container"
+        [href]="attachUrl(file)"
+        target="_blank"
+        [style.backgroundImage]="'url(' + attachUrl(file) + ')'"
+      ></a>
+      <a
+        class="fas fa-file-pdf"
+        style="font-size: 5rem; color: red"
+        [href]="attachUrl(file)"
+        [attr.title]="attachUrl(file)"
+        target="_blank"
+        *ngIf="isPDF(attachUrl(file))"
+      ></a>
+    </a>
+  </div>
+  <p-fileUpload
+    name="{{ name }}"
+    accept="{{ accept }}"
+    maxFileSize="1000000"
+    url="{{ url }}"
+    maxFileSize="10000000"
+    auto="auto"
+    [isMultiple]="isMultiple"
+    [chooseLabel]="chooseLabel"
+    [headers]="headers"
+    (onBeforeUpload)="onBeforeSend($event)"
+    (onUpload)="onComplete($event)"
+    (onSelect)="onSelect()"
+    (onSend)="onSend($event)"
+    *ngIf="!disableFields"
+    #filuploader
+  >
+    <ng-template pTemplate="content">
+      <div
+        *ngIf="!uploading"
+        class="d-flex align-items-center justify-content-center"
+      >
+        <a
+          *ngFor="let file of uploadedFiles"
+          class="file-view"
+          style="
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          "
+        >
+          <a
+            *ngIf="!isPDF(attachUrl(file))"
+            class="file-view-container"
+            [href]="attachUrl(file)"
+            target="_blank"
+            [style.backgroundImage]="'url(' + attachUrl(file) + ')'"
+          ></a>
+          <a
+            class="fas fa-file-pdf"
+            style="font-size: 5rem; color: red"
+            [href]="attachUrl(file)"
+            [attr.title]="attachUrl(file)"
+            target="_blank"
+            *ngIf="isPDF(attachUrl(file))"
+          ></a>
+          <i
+            class="fas fa-times-circle remove-photo"
+            title="Remove Image"
+            (click)="removeImage(file)"
+          ></i>
+        </a>
+      </div>
+    </ng-template>
+  </p-fileUpload>
+</div>

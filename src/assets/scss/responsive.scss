@@ -1,0 +1,73 @@
+/* For extremely small screen devices (595px and below) */
+@media only screen and (max-width: 595px) {
+    body {
+      border-right: 4px solid red;
+    }
+}
+  
+/* Small screen devices (600px and above) */
+@media only screen and (min-width: 600px) {
+    body {
+      border-right: 4px solid orange;
+    }
+}
+  
+/* Medium screen devices (768px and above) */
+@media only screen and (min-width: 768px) {
+    body {
+      border-right: 4px solid yellow;
+    }
+}
+  
+/* Big screen devices (889px and above) */
+@media only screen and (min-width: 889px) {
+    body {
+      border-right: 4px solid green;
+    }
+}
+/* Extra big screen devices (1024px and above) */
+@media only screen and (min-width: 1024) {
+    body {
+      border-right: 4px solid blue;
+    }
+}
+  
+/* Extra big screen devices (1280px and above) */
+@media only screen and (min-width: 1280px) {
+    body {
+      border-right: 4px solid violet;
+    }
+
+    .login-container {
+        .card {
+            width: 70vw;
+        }
+    }
+}
+  
+/* Extra big screen devices (1360px and above) */
+@media only screen and (min-width: 1360px) {
+    body {
+      border-right: 4px solid red;
+    }
+
+    .login-container {
+        .card {
+            width: 45vw;
+        }
+    }
+}
+  
+/* Extra big screen devices (1440px and above) */
+@media only screen and (min-width: 1440px) {
+    body {
+      border-right: 4px solid fuchsia;
+    }
+}
+  
+/* Extra big screen devices (1600px and above) */
+@media only screen and (min-width: 1600px) {
+    body {
+      border-right: 4px solid gray;
+    }
+}

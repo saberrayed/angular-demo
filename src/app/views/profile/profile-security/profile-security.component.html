@@ -1,0 +1,57 @@
+<div class="row mt-4">
+    <div class="col">
+        <div id="account-management" class="carousel slide" data-ride="carousel" data-interval="false" >
+            <ol class="carousel-indicators" style="display: none">
+                <li
+                  data-target="#account-management"
+                  data-slide-to="0"
+                  class="active"
+                  #startIndicator
+                ></li>
+                <li
+                  data-target="#account-management"
+                  data-slide-to="1"
+                  #smsIndicator
+                ></li>
+                <li
+                  data-target="#account-management"
+                  data-slide-to="2"
+                  #passwordIndicator
+                ></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <table class="table">
+                        <tr>
+                            <td class="text-muted" style="border-top: 0px; width: 230px;">Email Address / Username</td>
+                            <td style="border-top: 0px;">
+                                <b>{{ user?.email }}</b><br>
+                                <small>If you wish to change your email address, please send a request to <b class="text-primary"><a href="mailto:admin@mwell.com">admin@mwell.com</a></b></small>
+                            </td>
+                        </tr>
+                        <tr class="cursor-pointer" (click)="smsVerification()">
+                            <td class="text-muted">Mobile Number</td>
+                            <td class="d-flex justify-content-between align-items-center">
+                                <b>+63{{ user?.contact_no }}</b>
+                                <i class="fas fa-angle-right"></i>
+                            </td>
+                        </tr>
+                        <tr class="cursor-pointer" (click)="changePassword()">
+                            <td class="text-muted">Password</td>
+                            <td class="d-flex justify-content-between align-items-center">
+                                <b>*******</b>
+                                <i class="fas fa-angle-right"></i>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="carousel-item">
+                    <app-profile-change-mobile [user]="user" #changeMobile (back)="startPanel()"></app-profile-change-mobile>
+                </div>
+                <div class="carousel-item">
+                    <app-profile-reset-password (back)="startPanel()"></app-profile-reset-password>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

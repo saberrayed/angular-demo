@@ -1,0 +1,116 @@
+<div class="p-4">
+    <div class="container-fluid pt-2">
+        <div class="row pb-3">
+            <div class="col text-right">
+                <a class="btn btn-primary" [routerLink]="['/register']" >Add New Patient</a>
+            </div>
+        </div>
+        <div class="row pb-3">
+            <div class="col">
+                <div class="row" [formGroup]="form" *ngIf="form">
+                    <div class="col-auto" style="min-width: 500px">
+                        <input type="text" class="form-control" placeholder="Search Patient" formControlName="query" (keyup.enter)="list()" [disabled]="processing"/>
+                    </div>
+                    <div class="col-auto">
+                        <select class="form-control" formControlName="sex_code" (change)="list()" [disabled]="processing">
+                            <option value="null">Select Gender</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="document-header align-items-center d-flex justify-content-end">
+                    <div class="d-flex align-items-center">
+                    <select
+                        class="form-control ml-3"
+                        style="margin-right: -20px; width: 80px; height: 30px; padding-top: 3px"
+                        [(ngModel)]="perPage"
+                        (change)="list()"
+                    >
+                        <option [ngValue]="per" *ngFor="let per of perPages">
+                        {{ per }}
+                        </option>
+                    </select>
+                    <pagination-controls
+                        (pageChange)="list($event)"
+                        id="paginator_controls"
+                    ></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table table-striped">
+                    <thead>
+                        <th class="bg-primary cursor-pointer" (click)="sort('last')">Patient Name<i class="fas fa-sort float-right"></i></th>
+                        <th class="bg-primary cursor-pointer" (click)="sort('sex_code')">Age/Sex<i class="fas fa-sort float-right"></i></th>
+                        <th class="bg-primary cursor-pointer" (click)="sort('date_of_birth')">Date of Birth<i class="fas fa-sort float-right"></i></th>
+                        <th class="bg-primary cusor-pointer text-center" style="width: 250px">Actions</th>
+                    </thead>
+                    <tbody *ngIf="processing">
+                        <tr *ngFor="let val of counter(10)">
+                            <td *ngFor="let val of counter(4)"><p-skeleton height="2rem"></p-skeleton></td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="!processing">
+                        <tr *ngFor="let patient of patients?.data | paginate : {
+                            id: 'paginator_controls',
+                            itemsPerPage: patients?.per_page,
+                            currentPage: patients?.current_page,
+                            totalItems: patients?.total
+                          };
+                        ">
+                            <td><a [routerLink]="['/patient', patient?.patient_id, 'profile']" routerLinkActive="router-link-active" >{{ patient?.primary_name?.display }}</a></td>
+                            <td>{{ patient?.age_sex }}</td>
+                            <td>{{ patient?.date_of_birth_string }}</td>
+                            <td>
+                                <div class="text-right">
+                                    <button class="btn btn-primary mr-2" [routerLink]="['/patient', patient?.patient_id, 'profile']"><i class="fas fa-folder mr-2"></i>View</button>
+                                    <button class="btn btn-warning mr-2" [routerLink]="['/patient', patient?.patient_id, 'edit']"><i class="fas fa-edit mr-2"></i>Edit</button>
+                                    <div class="btn-group my-patient-btn-group">
+                                        <button type="button" class="btn btn-default dropdown-toggle bordered-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                        <div class="dropdown-menu">
+                                          <a class="dropdown-item cursor-pointer" (click)="createAppointmentModal?.onOpen(patient)">Add Appointment</a>
+                                          <a class="dropdown-item cursor-pointer" [routerLink]="['/patient', patient?.patient_id, 'clinical-documentation']">View Notes</a>
+                                          <a class="dropdown-item cursor-pointer">Add as Inpatient</a>
+                                          <div class="dropdown-divider"></div>
+                                          <a class="dropdown-item cursor-pointer text-danger" (click)="deletePatient(patient)">Delete Patient</a>
+                                        </div>
+                                    </div>
+                                    <!-- <button class="btn btn-default" title="Create Appointment" (click)="createAppointmentModal?.onOpen(patient)"><i class="far fa-calendar-plus text-muted cursor-pointer"></i></button> -->
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="patients?.data?.length < 1"><td colspan="3">No Patient Found</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row pb-3">
+            <div class="col">
+                <div class="document-header align-items-center d-flex justify-content-end">
+                    <div class="d-flex align-items-center">
+                    <select
+                        class="form-control ml-3"
+                        style="margin-right: -20px; width: 80px; height: 30px; padding-top: 3px"
+                        [(ngModel)]="perPage"
+                        (change)="list()"
+                    >
+                        <option [ngValue]="per" *ngFor="let per of perPages">
+                        {{ per }}
+                        </option>
+                    </select>
+                    <pagination-controls
+                        (pageChange)="list($event)"
+                        id="paginator_controls"
+                    ></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-create-appointment-modal #createAppointmentModal></app-create-appointment-modal>

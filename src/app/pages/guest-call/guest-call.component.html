@@ -1,0 +1,6 @@
+<div class="d-flex justify-content-center align-items-center flex-column video-wrapper p-5">
+    <b>Your Caller ID:</b>{{ videoCall?.user }}<br><br>
+    <div class="video-container">
+        <app-video-call-guest #videoCall [isGuest]="true"></app-video-call-guest>
+    </div>
+</div>

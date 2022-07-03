@@ -1,0 +1,26 @@
+<div class="bg2-img" [ngStyle]="{'background-image': 'url(assets/img/bg3.png)'}">
+    <div class="card no-border verify-content light-shadow mt-auto"
+        style="margin: 5% 25%;">
+        <div class="card-body p-5">
+            <div class="d-flex justify-content-center flex-column align-items-center w-100">
+                <img class="mb-5" src="assets/img/logo-title.png" width="150px">
+
+                <div class="d-flex justify-content-center align-items-center flex-column">
+                    <div class="icon d-flex justify-content-center align-items-center"><i class="far fa-check-circle"></i></div>
+                        
+                    <h3 class="text-primary text-center bold mt-5">Success! You have completed the setup of your account.</h3>
+                    <i class="fas fa-id-card id-icon"></i>
+                    <p class="text-center text-color bold-500" style="width: 80%;">Validation in progress. Expcet same day approval or less!</p>
+                    <p class="text-center text-color bold-500">
+                        Gentle reminder to always check your Spam Folder so you won't miss our emails.<br>
+                        <small>Same-day validation cut-off is based on regular business operating hours.</small>
+                    </p>
+                    <button type="button" (click)="view()" class="btn btn-primary btn-block btn-lg mt-2 mb-3 bold" [disabled]="processing">
+                        View Your Profile
+                        <i *ngIf="processing" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

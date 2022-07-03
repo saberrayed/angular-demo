@@ -1,0 +1,64 @@
+<p-dialog
+  [baseZIndex]="2000"
+  [(visible)]="modal"
+  [style]="{ minWidth: '600px' }"
+  [modal]="true"
+  position="center"
+  [draggable]="false"
+  [dismissableMask]="true"
+  closeIcon=""
+  styleClass="select-template-dialog"
+  (onHide)="onHide()"
+>
+  <div class="pr-3 pl-3">
+    <h3 class="text-primary bold">Create New Note</h3>
+    <span class="text-muted">Select a form template to create a note</span>
+    <form [formGroup]="filterForm" *ngIf="filterForm" class="mt-3">
+      <fieldset [disabled]="processing">
+        <div class="form-group">
+          <div class="input-icon">
+            <input
+              type="text"
+              formControlName="query"
+              class="form-control"
+              placeholder="Enter template name"
+              (keyup.enter)="listTemplates()"
+            />
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="showAssociatedVisit">
+          <span class="text-muted">Associated Visit</span>
+          <select class="form-control" formControlName="visit_id">
+            <option hidden value="null">Select Visit Date</option>
+            <option [value]="visit?.visit_id" *ngFor="let visit of visits?.data">
+                {{ visit?.admission_date_string }} ({{visit?.patient_class_code }} - {{ visit?.visit_id_string }})
+            </option>
+          </select>
+        </div>
+      </fieldset>
+    </form>
+    <div class="bordered-gray template-container">
+      <ul class="template-list">
+        <li *ngFor="let template of templates?.data">
+          <a (click)="selectedTemplate = template" [class.bg-success]="selectedTemplate === template">
+            <i class="far fa-file-alt"></i>
+            <p class="mb-0">{{ template?.name }}</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <p-footer>
+    <div class="w-100 pr-3 pl-3 pb-3">
+      <button
+      class="btn btn-primary btn-lg w-100"
+      (click)="onSelect()"
+      *ngIf="!processing"
+      [disabled]="!selectedTemplate || !filterForm?.value?.visit_id"
+    >
+      Select Form
+    </button>
+    </div>
+  </p-footer>
+</p-dialog>

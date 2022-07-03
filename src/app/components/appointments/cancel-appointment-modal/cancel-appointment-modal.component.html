@@ -1,0 +1,37 @@
+<p-dialog
+  [baseZIndex]="2000"
+  [style]="{ maxWidth: '600px', marginTop: '30px'  }"
+  [(visible)]="modal"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [dismissableMask]="false"
+  [modal]="true"
+  [position]="'center'"
+  [draggable]="false"
+>
+    <div class="pr-3 pl-3">
+        <h3 class="text-danger bold">Cancel Appointment</h3>
+        <p class="mt-4 bold-500">
+            You are about to cancel the appointment of patient <b>{{ appointment?.patient_name }}</b>.
+            This patient will be fully refunded.
+        </p>
+        <p class="bold-500">
+            Are you sure you would like to cancel the appointment.
+        </p>
+        <div class="form-group">
+            <small class="text-muted">Reason for Cancellation <b class="ml-2 text-danger" *ngIf="!declineReason">*</b></small>
+            <input type="text" class="form-control" [(ngModel)]="declineReason" [disabled]="processing">
+        </div>
+    </div>
+    <p-footer>
+        <div class="w-100 text-right pr-3 pl-3 pb-3">
+        <button role="button" class="btn btn-danger btn-lg mr-2" (click)="cancelAppointment()" [disabled]="processing || !declineReason">
+            Cancel Appointment
+            <i *ngIf="processing" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+        </button>
+        <button role="button" class="btn btn-outline-primary btn-lg" (click)="onClose()" [disabled]="processing">
+            Back
+        </button>
+        </div>
+    </p-footer>
+</p-dialog>

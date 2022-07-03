@@ -1,0 +1,69 @@
+<div class="video-wrapper">
+    <div class="remote-video-box" id="remote-video-box" ></div>
+    <div class="local-video-box" [class.video-minimized]="currentCall && currentCall?.state !== 'Disconnected'" [hidden]="!video" id="local-video-box" ></div>
+    <div class="p-3 text-center text-box" *ngIf="(!currentCall || currentCall?.state === 'Disconnected') && !isPatient">        
+        <div class="input-group mb-3">
+            <input 
+                id="callee-id-input"
+                type="text"
+                placeholder="Who would you like to call?"
+                class="form-control"
+                [(ngModel)]="destination"
+            />
+            <div class="input-group-append">
+                <button class="btn btn-success" type="button" [disabled]="!isReady || currentCall?.state === 'Disconnecting'" (click)="startCall()">
+                    <i class="fas fa-phone"></i>
+                </button>
+            </div>
+        </div>
+        <small class="text-white" *ngIf="user && !isGuest">YOUR ID: {{ user }}</small>
+    </div>
+    <div class="text-box" *ngIf="isPatient">
+        <button class="btn btn-success cursor-pointer" type="button" [disabled]="!isReady || currentCall?.state === 'Disconnecting'" (click)="startCall()">
+            <i class="fas fa-phone-alt mr-1"></i>Call Doctor
+        </button>
+    </div>
+    <div class="incoming-call-box pt-5" [class.incoming-call-box-open]="hasIncomingCall">
+        <p class="bold text-white">{{ incomingCall?.callerInfo?.displayName}} is calling</p>
+        <div class="d-flex justify-content-center">
+            <div class="text-center mr-3">
+                <button class="btn btn-success btn-circle" type="button" (click)="acceptIncomingCall()">
+                    <i class="fas fa-phone-alt"></i>
+                </button><br>
+                <small class="text-white">Accept</small>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-danger btn-circle" type="button" (click)="rejectIncomingCall()">
+                    <i class="fas fa-phone-slash"></i>
+                </button><br>
+                <small class="text-white">Decline</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-3 actions">
+        <!-- <button class="btn btn-success btn-circle mr-2" type="button" [disabled]="!isReady || currentCall?.state === 'Disconnecting'" (click)="startCall()" *ngIf="!currentCall || currentCall?.state === 'Disconnected'">
+            <i class="fas fa-phone"></i>
+        </button> -->
+        <button class="btn btn-circle mr-5" [class.btn-light]="video" [class.btn-danger]="!video" type="button" [disabled]="!isReady" (click)="toggleVideo()">
+            <i class="fas" [class.fa-video]="video" [class.fa-video-slash]="!video"></i>
+        </button>
+        <button class="btn btn-circle mr-5" [class.btn-light]="!muted" [class.btn-danger]="muted" type="button" [disabled]="!isReady" (click)="toggleMute()">
+            <i class="fas" [class.fa-microphone-slash]="muted" [class.fa-microphone]="!muted"></i>
+        </button>
+        <button class="btn btn-light btn-circle" type="button" [disabled]="!isReady" (click)="openSettings()">
+            <i class="fas fa-cog"></i>
+        </button>
+        <button class="btn btn-danger btn-circle ml-5" type="button" [disabled]="!isReady || currentCall?.state === 'Disconnecting'" (click)="endCall()" *ngIf="currentCall && currentCall?.state !== 'Disconnected'">
+            <i class="fas fa-phone-slash"></i>
+        </button>
+    </div>
+    <div class="status-box d-flex align-items-center">
+        <i class="fas fa-circle mr-1"
+        [class.text-warning]="currentCall && currentCall?.state !== 'Disconnected' && currentCall?.state !== 'Connected'"
+        [class.text-success]="currentCall?.state === 'Connected'"
+        [class.text-danger]="currentCall?.state === 'Disconnected' || !currentCall"
+        ></i> <small>{{ currentCall?.state || 'Disconnected' }}</small>
+    </div>
+    <div class="d-flex justify-content-center align-items-center w-100 h-100 spinner-container" *ngIf="!isReady"><i class="ml-2 nav-icon fas fa-circle-notch spinning"></i></div>
+</div>

@@ -1,0 +1,47 @@
+$border-radius: 13px;
+
+.button-navigator {
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    color: var(--mwell-text-color);
+
+    a.active {
+        color: white;
+        background-color: var(--mwell-primary-color);
+        border: none !important;
+    }
+
+    a {
+        cursor: pointer;
+        text-align: center;
+        font-weight: bold;
+        padding: 30px 30px;
+        flex-grow: 1;
+        background-color: white;
+    }
+
+    a:first-child {
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+        border: 1px solid var(--mwell-border-color);
+    }
+
+    a:nth-child(2) {
+        border-right: none;
+        border-top: 1px solid var(--mwell-border-color);
+        border-right: 1px solid var(--mwell-border-color);
+        border-bottom: 1px solid var(--mwell-border-color);
+    }
+
+    a:last-child {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+        border-top: 1px solid var(--mwell-border-color);
+        border-right: 1px solid var(--mwell-border-color);
+        border-bottom: 1px solid var(--mwell-border-color);
+    }
+
+    a:not(.active) {
+    }
+}

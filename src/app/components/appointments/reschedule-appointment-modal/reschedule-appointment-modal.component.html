@@ -1,0 +1,46 @@
+<p-dialog
+  [baseZIndex]="2000"
+  [style]="{ maxWidth: '600px', marginTop: '30px'  }"
+  [(visible)]="modal"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [dismissableMask]="false"
+  [modal]="true"
+  [position]="'center'"
+  [draggable]="false"
+>
+    <div class="pr-3 pl-3">
+        <h3 class="text-primary bold">Reschedule Appointment</h3>
+        <p class="mt-4 bold-500">
+            You are about to reschedule the appointment of patient <b>{{ appointment?.patient_name }}</b>.
+        </p>
+        <p class="bold-500">
+            Please select a new appointment date below.
+        </p>
+        <div class="form-group">
+            <small class="text-muted">New Appointment Date <b class="ml-2 text-danger" *ngIf="!date">*</b></small>
+            <input type="date" class="form-control" [(ngModel)]="date" [disabled]="processing" (change)="getServiceSchedule()" >
+        </div>
+        <div class="form-group">
+            <small class="text-muted">Slot <b class="ml-2 text-danger" *ngIf="!slot">*</b></small>
+            <select class="form-control" [(ngModel)]="slot" *ngIf="!searching" [disabled]="searaching">
+                <option hidden selected value="null">Select Slot</option>
+                <option [ngValue]="slot" *ngFor="let slot of schedule?.slots">{{ slot?.slot_start_time_string }} - {{ slot?.slot_end_time_string }}</option>
+            </select>
+            <div class="d-flex justify-content-center" *ngIf="searching" >
+                Updating <i class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+            </div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="w-100 text-right pr-3 pl-3 pb-3">
+        <button role="button" class="btn btn-primary btn-lg mr-2" (click)="rescheduleAppointment()" [disabled]="processing || !slot">
+            Reschedule
+            <i *ngIf="processing" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+        </button>
+        <button role="button" class="btn btn-outline-primary btn-lg" (click)="onClose()" [disabled]="processing">
+            Back
+        </button>
+        </div>
+    </p-footer>
+</p-dialog>

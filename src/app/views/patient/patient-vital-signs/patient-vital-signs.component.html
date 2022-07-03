@@ -1,0 +1,26 @@
+<div class="card mt-4 bg-white">
+    <div class="card-body pb-5 pt-0">
+        <div class="container-fluid mt-3">
+            <div class="row pb-4">
+                <div class="col right-container">
+                    <div class="btn-group mt-1 bg-white" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID , 'clinical-documentation']" >Clinical Notes</button>
+                        <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID ,'anthropometric-measurements']">Anthropometric Measurements</button>
+                        <button type="button" class="btn btn-primary btn-xl bold-500" [routerLink]="['/patient', patientID ,'vital-signs']">Vital Signs</button>
+                        <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID ,'uploaded-documents']">Attachments</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <app-clinical-document-filter #filter (filter)="listTrackingForms()" [isTracking]="true" ></app-clinical-document-filter>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <app-clinical-document-list-template #trackingListTemplate title="TRACKING NOTES" source="vital-signs"></app-clinical-document-list-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

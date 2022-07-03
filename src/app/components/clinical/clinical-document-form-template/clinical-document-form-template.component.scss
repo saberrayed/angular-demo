@@ -1,0 +1,38 @@
+.array-class {
+    .array-child:not(:first-child) {
+      .array-hidden-labels {
+        table {
+          .field-title {
+            display: none !important;
+          }
+  
+          .field-label {
+            opacity: 0 !important;
+          }
+        }
+      }
+  
+      .table-hidden-labels {
+        table {
+          .field-title {
+            display: none !important;
+          }
+  
+          .field-label {
+            opacity: 0 !important;
+          }
+        }
+      }
+    }
+  }
+  .section-form-header {
+    // border: 1px solid #ccc;
+    // border-top: 3px solid #ccc;
+    color: var(--mwell-text-color);
+    font-size: 1.2em;
+    border-bottom: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bold;
+  }
+  

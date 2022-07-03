@@ -1,0 +1,136 @@
+<form [formGroup]="patientForm" *ngIf="patientForm">
+    <fieldset [disabled]="disableFields">
+      <div
+        class="p-3"
+        [class.bordered-dashed-gray]="!disableFields"
+        [class.mb-3]="i < identifiers?.controls?.length - 1"
+        style="border-radius: 10px; position: relative"
+        *ngFor="let contact of identifiers.controls; index as i"
+        formArrayName="identifiers"
+      >
+        <i
+          class="cursor-pointer fas fa-times-circle text-danger"
+          style="
+            font-size: 1.5rem;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: white;
+            border: 3px solid white;
+          "
+          title="Remove"
+          (click)="removeIdentifier(i)"
+          *ngIf="!disableFields"
+        ></i>
+        <div class="row" [formGroup]="contact">
+          <div class="col">
+            <span>ID Type</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('identifiers.' + i + '.type_code')?.errors?.required
+              "
+              >*</b
+            >
+            <span *ngIf="i > 0">&nbsp;</span>
+            <select class="form-control" formControlName="type_code">
+              <option value="null" hidden>None</option>
+              <option
+                [value]="master.code"
+                *ngFor="let master of idTypes?.details"
+              >
+                {{ master?.text }}
+              </option>
+            </select>
+          </div>
+          <div class="col">
+            <span class="mb-2">ID Details</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('identifiers.' + i + '.id_number')?.errors?.required
+              "
+              >*</b
+            >
+            <span *ngIf="i > 0">&nbsp;</span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter id number"
+              formControlName="id_number"
+            />
+          </div>
+          <div class="col">
+            <span class="mb-2">Valid Until</span
+            ><b
+              class="text-red ml-2"
+              *ngIf="
+                !disableFields &&
+                getControl('identifiers.' + i + '.valid_until')?.errors?.required
+              "
+              >*</b
+            >
+            <span *ngIf="i > 0">&nbsp;</span>
+            <input
+              type="date"
+              class="form-control"
+              placeholder="Enter Validty"
+              formControlName="valid_until"
+            />
+          </div>
+          <div class="col-12 mt-3">
+            <span>File Upload</span>
+            <app-upload-file
+              #uploaders
+              [name]="'file'"
+              [url]="url"
+              [accept]="'.png,.jpg,.bmp,.pdf'"
+              [folder]="'photos'"
+              [disk]="'public'"
+              [disableFields]="disableFields"
+              [uploadedFiles]="
+                getIdentifier(i)?.value?.file
+                  ? [getIdentifier(i)?.value?.file]
+                  : []
+              "
+              (upload)="setUploadPhoto($event, i)"
+              (remove)="removeUploadPhoto($event, i)"
+            ></app-upload-file>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="pl-2" *ngIf="identifiers?.value?.length < 1">
+            <span *ngIf="!disableFields">
+              Click "<b>Add Button</b>" to add a identity document
+            </span>
+            <span *ngIf="disableFields">No identifier Associated</span>
+            <br />
+          </div>
+          <div class="pr-2 pl-2">
+            <small class="text-danger" *ngIf="identifiers?.errors?.required"
+              >Identity document is required.</small
+            >
+            <small class="text-danger" *ngIf="identifiers?.errors?.minlength"
+              >At least
+              {{ identifiers?.errors?.minlength?.requiredLength }} identity
+              document is required.</small
+            >
+          </div>
+        </div>
+        <div class="col-auto d-flex align-items-center" *ngIf="!disableFields">
+          <button
+            class="cursor-pointer btn btn-outline-success float-right"
+            (click)="addIdentifier()"
+            *ngIf="!disableFields"
+          >
+            <i class="fa fa-plus mr-2"></i>Add
+          </button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  

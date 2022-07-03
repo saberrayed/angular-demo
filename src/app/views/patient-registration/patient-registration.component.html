@@ -1,0 +1,55 @@
+<div class="container-fluid p-3">
+    <div class="row pb-3">
+        <div class="col text-right">
+            <button class="btn btn-primary mr-2" [disabled]="!isValid" (click)="confirm = true">
+              Save
+            </button>
+            <button class="btn btn-default" [routerLink]="['/patients']">
+              Cancel
+            </button>
+        </div>
+    </div>
+    <div class="row pb-3">
+        <div class="col">
+            <app-registration
+                #patientRegistration
+                (updateFormValidity)="updateFormValidity($event)"
+            ></app-registration>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-right">
+            <button class="btn btn-primary mr-2" [disabled]="!isValid" (click)="confirm = true">
+              Save
+            </button>
+            <button class="btn btn-default" [routerLink]="['/patients']">
+              Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog
+  header="Confirm"
+  [(visible)]="confirm"
+  [style]="{ width: '50vw' }"
+  [modal]="true"
+  [baseZIndex]="2000"
+  [position]="'center'"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [draggable]="false"
+>
+  <p>
+    A new patient record will be created. Are you sure you want to save and
+    create a new patient record?
+  </p>
+  <div class="float-right">
+    <button class="btn btn-primary mr-2" (click)="save()" [disabled]="processing">
+      Create New Patient
+      <i *ngIf="processing" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+    </button>
+    <button class="btn btn-default" (click)="confirm = false">Cancel</button>
+  </div>
+</p-dialog>

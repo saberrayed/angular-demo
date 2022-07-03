@@ -1,0 +1,59 @@
+<div class="p-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['/guest']" >Home</a></li>
+          <li class="breadcrumb-item"><a [routerLink]="['/guest', patientID]" >Appointments</a></li>
+          <li class="breadcrumb-item"><a [routerLink]="['/guest', patientID, 'item', serviceCode]" >Resource</a></li>
+          <li class="breadcrumb-item active" aria-current="page">resource</li>
+        </ol>
+    </nav>
+</div>
+<div class="d-flex justify-content-center align-items-center flex-column body-wrapper p-5">
+    <div>
+        <div class="card light-shadow" style="min-width: 500px;">
+            <div class="card-body">
+                <form [formGroup]="form" *ngIf="form">
+                    <fieldset [disabled]="processing">
+                        <b>Resource: </b>
+                        {{ selectedService?.resource?.resource_text }} ({{ selectedService?.price?.toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }})
+                        <hr>
+                        <div class="form-group">
+                            <label>Complaint</label>
+                            <input type="text" class="form-control" formControlName="complaint" placeholder="Enter complaint">
+                        </div>
+                        <div *ngIf="!selectedService?.is_auto_booking">
+                            <div class="form-group">
+                                <label>Schedule</label>
+                                <input type="date" class="form-control" formControlName="date" (change)="getServiceSchedule()">
+                            </div>
+                            <b>Slots</b>
+                            <select class="form-control" (click)="updateSlot($event.target.value)" *ngIf="!searching">
+                                <option hidden selected>Select Slot</option>
+                                <option value="{{ slot?.id }}" *ngFor="let slot of schedule?.slots">{{ slot?.slot_start_time_string }} - {{ slot?.slot_end_time_string }}</option>
+                            </select>
+                            <div class="d-flex justify-content-center" *ngIf="searching" >
+                                Updating <i class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+                            </div>
+
+                            <!-- <div class="d-flex flex-column">
+                                <a class="mr-2 btn btn-primary mr-2" *ngFor="let slot of schedule?.slots" [class.active]="+form?.value?.slot_id === +slot?.id" (click)="updateSlot(slot)">
+                                    <i class="fas fa-check-circle mr-2 text-white" *ngIf="+form?.value?.slot_id === +slot?.id"></i>{{ slot?.slot_start_time_string }} - {{ slot?.slot_end_time_string }}
+                                </a>
+                                <div *ngIf="schedule?.slots?.length < 1" class="w-100 text-left">No Slots.</div>
+                            </div> -->
+                        </div>
+                    </fieldset>
+                </form>
+                <div *ngIf="!form">Loading contents</div>
+            </div>
+            <div class="card-footer text-right">
+                <button class="btn btn-primary btn-lg mr-2" (click)="book()" [disabled]="processing || (!selectedService?.is_auto_booking && (!form?.value?.slot_id || !schedule)) || form?.invalid">
+                    Confirm
+                </button>
+                <button class="btn btn-light bordered-gray btn-lg" [disabled]="processing" [routerLink]="['/guest', patientID, 'item', serviceCode]">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

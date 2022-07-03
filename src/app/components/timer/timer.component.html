@@ -1,0 +1,7 @@
+<span class="mr-1">
+    {{ minutesToDday > 9 ? minutesToDday : '0' + minutesToDday }} : {{ secondsToDday > 9 ? secondsToDday : '0' + secondsToDday }}
+</span>
+<span *ngIf="minutesToDday > 1">minutes</span>
+<span *ngIf="minutesToDday === 1">minute</span>
+<span *ngIf="minutesToDday < 1 && secondsToDday > 1">seconds</span>
+<span *ngIf="minutesToDday < 1 && secondsToDday < 2">second</span>

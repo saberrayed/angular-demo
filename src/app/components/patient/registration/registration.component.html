@@ -1,0 +1,95 @@
+<form [formGroup]="patientForm" *ngIf="patientForm" class="mb-3">
+    <fieldset [disabled]="processing">
+      <div class="row equal">
+        <div class="col-12">
+          <p-accordion [styleClass]="'card-primary card-outline'" [style]="''">
+            <p-accordionTab header="PATIENT DEMOGRAPHICS" [selected]="true">
+              <app-demographics
+                #patientDemographics
+                [patient]="patient"
+                [disableFields]="disableFields"
+                [patientForm]="patientForm"
+              ></app-demographics>
+            </p-accordionTab>
+          </p-accordion>
+        </div>
+        <div class="col-12 mt-3">
+          <p-accordion [styleClass]="'card-primary card-outline'" [style]="''">
+            <p-accordionTab header="PATIENT ADDRESS DETAILS" [selected]="true">
+              <app-addresses
+                #patientAddresses
+                [patient]="patient"
+                [disableFields]="disableFields"
+                [patientForm]="patientForm"
+              ></app-addresses>
+            </p-accordionTab>
+          </p-accordion>
+        </div>
+        <div class="col-6 mt-3">
+          <p-accordion [styleClass]="'card-primary card-outline'">
+            <p-accordionTab
+              header="PATIENT CONTACT DETAILS"
+              [selected]="true"
+              [style]="''"
+            >
+              <app-contacts
+                [patient]="patient"
+                [disableFields]="disableFields"
+                [patientForm]="patientForm"
+              ></app-contacts>
+            </p-accordionTab>
+          </p-accordion>
+        </div>
+        <!-- <div class="col-6 mt-3">
+          <p-accordion [styleClass]="'card-primary card-outline'" [style]="''">
+            <p-accordionTab header="PATIENT IDENTITY DOCUMENTS" [selected]="true">
+              <app-identification
+                #identifiersComponent
+                [patient]="patient"
+                [disableFields]="disableFields"
+                [patientForm]="patientForm"
+              ></app-identification>
+            </p-accordionTab>
+          </p-accordion>
+        </div> -->
+        <div class="col-6 mt-3">
+          <p-accordion [styleClass]="'card-primary card-outline'">
+            <p-accordionTab header="PATIENT OCCUPATION DETAILS" [selected]="true">
+              <app-occupation
+                #occupationComponent
+                [patient]="patient"
+                [disableFields]="disableFields"
+                [patientForm]="patientForm"
+              ></app-occupation>
+            </p-accordionTab>
+          </p-accordion>
+        </div>
+        <div class="col-12 mt-3">
+          <p-accordion [styleClass]="'card-primary card-outline'" [style]="''">
+            <p-accordionTab
+              header="CONTACT IN CASE OF EMERGENCY"
+              [selected]="true"
+            >
+              <app-emergency-contacts
+                [patient]="patient"
+                [disableFields]="disableFields"
+                [patientForm]="patientForm"
+              ></app-emergency-contacts>
+            </p-accordionTab>
+          </p-accordion>
+        </div>
+        <!-- <div class="col-12 mt-3">
+          <p-accordion [styleClass]="'card-primary card-outline'" [style]="''">
+            <p-accordionTab header="Family Details" [selected]="true">
+              <app-family-details
+                [patient]="patient"
+                [disableFields]="disableFields"
+                [patientForm]="patientForm"
+              ></app-family-details>
+            </p-accordionTab>
+          </p-accordion>
+        </div> -->
+      </div>
+    </fieldset>
+  </form>
+  

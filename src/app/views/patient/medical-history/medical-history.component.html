@@ -1,0 +1,33 @@
+<div class="card mt-4 bg-white">
+    <div class="card-body pb-5">
+        <p class="bold text-color">Medical History</p>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <app-allergies [patientID]="patientID"></app-allergies>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <app-past-medical-history [patientID]="patientID"></app-past-medical-history>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <app-past-hospitalization-history [patientID]="patientID"></app-past-hospitalization-history>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" *ngIf="patient?.sex_code === 'F'">
+                    <app-obgyne-history [patientID]="patientID"></app-obgyne-history>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <app-medication-history [patientID]="patientID"></app-medication-history>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <app-immunization-history [patientID]="patientID"></app-immunization-history>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <app-family-medical-history [patientID]="patientID"></app-family-medical-history>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <app-personal-social-history [patientID]="patientID"></app-personal-social-history>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

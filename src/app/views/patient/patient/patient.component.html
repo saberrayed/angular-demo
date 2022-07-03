@@ -1,0 +1,55 @@
+<div class="container-fluid pt-3">
+    <div class="row no-gutters">
+        <div class="col-auto animated-width p-0 left-container" [class.open]="leftPanel" [class.p-2]="leftPanel" [class.closed]="!leftPanel">
+            <button class="btn btn-dark back" (click)="closeCall()">
+                <i class="fas fa-angle-left"></i>
+            </button>
+            <div class="video-container">
+                <app-video-call [withCustomButton]="true" [patientCommunicationUserId]="patient?.communication_user_id" (ended)="onEndCall()" #videoCall></app-video-call>
+            </div>
+        </div>
+        <div class="col right-container p-2">
+            <app-patient-banner #banner [videoCall]="videoCall" [inprogressAppointment]="inprogressAppointment" (start)="startConsultation()"></app-patient-banner>
+    
+            <!-- <div class="button-navigator mt-4">
+                <a [routerLink]="['/patient', patientID , 'profile']"  [class.active]="isCurrentPath('profile') || isCurrentPath('edit')">PATIENT PROFILE</a>
+                <a [routerLink]="['/patient', patientID ,'visit-history']" [class.active]="isCurrentPath('visit-history')">VISIT HISTORY</a>
+                <a [routerLink]="['/patient', patientID ,'clinical-documentation']" [class.active]="isCurrentPath('clinical-documentation') || isCurrentPath('document')">CLINICAL DOCUMENTATION</a>
+            </div> -->
+            <div class="btn-group mt-1 bg-white" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID , 'profile']" 
+                    [class.btn-primary]="isCurrentPath('profile') || isCurrentPath('edit')"
+                    [class.btn-outline-primary]="!isCurrentPath('profile') || isCurrentPath('edit')"
+                >PATIENT PROFILE</button>
+                <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID ,'medical-history']"
+                    [class.btn-primary]="isCurrentPath('medical-history')"
+                    [class.btn-outline-primary]="!isCurrentPath('medical-history')"
+                >MEDICAL HISTORY</button>
+                <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID ,'visit-history']"
+                    [class.btn-primary]="isCurrentPath('visit-history')"
+                    [class.btn-outline-primary]="!isCurrentPath('visit-history')"
+                >VISIT HISTORY</button>
+                <button type="button" class="btn btn-outline-primary btn-xl bold-500 hidden" [routerLink]="['/patient', patientID ,'vital-signs']"
+                    [class.btn-primary]="isCurrentPath('vital-signs')"
+                    [class.btn-outline-primary]="!isCurrentPath('vital-signs')"
+                >VITAL SIGNS AND ANTHROPOMETRIC MEASUREMENTS</button>
+                <button type="button" class="btn btn-outline-primary btn-xl bold-500 hidden" [routerLink]="['/patient', patientID ,'diagnostic-results']"
+                    [class.btn-primary]="isCurrentPath('diagnostic-results')"
+                    [class.btn-outline-primary]="!isCurrentPath('diagnostic-results')"
+                >DIAGNOSTIC RESULTS</button>
+                <button type="button" class="btn btn-outline-primary btn-xl bold-500 hidden" [routerLink]="['/patient', patientID ,'uploaded-documents']"
+                    [class.btn-primary]="isCurrentPath('uploaded-documents')"
+                    [class.btn-outline-primary]="!isCurrentPath('uploaded-documents')"
+                >UPLOADED DOCUMENTS</button>
+                <button type="button" class="btn btn-outline-primary btn-xl bold-500" [routerLink]="['/patient', patientID ,'clinical-documentation']" 
+                    [class.btn-primary]="isCurrentPath('clinical-documentation') || isCurrentPath('document') || isCurrentPath('uploaded-documents') || isCurrentPath('vital-signs') || isCurrentPath('anthropometric-measurements')"
+                    [class.btn-outline-primary]="!isCurrentPath('clinical-documentation')"
+                >CLINICAL DOCUMENTATION</button>
+            </div>
+        
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+<app-end-video-call-modal #endVideoCallDialog (end)="endCall()"></app-end-video-call-modal>
+<app-end-consultation-modal #endConsultationDialog (end)="endConsultation()"></app-end-consultation-modal>

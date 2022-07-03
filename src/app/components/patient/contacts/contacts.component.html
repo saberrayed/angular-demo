@@ -1,0 +1,94 @@
+<form [formGroup]="patientForm" *ngIf="patientForm">
+    <fieldset [disabled]="disableFields">
+      <div
+        class="p-3"
+        [class.bordered-dashed-gray]="!disableFields"
+        [class.mb-3]="i < contacts?.controls?.length - 1"
+        style="border-radius: 10px; position: relative"
+        *ngFor="let contact of contacts.controls; index as i"
+        formArrayName="contacts"
+      >
+        <i
+          class="cursor-pointer fas fa-times-circle text-danger"
+          style="
+            font-size: 1.5rem;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: white;
+            border: 3px solid white;
+          "
+          title="Remove"
+          (click)="removeContact(i)"
+          *ngIf="!disableFields"
+        ></i>
+        <div class="row" [formGroup]="contact">
+          <div class="col">
+            <span>Contact Type</span><b class="text-red ml-2" *ngIf="!disableFields && getControl('contacts.' + i + '.type_code')?.errors?.required">*</b>
+            <span *ngIf="i > 0">&nbsp;</span>
+            <select class="form-control" formControlName="type_code" (change)="updateValidator(i)">
+              <option value="null" hidden>Select</option>
+              <option [value]="master.code" *ngFor="let master of contactTypes?.details">
+                {{ master?.text }}
+              </option>
+            </select>
+          </div>
+          <div class="col">
+            <span class="mb-2">Contact Details</span><b class="text-red ml-2" *ngIf="!disableFields &&getControl('contacts.' + i + '.contact_details')?.errors?.required">*</b>
+            <span *ngIf="i > 0">&nbsp;</span>
+            <input *ngIf="contact?.value?.type_code !== 'M' && contact?.value?.type_code !== 'E' && contact?.value?.type_code !== 'H'" type="number" class="form-control" placeholder="Enter Contact Detail" formControlName="contact_details" style="border-top-left: 0px; border-bottom-left: 0px;" />
+            <div *ngIf="contact?.value?.type_code === 'E'">
+              <input type="email" class="form-control" placeholder="Enter email address" formControlName="contact_details"/>
+              <div *ngIf="contact?.controls?.contact_details?.touched &&contact?.controls?.contact_details?.errors?.email">
+                <small class="text-danger">Email format is invalid.</small>
+              </div>
+            </div>
+            <div *ngIf="contact?.value?.type_code === 'M' || contact?.value?.type_code === 'H'">
+              <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">+63</span>
+                  </div>
+                  <input type="text" formControlName="contact_details" class="form-control" style="border-top-left-radius: 0px !important; border-bottom-left-radius: 0px !important;" />
+              </div>
+              <div *ngIf="contact?.controls?.contact_details?.touched && contact?.controls?.contact_details?.errors?.required">
+                <small class="text-danger">Mobile is required</small>
+              </div>
+              <div *ngIf="contact?.controls?.contact_details?.touched && contact?.controls?.contact_details?.errors?.minlength">
+                <small class="text-danger">Mobile should be 10 digits excluding <b>+63</b> and <b>0</b></small>
+              </div>
+              <div *ngIf=" contact?.controls?.contact_details?.touched && contact?.controls?.contact_details?.errors?.maxlength">
+                <small class="text-danger">Mobile should not exceed 10 digits</small>
+              </div>
+              <div *ngIf="contact?.controls?.contact_details?.touched && contact?.controls?.contact_details?.errors?.pattern">
+                <small class="text-danger">Mobile format is invalid, should be the 10 digit number. example: 9054568596</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" [class.mt-3]="contacts?.value?.length > 0">
+        <div class="col">
+          <div class="pl-2" *ngIf="contacts?.value?.length < 1">
+            <span *ngIf="!disableFields">
+              Click "<b>Add Button</b>" to add a contact information
+            </span>
+            <span *ngIf="disableFields">No Contact Associated</span>
+            <br />
+          </div>
+          <div class="pr-2 pl-2">
+            <small class="text-danger" *ngIf="contacts?.errors?.required">Contact information is required.</small>
+            <small class="text-danger" *ngIf="contacts?.errors?.minlength">At least  {{ contacts?.errors?.minlength?.requiredLength }} contact details are required.</small>
+            <div *ngIf="contacts?.errors?.mobile_email_required"><small class="text-danger">1 mobile number and 1 email address are required.</small></div>
+            <div *ngIf="contacts?.errors?.email_required"><small class="text-danger">Email address is required.</small></div>
+            <div *ngIf="contacts?.errors?.mobile_required"><small class="text-danger">Mobile number is required.</small></div>
+          </div>
+        </div>
+        <div class="col-auto d-flex align-items-center" *ngIf="!disableFields">
+          <button class="cursor-pointer btn btn-outline-success float-right" (click)="addContact()" *ngIf="!disableFields">
+            <i class="fa fa-plus mr-2"></i>Add
+          </button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  

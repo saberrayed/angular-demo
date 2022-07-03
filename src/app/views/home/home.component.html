@@ -1,0 +1,73 @@
+<div class="p-4">
+    <div class="container-fluid pt-2">
+
+        <h2 class="text-left">Welcome  {{ user?.doctor?.primary_name?.full }}</h2>
+        <br>
+        <div class="row" >
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        Dashboard
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col col-md-3">
+                                <a href="/register" class="p-3 btn btn-primary  btn-block">Add New Patient</a>
+                            </div>
+                            <div class="col  col-md-3">
+                                <a href="/patients" class="p-3 btn btn-primary  btn-block">Add Appointment</a>
+                            </div>
+                            <div class="col  col-md-3">
+                                <a href="/consults" class="p-3 btn btn-info btn-block">View Consults</a>
+                            </div>
+                            <div class="col  col-md-3">
+                                <a href="/consults" class="p-3 btn btn-info  btn-block">View Inpatients</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 40px">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">Statistics</div>
+                    <div class="card-body row">
+                        <div class="col-md-3">
+                            <div class="info-box"><span class="info-box-icon bg-blue">
+                                <i class="fas fa-users"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">New Patients (month)</span>
+                                    <span class="info-box-number">{{ patients ?  patients.length : '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-box"><span class="info-box-icon bg-teal">
+                                <i class="fas fa-clinic-medical"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Consults this Month</span>
+                                    <span class="info-box-number">{{ appointments ?  appointments.length : '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-orange" style="color:white!important;"><i class="fas fa-file-medical"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Consults Today</span>
+                                    <span class="info-box-number">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-box"><span class="info-box-icon bg-red"><i class="fas fa-notes-medical"></i></span>
+                                <div class="info-box-content"><span class="info-box-text">Inpatients this Month</span><span class="info-box-number">-</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

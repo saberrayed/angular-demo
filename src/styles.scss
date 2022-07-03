@@ -1,1 +1,69 @@
 /* You can add global styles to this file, and also import other style files */
+// $link-color: #ffffff;
+
+$theme-colors: (
+  "primary": #035099,
+  "secondary": #34abdf,
+  "success": #27ae60,
+  "warning": #ffa800,
+  "danger": #eb5757,
+  "light": #ffffff,
+  "dark": #404040
+);
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+@import "../node_modules/ionicons/css/ionicons.min.css";
+@import "../node_modules/admin-lte/dist/css/adminlte.min.css";
+
+@import '~primeicons/primeicons.css';
+@import '~primeng/resources/themes/saga-blue/theme.css';
+@import '~primeng/resources/primeng.min.css';
+
+@import '~ngx-toastr/toastr';
+@import './assets/scss/colors.scss';
+@import './assets/scss/theme.scss';
+@import './assets/scss/custom.scss';
+@import './assets/scss/responsive.scss';
+
+
+::-webkit-scrollbar {
+  width: 0px;
+  /* remove scrollbar space */
+  // background: transparent;
+  /* optional: just make scrollbar invisible */
+}
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(./assets/fonts/material.woff2) format('woff2');
+}
+
+.scrollable {
+    & {
+        scrollbar-width: auto !important;
+        scrollbar-color: #787676 #ffffff !important;
+    }
+    
+    &::-webkit-scrollbar {
+        width: 16px !important;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: #ffffff !important;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background-color: #787676 !important;
+        border-radius: 10px !important;
+        border: 3px solid #ffffff !important;
+    }
+}
+
+/* optional: show position indicator in red */
+// ::-webkit-scrollbar-thumb {
+//   background: #ff0000;
+// }

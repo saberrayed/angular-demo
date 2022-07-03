@@ -1,0 +1,200 @@
+<div class="p-4">
+    <div class="d-flex mb-4 hidden">
+        <div class="patient-count-box mr-4">
+            <div class="d-flex p-3">
+                <div class="flex-fill text-center pt-2 mb-2" style="border-right: 0.5px solid #ffff; color: #fff; height: 75px;">
+                    <h4><b>0</b></h4><h6>APPOINTMENT REQUEST</h6></div>
+                <div class="flex-fill text-center pt-2 mb-2" style="color: #fff;">
+                    <h4><b>{{ virtualPatients }}</b></h4><h6>VIRTUAL CLINIC PATIENTS</h6></div>
+            </div>
+        </div>
+        <div class="total-earning-box text-center pt-4">
+            <h4><b>PHP 0</b></h4><h6>TOTAL EARNINGS</h6>
+        </div>
+    </div>
+    <form [formGroup]="form" *ngIf="form">
+        <fieldset [disabled]="processing">
+            <div class="d-flex mb-4 pt-3 pb-3 pl-5 pr-5 filter-inputs">
+                <div class="pl-3" style="width: 20%;">
+                    <span for="appointmentDateFrom" class="text-primary bold-500">Appointment Date From</span>
+                    <input type="date" class="form-control w-100" id="appointmentDateFrom" style="height: 53px;" (change)="list()" formControlName="from">
+                </div>
+                <div class="pl-3" style="width: 20%;">
+                    <span for="appointmentDateTo" class="text-primary bold-500">Appointment Date To</span>
+                    <input type="date" class="form-control w-100" id="appointmentDateTo" style="height: 53px;" (change)="list()" formControlName="to">
+                </div>
+                <div class="pl-3"  style="width: 30%;">
+                    <span for="patientName" class="text-primary bold-500">Patient Name</span>
+                    <input type="text" class="form-control w-100" id="patientName" style="height: 53px;" (keyup.enter)="list()" formControlName="patient_name">
+                </div>
+                <div class="pl-3" style="width: 30%;">
+                    <span for="status" class="text-primary bold-500">Status</span>
+                    <select class="form-control w-100" name="cars" id="status" style="height: 53px;" (change)="list()" formControlName="appointment_status">
+                        <option value="null">All</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="waiting">Waiting</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                        <option value="missed-by-doctor">Missed by Doctor</option>
+                        <option value="no-show">No Show</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="blocked">Blocked</option>
+                        <option value="reserved">Reserved</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    <div class="d-flex justify-content-between">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button *ngFor="let service of currentServices" type="button" class="btn btn-xl bold-500"
+                [class.btn-outline-primary]="selectedService?.service_item_code !== service?.service_item_code"
+                [class.btn-primary]="selectedService?.service_item_code === service?.service_item_code"
+                (click)="setService(service)"
+            >{{ service?.service_item?.service_item_name }}</button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary font-weight-bold" [routerLink]="['/patients']" routerLinkActive="router-link-active" >Add Appointment</button>
+        </div>
+    </div>
+    <div class="w-100">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade" id="consult-now" role="tabpanel" aria-labelledby="consult-now-tab"></div>
+            <div class="tab-pane fade  show active" id="consult-later" role="tabpanel" aria-labelledby="consult-later-tab"></div>
+        </div>
+    </div>
+
+    <div class="container-fluid pt-3">
+        <div class="row">
+            <table class="table table-striped patient-worklist-table bold-500">
+                <thead>
+                    <th class="bg-primary">Appointment Date / Time</th>
+                    <th class="bg-primary text-left">Patient Name</th>
+                    <th class="bg-primary">Date of Birth</th>
+                    <th class="bg-primary">Age/Sex</th>
+                    <th class="bg-primary">Reason for Consultation</th>
+                    <th class="bg-primary">Status</th>
+                    <!-- <th>Clinic Name</th> -->
+                    <th class="bg-primary">Actions</th>
+                </thead>
+                <tbody *ngIf="processing">
+                    <tr *ngFor="let val of counter(10)">
+                        <td *ngFor="let val of counter(7)"><p-skeleton height="2rem"></p-skeleton></td>
+                    </tr>
+                </tbody>
+                <tbody [class.hidden]="processing" *ngFor="let appointment of appointments?.data | paginate : {
+                        id: 'paginator_controls',
+                        itemsPerPage: appointments?.per_page,
+                        currentPage: appointments?.current_page,
+                        totalItems: appointments?.total
+                    }; let i = index">
+                    <tr *ngIf="i === 0 || !isSameDate(appointment?.appointment_start_datetime, appointments?.data[i - 1]?.appointment_start_datetime)">
+                       <td colspan="8" class="text-left p-0">
+                            <div class="p-text-bold p-2 pl-3 w-100" [class.mt-3]="i === 0" style="background-color: #E8E8E8;"><b>{{ appointment?.appointment_start_datetime | date:'EEEE' }}</b>  {{ appointment?.appointment_start_datetime | date:'MMMM d, y' }}</div>
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td [class.font-italic]="!appointment?.patient_name">
+                            <a [routerLink]="['/patient', appointment?.patient_id, 'clinical-documentation']" [queryParams]="{ visit: appointment?.visit_id }"  >{{ appointment?.time_start_string }} - {{ appointment?.time_end_string }}</a>
+                        </td>
+                        <td class="text-left" [class.font-italic]="!appointment?.patient_name">
+                            <a [routerLink]="['/patient', appointment?.patient_id]" >{{ appointment?.patient?.primary_name?.display || 'No Patient' }}</a></td>
+                        <td>{{ appointment?.patient?.date_of_birth_string || '-' }}</td>
+                        <td>{{ appointment?.patient?.age_sex || '-'  }}</td>
+                        <td>{{ appointment?.visit_reason || '-' }}</td>
+                        <td class="d-flex justify-content-center">
+                            <div type="button" class="status badge text-capitalize mt-2" *ngIf="appointment?.patient_name"
+                                [class.bg-success]="appointment?.appointment_status === 'confirmed'"
+                                [class.bg-info]="appointment?.appointment_status === 'waiting'"
+                                [class.bg-warning]="appointment?.appointment_status === 'in-progress'"
+                                [class.bg-danger]="appointment?.appointment_status === 'no-show' || appointment?.appointment_status === 'cancelled' || appointment?.appointment_status === 'missed-by-doctor'"
+                            >
+                                {{ getName(appointment?.appointment_status) }}
+                            </div>
+                            <span *ngIf="!appointment?.patient_name"> - </span>
+                        </td>
+                        <!-- <td>{{ appointment?.resource?.type_text || '-' }}</td> -->
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <button class="btn btn-success hidden" (click)="startAppointment(appointment)" *ngIf="appointment?.can_start"  [disabled]="appointment?.loading">
+                                    <i *ngIf="!appointment?.loading" class="fas fa-video mr-2"></i><small>Start Consult</small>
+                                    <i *ngIf="appointment?.loading" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+                                </button>
+                                <button class="btn btn-primary ml-2" title="Create Appointment" *ngIf="appointment?.appointment_status === 'cancelled' || appointment?.appointment_status === 'completed' || appointment?.appointment_status === 'missed-by-doctor'" (click)="createAppointmentModal?.onOpen(appointment?.patient)">
+                                    <i class="fas fa-calendar-plus cursor-pointer mr-2"></i><small>Create Appointment</small>
+                                </button>
+                                <button class="btn btn-warning ml-2" *ngIf="appointment?.appointment_status === 'confirmed' && !appointment?.service?.is_auto_booking" (click)="reschedAppointment?.onOpen(appointment, selectedService?.service_item_code)">
+                                    <i class="fas fa-calendar-day mr-2"></i><small>Reschedule</small>
+                                </button>
+                                <button class="btn btn-default ml-2" *ngIf="!appointment?.appointment_status">
+                                    <i class="fas fa-calendar-times text-danger"></i>
+                                </button>
+                                <button class="btn btn-danger ml-2" *ngIf="appointment?.appointment_status === 'in-progress' || appointment?.appointment_status === 'confirmed'"  (click)="cancelAppointment?.onOpen(appointment)">
+                                    <i class="fas fa-times mr-2"></i><small>Cancel</small>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <td [class.font-italic]="!slot?.appointment?.patient_name">{{ slot?.slot_start_time }} - {{ slot?.slot_end_time }}</td>
+                        <td class="text-left" [class.font-italic]="!slot?.appointment?.patient_name">{{ slot?.appointment?.patient_name || 'No Patient' }}</td>
+                        <td>{{ slot?.appointment?.patient?.date_of_birth_string || '-' }}</td>
+                        <td>{{ slot?.appointment?.patient?.age_sex || '-'  }}</td>
+                        <td>{{ slot?.appointment?.visit_reason || '-' }}</td>
+                        <td>
+                            <button type="button" class="btn text-capitalize" *ngIf="slot?.appointment?.patient_name"
+                                [class.btn-success]="patient?.appointment_status === 'confirmed'"                                                     
+                                [class.btn-warning]="patient?.appointment_status === 'in-progress'"
+                                >{{ slot?.appointment?.appointment_status }}</button>
+                            <span *ngIf="!slot?.appointment?.patient_name"> - </span>
+                        </td>
+                        <td>{{ slot?.appointment?.resource?.type_text || '-' }}</td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <button class="btn btn-default" [routerLink]="['/patient', patient?.patient_id]" *ngIf="slot?.appointment?.appointment_status === 'in-progress' || slot?.appointment?.appointment_status === 'confirmed'"><i class="fas fa-video fa-lg text-success"></i></button>
+                                <button class="btn btn-default" [routerLink]="['/patient', patient?.patient_id]" *ngIf="slot?.appointment?.appointment_status === 'in-progress' || slot?.appointment?.appointment_status === 'confirmed'"><i class="fas fa-calendar-day fa-lg text-warning"></i></button>
+                                <button class="btn btn-default ml-2" [routerLink]="['/patient', patient?.patient_id]" *ngIf="!slot?.appointment?.appointment_status"><i class="fas fa-calendar-times fa-lg text-danger"></i></button>
+                                <button class="btn btn-default" [routerLink]="['/patient', patient?.patient_id]" *ngIf="slot?.appointment?.appointment_status === 'in-progress' || slot?.appointment?.appointment_status === 'confirmed'"><i class="fas fa-times fa-lg text-danger"></i></button>
+                                <button class="btn btn-default" [routerLink]="['/patient', appointment?.patient_id]" *ngIf="appointment?.can_start"><i class="fas fa-video text-success"></i></button>
+                                <button class="btn btn-default" (click)="startAppointment(appointment)" *ngIf="appointment?.can_start" [disabled]="appointment?.loading">
+                                    <i *ngIf="!appointment?.loading" class="fas fa-video text-success"></i>
+                                    <i *ngIf="appointment?.loading" class="nav-icon fas fa-circle-notch spinning"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr> -->
+                </tbody>
+                <tbody [class.hidden]="processing">
+                    <tr *ngIf="appointments?.data?.length < 1">
+                        <td colspan="8" class="text-left">No Appointment</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row pb-3" [class.hidden]="processing">
+            <div class="col">
+                <div class="document-header align-items-center d-flex justify-content-end">
+                    <div class="d-flex align-items-center">
+                    <select
+                        class="form-control ml-3"
+                        style="margin-right: -20px; width: 80px; height: 30px; padding-top: 3px"
+                        [(ngModel)]="perPage"
+                        (change)="list()"
+                    >
+                        <option [ngValue]="per" *ngFor="let per of perPages">
+                        {{ per }}
+                        </option>
+                    </select>
+                    <pagination-controls
+                        (pageChange)="list($event)"
+                        id="paginator_controls"
+                    ></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-create-appointment-modal #createAppointmentModal></app-create-appointment-modal>
+<app-cancel-appointment-modal #cancelAppointment (cancel)="list()"></app-cancel-appointment-modal>
+<app-reschedule-appointment-modal #reschedAppointment (reschedule)="list()"></app-reschedule-appointment-modal>

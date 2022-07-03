@@ -1,0 +1,25 @@
+.icon {
+    background-color: #a8c1db;
+    border: 10px solid #cfddeb;
+    border-radius: 100%;
+    width: 90px;
+    height: 90px;
+
+    i {
+        font-size: 2rem;
+        color: var(--mwell-primary-color);
+    }
+}
+
+.code-input {
+    padding-right: 143px !important;
+}
+
+.send-code {
+    position: absolute;
+    right: 10px;
+    top: 6px;
+    background-color: #cddceb;
+    color: var(--mwell-primary-color);
+    font-weight: 600;
+}

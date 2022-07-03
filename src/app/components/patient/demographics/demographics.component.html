@@ -1,0 +1,402 @@
+<form [formGroup]="patientForm" *ngIf="patientForm">
+    <fieldset [disabled]="disableFields">
+      <div class="row equal">
+        <div class="col-sm-10">
+          <div class="row hidden" formGroupName="patient">
+            <div class="col-4">
+              <span>PIN</span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                formControlName="patient_id"
+                disabled
+              />
+            </div>
+            <!-- <div class="col-3">
+              <div class="form-group" style="padding-top: 30px">
+                <div class="custom-control custom-checkbox">
+                  <input
+                    class="custom-control-input"
+                    type="checkbox"
+                    id="newborn"
+                    formControlName="is_newborn"
+                  />
+                  <label for="newborn" class="custom-control-label">
+                    <span style="font-weight: none !important">Newborn</span>
+                  </label>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div class="row mt-3" formGroupName="name">
+            <div class="col-auto">
+              <span>Prefix/Title</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields && getControl('name.prefix')?.errors?.required
+                "
+                >*</b
+              >
+              <select class="form-control" formControlName="prefix">
+                <option value="null" hidden>Select</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Dr.">Dr.</option>
+                <option value="Atty.">Atty.</option>
+              </select>
+            </div>
+            <div class="col">
+              <span>First Name</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields && getControl('name.first')?.errors?.required
+                "
+                >*</b
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                formControlName="first"
+              />
+            </div>
+            <div class="col">
+              <span>Middle Name</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields && getControl('name.middle')?.errors?.required
+                "
+                >*</b
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                formControlName="middle"
+              />
+            </div>
+            <div class="col">
+              <span>Last Name</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields && getControl('name.last')?.errors?.required
+                "
+                >*</b
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                formControlName="last"
+              />
+            </div>
+            <div class="col-1">
+              <span>Suffix</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields && getControl('name.suffix')?.errors?.required
+                "
+                >*</b
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                formControlName="suffix"
+              />
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col" formGroupName="patient">
+              <span>Nickname</span><b class="text-red ml-2" *ngIf="!disableFields && getControl('name.sex_code')?.errors?.required">*</b>
+              <input type="text" class="form-control" placeholder="" formControlName="nickname"/>
+            </div>
+            <div class="col-auto" formGroupName="patient">
+              <span>Sex</span><b class="text-red ml-2" *ngIf="!disableFields && getControl('name.sex_code')?.errors?.required">*</b>
+              <select class="form-control" formControlName="sex_code">
+                <option value="null" hidden>None</option>
+                <option *ngFor="let gender of sex" [value]="gender.value">
+                  {{ gender.display }}
+                </option>
+              </select>
+            </div>
+            <div class="col-auto" formGroupName="patient">
+              <span>Date of Birth</span><b class="text-red ml-2" *ngIf="!disableFields && (getControl('patient.month')?.errors?.required || getControl('patient.day')?.errors?.required || getControl('patient.year')?.errors?.required)">*</b>
+              <select class="form-control" formControlName="month" (change)="generateAge()">
+                <option value="null" hidden>- Month -</option>
+                <option *ngFor="let month of months" [value]="month.value">
+                  {{ month.display }}
+                </option>
+              </select>
+            </div>
+            <div class="col-auto" formGroupName="patient">
+              <span>&nbsp;</span>
+              <select class="form-control" formControlName="day" (change)="generateAge()">
+                <option value="null" hidden>- Day -</option>
+                <option *ngFor="let day of days" [value]="day.value">
+                  {{ day.display }}
+                </option>
+              </select>
+            </div>
+            <div class="col-auto" formGroupName="patient">
+              <span>&nbsp;</span>
+              <input type="number" class="form-control" placeholder="- Year -" maxlength="4" max="{{ maxYear }}" formControlName="year" (change)="generateAge()"/>
+            </div>
+            <div class="col-auto">
+              <span>Age</span>
+              <input type="text" style="width: 100px" class="form-control" placeholder="" [(ngModel)]="age" [ngModelOptions]="{ standalone: true }" [disabled]="!patientForm?.value?.patient?.is_fictitious_date_of_birth" (change)="generateYear()"/>
+            </div>
+            <div class="col-1" *ngIf="patientForm?.value?.patient?.is_newborn">
+              <span>M/o</span>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="possibleMonth"
+                [ngModelOptions]="{ standalone: true }"
+                disabled
+              />
+            </div>
+            <div class="col-1" *ngIf="patientForm?.value?.patient?.is_newborn">
+              <span>day</span>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="possibleDay"
+                [ngModelOptions]="{ standalone: true }"
+                disabled
+              />
+            </div>
+            <!-- <div class="col-3" formGroupName="patient">
+              <div class="form-group" style="padding-top: 30px">
+                <div class="custom-control custom-checkbox">
+                  <input
+                    class="custom-control-input"
+                    type="checkbox"
+                    id="admitted-inpatient"
+                    value="option1"
+                    formControlName="is_fictitious_date_of_birth"
+                  />
+                  <label for="admitted-inpatient" class="custom-control-label">
+                    <span style="font-weight: none !important"
+                      >Fictitous Date of Birth</span
+                    >
+                  </label>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div class="row mt-3" formArrayName="attributes">
+            <div class="col" formGroupName="0">
+              <span>Nationality</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields &&
+                  getControl('attributes.value_code')?.errors?.required
+                "
+                >*</b
+              >
+              <select
+                class="form-control"
+                [(ngModel)]="selectedAttribute[0]"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="
+                  updateAttribute(0, 'nationalities', $event.target.value)
+                "
+              >
+                <option value="null" hidden>None</option>
+                <option
+                  [value]="master.code"
+                  *ngFor="let master of nationalities?.details"
+                >
+                  {{ master.text }}
+                </option>
+              </select>
+            </div>
+            <div class="col" formGroupName="1">
+              <span>Civil Status</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields &&
+                  getControl('attributes.value_code')?.errors?.required
+                "
+                >*</b
+              >
+              <select
+                class="form-control"
+                [(ngModel)]="selectedAttribute[1]"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="
+                  updateAttribute(1, 'civilStatuses', $event.target.value)
+                "
+              >
+                <option value="null" hidden>None</option>
+                <option
+                  [value]="master.code"
+                  *ngFor="let master of civilStatuses?.details"
+                >
+                  {{ master?.text }}
+                </option>
+              </select>
+            </div>
+            <div class="col" formGroupName="2">
+              <span>Religion</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields &&
+                  getControl('attributes.value_code')?.errors?.required
+                "
+                >*</b
+              >
+              <select
+                class="form-control"
+                [(ngModel)]="selectedAttribute[2]"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="updateAttribute(2, 'religions', $event.target.value)"
+              >
+                <option value="null" hidden>None</option>
+                <option
+                  [value]="master.code"
+                  *ngFor="let master of religions?.details"
+                >
+                  {{ master?.text }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <!-- <div class="row mt-5" formGroupName="alias">
+            <div class="col-12">
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="alias"
+                    [(ngModel)]="hasAlias"
+                    [ngModelOptions]="{ standalone: true }"
+                    (change)="updateAlias()"
+                  />
+                  <label class="custom-control-label" for="alias"
+                    >Alias / Fictitious Name</label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <span>Prefix/Title</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields && getControl('alias.prefix')?.errors?.required
+                "
+                >*</b
+              >
+              <select class="form-control" formControlName="prefix">
+                <option value="null" hidden>None</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+              </select>
+            </div>
+            <div class="col">
+              <span>First Name</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields && getControl('alias.first')?.errors?.required
+                "
+                >*</b
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                formControlName="first"
+              />
+            </div>
+            <div class="col">
+              <span>Middle Name</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields && getControl('alias.middle')?.errors?.required
+                "
+                >*</b
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                formControlName="middle"
+              />
+            </div>
+            <div class="col">
+              <span>Last Name</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields && getControl('alias.last')?.errors?.required
+                "
+                >*</b
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                formControlName="last"
+              />
+            </div>
+            <div class="col-1">
+              <span>Suffix</span
+              ><b
+                class="text-red ml-2"
+                *ngIf="
+                  !disableFields && getControl('name.suffix')?.errors?.required
+                "
+                >*</b
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                formControlName="suffix"
+              />
+              <input
+                type="hidden"
+                class="form-control"
+                placeholder=""
+                formControlName="is_primary"
+              />
+            </div>
+          </div> -->
+        </div>
+        <div class="col-sm-2 pt-3">
+          <span>Upload Patient Photo</span>
+          <app-upload-file
+            #uploaders
+            [name]="'file'"
+            [url]="uploadUrl"
+            [accept]="'.png,.jpg,.bmp'"
+            [folder]="'photos'"
+            [disk]="'public'"
+            [disableFields]="disableFields"
+            [uploadedFiles]="
+              patientForm.value.patient.photo
+                ? [patientForm.value.patient.photo]
+                : []
+            "
+            (upload)="setUploadPhoto($event)"
+            (remove)="removeUploadPhoto($event)"
+          ></app-upload-file>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  

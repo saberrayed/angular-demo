@@ -1,0 +1,13 @@
+<div class="d-flex align-items-center mb-2" *ngFor="let file of files; let i = index">
+    <button (click)="selectImage(i)" type="button" class="upload-button btn btn-outline-primary border-color-gray mr-3" [disabled]="uploading">
+        Select <i *ngIf="uploading" class="ml-2 nav-icon fas fa-circle-notch spinning"></i>
+    </button>
+    <button type="button" class="choose-button btn btn-danger mr-3" (click)="removeFile(i)" title="Remove File" [disabled]="uploading">
+        <i class="fa fa-minus" aria-hidden="true"></i>
+    </button>
+    <span><i class="fas fa-check-circle mr-2 text-success" *ngIf="file?.isUploaded"></i>{{ file?.name }}</span>
+    <input type='file' [attr.accept]="format" (change)="previewUploadFile(i, $event)" #uploader hidden />
+</div>
+<button type="button" class="choose-button btn btn-primary mr-3" (click)="addFile()" title="Add More Files" [disabled]="uploading">
+    <i class="fa fa-plus" aria-hidden="true"></i>
+</button>

@@ -1,0 +1,28 @@
+<p-dialog
+  [baseZIndex]="2000"
+  [style]="{ maxWidth: '600px', marginTop: '30px'  }"
+  [(visible)]="modal"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [dismissableMask]="false"
+  [modal]="true"
+  [position]="'top'"
+  [draggable]="false"
+>
+    <div class="pr-3 pl-3">
+        <h3 class="text-primary bold">Do you want to end the consultation?</h3>
+        <p class="mt-4">
+        Once ended, this consulation will be tagged as completed.
+        </p>
+    </div>
+    <p-footer>
+        <div class="w-100 text-right pr-3 pl-3 pb-3">
+        <button role="button" class="btn btn-danger btn-lg mr-2" (click)="endConsultation()">
+            End Consultation
+        </button>
+        <button role="button" class="btn btn-outline-primary btn-lg" (click)="onClose()">
+            Cancel
+        </button>
+        </div>
+    </p-footer>
+</p-dialog>

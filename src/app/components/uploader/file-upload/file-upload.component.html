@@ -1,0 +1,7 @@
+<div class="upload-container">
+    <a class="btn btn-dark bg-lightgray bold" (click)="uploader.click()" *ngIf="!image">
+        <i class="fa fa-download pr-3" aria-hidden="true"></i>Upload {{ label }}
+    </a>
+    <img [src]="image" (click)="uploader.click()" *ngIf="image" alt="" class="img-preview"/>
+    <input type='file' accept="image/*" (change)="previewUploadFile($event)" #uploader hidden />
+</div>

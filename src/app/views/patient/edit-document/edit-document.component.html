@@ -1,0 +1,9 @@
+<div class="card mt-4 bg-white">
+    <div class="card-body">
+        <app-clinical-document-form
+            #formComponent
+            (saveForm)="onSaveForm($event)"
+            (goBack)="onGoBack()"
+        ></app-clinical-document-form>
+    </div>
+</div>

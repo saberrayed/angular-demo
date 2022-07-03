@@ -1,0 +1,141 @@
+<form [formGroup]="patientForm" *ngIf="patientForm">
+    <fieldset [disabled]="disableFields">
+      <h4>Contact Person Name</h4>
+      <div class="row mt-3" formGroupName="emergency_contact">
+        <div class="col-auto">
+          <span>Prefix/Title</span
+          ><b
+            class="text-red ml-2"
+            *ngIf="
+              !disableFields &&
+              getControl('emergency_contact.prefix')?.errors?.required
+            "
+            >*</b
+          >
+          <select class="form-control" formControlName="prefix">
+            <option value="null" hidden>None</option>
+            <option value="Mr.">Mr.</option>
+            <option value="Ms.">Ms.</option>
+            <option value="Dr.">Dr.</option>
+            <option value="Atty.">Atty.</option>
+          </select>
+        </div>
+        <div class="col">
+          <span>First Name</span
+          ><b
+            class="text-red ml-2"
+            *ngIf="
+              !disableFields &&
+              getControl('emergency_contact.first')?.errors?.required
+            "
+            >*</b
+          >
+          <input
+            type="text"
+            class="form-control"
+            placeholder=""
+            formControlName="first"
+          />
+        </div>
+        <div class="col">
+          <span>Middle Name</span
+          ><b
+            class="text-red ml-2"
+            *ngIf="
+              !disableFields &&
+              getControl('emergency_contact.middle')?.errors?.required
+            "
+            >*</b
+          >
+          <input
+            type="text"
+            class="form-control"
+            placeholder=""
+            formControlName="middle"
+          />
+        </div>
+      </div>
+      <div class="row mt-3 pb-3" formGroupName="emergency_contact">
+        <div class="col-8">
+          <span>Last Name</span
+          ><b
+            class="text-red ml-2"
+            *ngIf="
+              !disableFields &&
+              getControl('emergency_contact.last')?.errors?.required
+            "
+            >*</b
+          >
+          <input
+            type="text"
+            class="form-control"
+            placeholder=""
+            formControlName="last"
+          />
+        </div>
+        <div class="col">
+          <span>Suffix</span
+          ><b
+            class="text-red ml-2"
+            *ngIf="
+              !disableFields &&
+              getControl('emergency_contact.suffix')?.errors?.required
+            "
+            >*</b
+          >
+          <input
+            type="text"
+            class="form-control"
+            placeholder=""
+            formControlName="suffix"
+          />
+        </div>
+      </div>
+      <hr />
+      <h4>Contact Details</h4>
+      <div class="row mt-3" formGroupName="emergency_contact">
+        <div class="col">
+          <span>Relationship</span><b class="text-red ml-2"*ngIf="!disableFields && getControl('emergency_contact.relationship_uid')?.errors?.required">*</b>
+          <select class="form-control" formControlName="relationship_uid">
+            <option value="null" hidden>None</option>
+            <option [value]="master?.uid" *ngFor="let master of relationships?.details">{{ master?.text }}</option>
+          </select>
+        </div>
+        <div class="col">
+          <span>Purpose</span><b class="text-red ml-2" *ngIf="!disableFields && getControl('emergency_contact.purpose_uid')?.errors?.required">*</b>
+          <select class="form-control" formControlName="purpose_uid">
+            <option value="null" hidden>None</option>
+            <option [value]="master?.uid" *ngFor="let master of purposes?.details">{{ master?.text }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-3" formGroupName="emergency_contact">
+        <div class="col">
+          <span>Contact Number</span><b class="text-red ml-2" *ngIf="!disableFields && getControl('emergency_contact.contact_number')?.errors?.required" >*</b>
+          <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">+63</span>
+              </div>
+              <input type="number" class="form-control" style="border-top-left-radius: 0px !important; border-bottom-left-radius: 0px !important;"  formControlName="contact_number"/>
+          </div>
+          <div *ngIf="patientForm?.controls?.emergency_contact?.controls?.contact_number?.touched && patientForm?.controls?.emergency_contact?.controls?.contact_number?.errors?.required">
+            <small class="text-danger">Mobile is required</small>
+          </div>
+          <div *ngIf="patientForm?.controls?.emergency_contact?.controls?.contact_number?.touched && patientForm?.controls?.emergency_contact?.controls?.contact_number?.errors?.minlength">
+            <small class="text-danger">Mobile should be 10 digits excluding <b>+63</b> and <b>0</b></small>
+          </div>
+          <div *ngIf="patientForm?.controls?.emergency_contact?.controls?.contact_number?.touched && patientForm?.controls?.emergency_contact?.controls?.contact_number?.errors?.maxlengt">
+            <small class="text-danger">Mobile should not exceed 10 digits</small>
+          </div>
+          <div *ngIf="patientForm?.controls?.emergency_contact?.controls?.contact_number?.touched && patientForm?.controls?.emergency_contact?.controls?.contact_number?.errors?.pattern">
+            <small class="text-danger">Mobile format is invalid, should be the 10 digit number. example: 9054568596</small>
+          </div>
+        </div>
+        <div class="col hidden">
+          <span>PIN</span><b class="text-red ml-2" *ngIf="!disableFields && getControl('emergency_contact.contact_patient_id')?.errors?.required">*</b>
+          <input type="text" class="form-control" placeholder="Select Patient ID" formControlName="contact_patient_id"/>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  

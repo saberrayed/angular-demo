@@ -1,0 +1,72 @@
+.vital-signs {
+    border-color: #333333;
+    thead {
+      tr {
+        background-color: #cce8cc;
+        color: #333333;
+        th {
+          border-color: #333333;
+        }
+      }
+    }
+    tr {
+      td {
+        border-color: #333333;
+        vertical-align: middle;
+        text-align: center;
+      }
+    }
+  }
+  .header {
+    font-weight: bold;
+    border-bottom: 1px solid black;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-bottom: 5px;
+  }
+  
+  .paginator-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 5px;
+  
+    a {
+      color: #5f5f5f !important;
+      margin-right: 10px;
+  
+      &:last-child {
+        margin-right: 0;
+      }
+  
+      &:hover {
+        color: red !important;
+      }
+    }
+  }
+  
+  .maximize-vital {
+    position: fixed !important;
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    padding: 0px;
+  
+    .row {
+      margin: 0px !important;
+    }
+  }
+  
+  .graph {
+    background-color: white;
+    transition: margin 1s linear;
+  }
+  

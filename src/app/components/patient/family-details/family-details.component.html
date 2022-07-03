@@ -1,0 +1,227 @@
+<form [formGroup]="patientForm" *ngIf="patientForm">
+    <fieldset [disabled]="disableFields">
+      <div class="row mb-3" *ngIf="families?.value?.length > 0">
+        <div class="col-12">
+          <div
+            class="p-3"
+            [class.mb-3]="i < families?.controls?.length - 1"
+            [class.bordered-dashed-gray]="!disableFields"
+            [class.bordered-bottom-gray]="
+              disableFields && i < families?.controls?.length - 1
+            "
+            style="position: relative"
+            *ngFor="let family of families.controls; index as i"
+            formArrayName="families"
+          >
+            <i
+              class="cursor-pointer fas fa-times-circle text-danger"
+              style="
+                font-size: 1.5rem;
+                position: absolute;
+                right: -10px;
+                top: -10px;
+                border: 3px solid white;
+              "
+              title="Remove"
+              (click)="removeFamily(i)"
+              *ngIf="!disableFields"
+            ></i>
+  
+            <h4>Family Member Name</h4>
+            <div class="row" [formGroup]="family">
+              <div class="col-auto">
+                <span>Prefix/Title</span
+                ><b
+                  class="text-red ml-2"
+                  *ngIf="
+                    !disableFields &&
+                    getControl('families.' + i + '.prefix')?.errors?.required
+                  "
+                  >*</b
+                >
+                <select class="form-control" formControlName="prefix">
+                  <option value="null" hidden>None</option>
+                  <option value="Mr.">Mr.</option>
+                  <option value="Ms.">Ms.</option>
+                </select>
+              </div>
+              <div class="col">
+                <span>First Name</span
+                ><b
+                  class="text-red ml-2"
+                  *ngIf="
+                    !disableFields &&
+                    getControl('families.' + i + '.first')?.errors?.required
+                  "
+                  >*</b
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder=""
+                  formControlName="first"
+                />
+              </div>
+              <div class="col">
+                <span>Middle Name</span
+                ><b
+                  class="text-red ml-2"
+                  *ngIf="
+                    !disableFields &&
+                    getControl('families.' + i + '.middle')?.errors?.required
+                  "
+                  >*</b
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder=""
+                  formControlName="middle"
+                />
+              </div>
+            </div>
+            <div class="row mt-3 pb-3" [formGroup]="family">
+              <div class="col-8">
+                <span>Last Name</span
+                ><b
+                  class="text-red ml-2"
+                  *ngIf="
+                    !disableFields &&
+                    getControl('families.' + i + '.last')?.errors?.required
+                  "
+                  >*</b
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder=""
+                  formControlName="last"
+                />
+              </div>
+              <div class="col">
+                <span>Suffix</span
+                ><b
+                  class="text-red ml-2"
+                  *ngIf="
+                    !disableFields &&
+                    getControl('families.' + i + '.suffix')?.errors?.required
+                  "
+                  >*</b
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder=""
+                  formControlName="suffix"
+                />
+              </div>
+              <div class="col">
+                <span>Sex</span
+                ><b
+                  class="text-red ml-2"
+                  *ngIf="
+                    !disableFields &&
+                    getControl('families.' + i + '.sex_code')?.errors?.required
+                  "
+                  >*</b
+                >
+                <select class="form-control" formControlName="sex_code">
+                  <option value="null" hidden>None</option>
+                  <option *ngFor="let gender of sex" [value]="gender.value">
+                    {{ gender.display }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <hr />
+            <h4>Contact Details</h4>
+            <div class="row mt-3" [formGroup]="family">
+              <div class="col">
+                <span>Relationship</span>
+                <b
+                  class="text-red ml-2"
+                  *ngIf="
+                    !disableFields &&
+                    getControl('families.' + i + '.relationship_uid')?.errors
+                      ?.required
+                  "
+                  >*</b
+                >
+                <select class="form-control" formControlName="relationship_uid">
+                  <option value="null" hidden>None</option>
+                  <option
+                    [value]="master?.uid"
+                    *ngFor="let master of relationships?.details"
+                  >
+                    {{ master?.text }}
+                  </option>
+                </select>
+              </div>
+              <div class="col">
+                <span>Purpose</span
+                ><b
+                  class="text-red ml-2"
+                  *ngIf="
+                    !disableFields &&
+                    getControl('families.' + i + '.purpose_uid')?.errors?.required
+                  "
+                  >*</b
+                >
+                <select class="form-control" formControlName="purpose_uid">
+                  <option value="null" hidden>None</option>
+                  <option
+                    [value]="master?.uid"
+                    *ngFor="let master of purposes?.details"
+                  >
+                    {{ master?.text }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row mt-3" [formGroup]="family">
+              <div class="col">
+                <span>Contact Number</span><b class="text-red ml-2" *ngIf="!disableFields && getControl('families.' + i + '.contact_number')?.errors?.required">*</b>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">+63</span>
+                    </div>
+                    <input type="text" formControlName="contact_number" class="form-control" style="border-top-left-radius: 0px !important; border-bottom-left-radius: 0px !important;"/>
+                </div>
+                <div *ngIf="family.controls?.contact_number?.touched && family.controls?.contact_number?.errors?.required">
+                  <small class="text-danger">Mobile is required</small>
+                </div>
+                <div *ngIf="family.controls?.contact_number?.touched && family.controls?.contact_number?.errors?.minlength">
+                  <small class="text-danger">Mobile should be 10 digits excluding <b>+63</b> and <b>0</b></small>
+                </div>
+                <div *ngIf="family.controls?.contact_number?.touched && family.controls?.contact_number?.errors?.maxlength">
+                  <small class="text-danger">Mobile should not exceed 10 digits</small>
+                </div>
+                <div *ngIf="family.controls?.contact_number?.touched && family.controls?.contact_number?.errors?.pattern">
+                  <small class="text-danger">Mobile format is invalid, should be the 10 digit number. example: 9054568596</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="p-2" *ngIf="families?.value?.length < 1">
+            <span *ngIf="!disableFields"
+              >Click "<b>Add Button</b>" to associate a family</span
+            >
+            <span *ngIf="disableFields">No Family Associated</span>
+          </div>
+        </div>
+        <div class="col-auto" *ngIf="!disableFields">
+          <button
+            class="cursor-pointer btn btn-outline-success"
+            (click)="addFamily()"
+          >
+            <i class="fa fa-plus mr-2"></i>Add
+          </button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  

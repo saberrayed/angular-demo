@@ -1,0 +1,35 @@
+<p-dialog
+  [baseZIndex]="2000"
+  [style]="{ maxWidth: '600px', marginTop: '30px'  }"
+  [(visible)]="modal"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [dismissableMask]="false"
+  [modal]="true"
+  [position]="'top'"
+  [draggable]="false"
+>
+    <div class="pr-3 pl-3">
+        <h3 class="text-primary bold">Decline Patient</h3>
+        <p class="mt-4">
+            Are you sure you want to decline this patient and provide a refund for this consult?
+        </p>
+        <p>
+            If yes, please state the decline reason below.
+        </p>
+        <div class="form-group">
+            <small class="text-muted">Decline Reason</small>
+            <input type="text" class="form-control" [(ngModel)]="declineReason">
+        </div>
+    </div>
+    <p-footer>
+        <div class="w-100 text-right pr-3 pl-3 pb-3">
+        <button role="button" class="btn btn-danger btn-lg mr-2" (click)="declinePatient()">
+            Decline Patient
+        </button>
+        <button role="button" class="btn btn-outline-primary btn-lg" (click)="onClose()">
+            Cancel
+        </button>
+        </div>
+    </p-footer>
+</p-dialog>

@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand navbar-light bg-primary"
+  [class.no-ml]="+user?.is_new_user === 1"
+  [class.main-header]="+user?.is_new_user === 0"
+  [class.navbar-white]="!darkMode" [class.navbar-dark]="darkMode">
+  <ul class="navbar-nav">
+    <li class="nav-item mr-3" *ngIf="+user?.is_new_user === 0">
+      <a class="nav-link" (click)="toggleMenuSidebar.emit()" pTooltip="Expand/Collapse" tooltipPosition="right" tooltipZIndex="99999">
+        <i class="text-white fas fa-bars"></i>
+      </a>
+    </li>
+    <li class="nav-item d-flex align-items-center hidden" *ngFor="let clinic of user?.doctor?.clinics">
+      <div *ngFor="let toggle of clinic?.resource?.services" class="mr-2">
+        <div class="d-flex align-items-center" *ngIf="toggle.is_on_call_toggleable && +user?.is_new_user === 0">
+          <span class="mr-2">On-Call Status:</span>
+          <p-inputSwitch [(ngModel)]="toggle.is_on_call" styleClass="on-call" (onChange)="toggleOnCall(toggle, $event)"></p-inputSwitch>
+          <span class="ml-2">{{ toggle?.is_on_call ? 'Online' : 'Offline'}}</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item text-center">
+      <small>Today is</small><br>
+      <b>{{ currentDate | date:'MMMM d, y' }}</b>
+    </li>
+  </ul>
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item d-flex align-items-center">      
+      <small>Welcome, Doctor</small>
+        <div class="dropdown">
+            <img 
+              [src]="user?.doctor?.profile_photo_url"
+              onerror="this.src='./assets/img/user-stock.png';"
+              class="profile-pic-btn ml-2 cursor-pointer" 
+              data-toggle="dropdown">
+          <ul class="dropdown-menu dropdown-menu-right pt-1 pb-1 pl-1">
+            <li><a class="nav-link cursor-pointer font-weight-bold" (click)="logout()">Logout</a></li>
+          </ul>
+        </div>   
+    </li>
+    <app-notifications-dropdown-menu *ngIf="+user?.is_new_user === 0"></app-notifications-dropdown-menu>
+  </ul>
+</nav>
