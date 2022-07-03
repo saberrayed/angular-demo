@@ -37,7 +37,7 @@ jobs:
     needs: build
     environment:
       name: 'Production'
-      url: $
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
       - name: Download artifact from build job
@@ -51,5 +51,5 @@ jobs:
         with:
           app-name: 'mwellmdappdev'
           slot-name: 'Production'
-          publish-profile: $
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_46440F5090A34E8EA6984989BD729560 }}
           package: .
